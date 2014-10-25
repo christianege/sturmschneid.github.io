@@ -125,9 +125,6 @@
 
 <div class="entry-content clearfix" itemprop="articleBody description"><p>After a successfull merge of the <a href="https://github.com/project-magpie/linux-sh4-2.6.32.y/tree/ubifs-merge">UBIFS patches</a>  I have made some benchmarks. In both cases I have flashed the same image. It was a fresh build of core-image-minimal from the <a href="https://github.com/project-magpie/meta-stlinux/tree/dylan">dylan branch</a>. Maybe these benachmarks have to be repeated with a more representative scenario. More Information regarding <a href="http://en.wikipedia.org/wiki/UBIFS">UBIFS</a> can be found on <a href="http://elinux.org/UBIFS">eLinux</a>. If you are interested in more flash file system Benchmarks you can also have a look a <a href="http://elinux.org/Flash_Filesystem_Benchmarks">eLinux</a>.</p>
 
-<!--more-->
-
-
 <h2>Mounting a JFFS2 Volume</h2>
 
 <pre><code>root@spark:~# time mount /dev/mtdblock6  -tjffs2 /mnt/

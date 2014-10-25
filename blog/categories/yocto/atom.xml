@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Yocto | Sturmschneid]]></title>
   <link href="http://sturmschneid.github.io/blog/categories/yocto/atom.xml" rel="self"/>
   <link href="http://sturmschneid.github.io/"/>
-  <updated>2014-10-25T13:59:25+02:00</updated>
+  <updated>2014-10-25T14:03:35+02:00</updated>
   <id>http://sturmschneid.github.io/</id>
   <author>
     <name><![CDATA[Christian Ege]]></name>
@@ -25,9 +25,6 @@
 <p>I&rsquo;ve created a successful <a href="https://github.com/linux-sunxi/meta-sunxi/commit/998cbf354423375ceacf735571dab150b9670502">pull-request</a> to merge my changes into the <a href="https://github.com/linux-sunxi/meta-sunxi">meta-sunxi</a> repository and succeeded with the current master branch. Maybe I also start a pull request for the daisy branch. Due  to the fact that the new yocto release is knocking on the door This is may not needed.</p>
 
 <p>As a big fan of the <a href="https://www.yoctoproject.org/">Yocto Project</a> I decided to run poky on my OLinuXino. Due to the fact that the <a href="https://www.olimex.com/Products/OLinuXino/A20/A20-OLinuXino-LIME-4GB/open-source-hardware">A20-OLinuXino-LIME-4GB</a> is not yet officially supported by the <a href="https://github.com/linux-sunxi/meta-sunxi">meta-sunxi layer</a> there are some patches needed. Those patches are located in <a href="https://github.com/cybertux/meta-sunxi/tree/olimex-a20-lime">my fork</a>. The patch set is against the daisy branch</p>
-
-<!--more-->
-
 
 <h1>Preparation</h1>
 

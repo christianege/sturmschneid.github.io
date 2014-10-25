@@ -4,7 +4,7 @@
   <title><![CDATA[Category: | Sturmschneid]]></title>
   <link href="http://sturmschneid.github.io/blog/categories//atom.xml" rel="self"/>
   <link href="http://sturmschneid.github.io/"/>
-  <updated>2014-10-25T13:59:25+02:00</updated>
+  <updated>2014-10-25T14:03:35+02:00</updated>
   <id>http://sturmschneid.github.io/</id>
   <author>
     <name><![CDATA[Christian Ege]]></name>
@@ -19,9 +19,6 @@
     <updated>2014-06-15T00:00:00+02:00</updated>
     <id>http://sturmschneid.github.io/blog/2014/06/15/sti7111-st40-jtag-preparations</id>
     <content type="html"><![CDATA[<p>While I almost smashed my Spark 7111 Box during <a href="http://project-magpie.github.io/2013/10/02/that-was-a-close-shave/">UBI experiments</a> I decided to build a JTAG adapter for the ST40 CPU. After getting a little more familiar with eagle my second design ended in the <a href="https://github.com/project-magpie/jtag-adapter">ST40 JTAG adapter</a>.</p>
-
-<!--more-->
-
 
 <p>I ordered the PCB at <a href="http://www.seeedstudio.com/service/">Seeedstudio Fusion PCB</a> and was impressed how cheap and fast they are.</p>
 
@@ -145,9 +142,6 @@ Err:   serial
     <id>http://sturmschneid.github.io/blog/2014/04/29/edid-mission-accomplished</id>
     <content type="html"><![CDATA[<p>After my <a href="http://project-magpie.github.io/2014/04/26/pursue-hdmi-edid-bugs/">HDMI EDID analisys</a> I decided getting more in touch with the hardware. I tried to trace the loose ends and checked where the onboard EEPROM is located. The next step was disabling the EEPROM and connecting the STB I2C Bus to the HDMI side.As in my previous <a href="2014/04/26/pursue-hdmi-edid-bugs">post</a> expected the missing SOT-23 parts near the HDMI output form a level shifter which convert the 3.3V I2C STB level to the 5V level of the HDMI side an vice versa.</p>
 
-<!--more-->
-
-
 <p>A detailed description of such an level shifter is described in an application note from <a href="http://www.adafruit.com/datasheets/an97055.pdf">Phillips</a>/<a href="http://www.nxp.com/documents/application_note/AN10441.pdf">NXP</a>.</p>
 
 <p>I started with the trace of the EEPROM. I finally found the EEPROM.</p>
@@ -176,9 +170,6 @@ Err:   serial
     <updated>2014-04-26T00:00:00+02:00</updated>
     <id>http://sturmschneid.github.io/blog/2014/04/26/pursue-hdmi-edid-bugs</id>
     <content type="html"><![CDATA[<p>Today I tried to track down the <a href="http://en.wikipedia.org/wiki/Extended_display_identification_data">EDID (&ldquo;Extended display identification data&rdquo;)</a> bug on my STi7111 (Golden Media 990CR ) spark box. <a href="http://en.wikipedia.org/wiki/Extended_display_identification_data">EDID</a> is needed to detect the display attached to the set-top box. On the newer STi7105 based boxes this works quite good. But on the STi7111 based spark boxes there is a hardware issue.</p>
-
-<!--more-->
-
 
 <p>During EDID query the frame-buffer driver prints out the following warning message:</p>
 
@@ -370,9 +361,6 @@ Checksum: 0x56
     <id>http://sturmschneid.github.io/blog/2014/04/21/assign-static-device-name-for-usb-infrared-toy</id>
     <content type="html"><![CDATA[<p>The last few days I was playing arround with my <a href="http://dangerousprototypes.com/docs/USB_Infrared_Toy">USB Infrared Toy v2</a> from Dangerous Prototypes. Due to the fact that I have attached some more devices which are detected as <strong>/dev/ACM[0-9]</strong> I decided to write an udev rule to assign a static device name.</p>
 
-<!--more-->
-
-
 <p>I stored the rule in the following file: <strong>/etc/udev/rules.d/98-ir-toy-v2.rules</strong></p>
 
 <pre><code>SUBSYSTEM=="tty", ATTRS{manufacturer}=="Dangerous Prototypes", ATTRS{idProduct}=="fd08", SYMLINK+="ir_toy" MODE="0666"
@@ -388,9 +376,6 @@ Checksum: 0x56
     <updated>2013-11-04T00:00:00+01:00</updated>
     <id>http://sturmschneid.github.io/blog/2013/11/04/rewriting-history</id>
     <content type="html"><![CDATA[<p>Sometimes history has to be rewritten. In real life this is hopefully not possible yet. But in case of git this is possible. Some projecs start with a small repository which evolves over the time to a big bloated repository. Other ones start already bloated. In some cases the wish to split-up the repository in smaller chunks emerges. With some advice from <a href="http://seife.kernalert.de/blog/">Stefan Seyfried</a> I learned how to rewrite history</p>
-
-<!--more-->
-
 
 <p>The goal was to extract the driver directory from the <a href="https://gitorious.org/open-duckbox-project-sh4/tdt">tdt</a> repository like <a href="https://gitorious.org/neutrino-mp/tdt-driver">Stefan</a> already did.</p>
 

@@ -125,9 +125,6 @@
 
 <div class="entry-content clearfix" itemprop="articleBody description"><p>While fiddling arround with the ubifs port I recently did. I misstyped the MTD Partion and completly erased mtd0. This sounds not that tragically, but on mtd0 u-boot is located. Without a bootloader there is only a small chance that the box will boot again. To reboot the box in such a situation is a absolut no go. Now you have to start brain work &hellip;</p>
 
-<!--more-->
-
-
 <p>For the ubifs tests I have choosen the fresh dylan port of my <a href="https://github.com/project-magpie/meta-stlinux/tree/dylan">meta-stlinux</a> layer. This was a first draft and so I just build the ,,core-image-minimal&#8217;&lsquo;. I included the mtd-utils but I&rsquo;ve forgotten to include a ssh server aswell. This was not a big issue due to the fact that I used the serial line for connection. For testing I booted the box from USB. The USB was connect through a USB extension cable. Which cut me off from installing a fresh u-boot by inserting a USB Stick.</p>
 
 <h2>What are the options?</h2>
@@ -239,8 +236,6 @@ IdentID : 09 00 07 00 00 46 d1
         
         
           <ul class="meta text-muted pager">
-            
-            <li class="previous"><a href="/blog/2013/09/30/new-website/" title="Previous Post: New project Website">&laquo; New project Website</a></li>
             
             
             <li class="next"><a href="/blog/2013/10/04/jffs2-vs-ubifs/" title="Next Post: JFFS2 vs. UBIFS">JFFS2 vs. UBIFS &raquo;</a></li>

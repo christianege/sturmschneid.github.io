@@ -125,9 +125,6 @@
 
 <div class="entry-content clearfix" itemprop="articleBody description"><p>After my <a href="http://project-magpie.github.io/2014/04/26/pursue-hdmi-edid-bugs/">HDMI EDID analisys</a> I decided getting more in touch with the hardware. I tried to trace the loose ends and checked where the onboard EEPROM is located. The next step was disabling the EEPROM and connecting the STB I2C Bus to the HDMI side.As in my previous <a href="2014/04/26/pursue-hdmi-edid-bugs">post</a> expected the missing SOT-23 parts near the HDMI output form a level shifter which convert the 3.3V I2C STB level to the 5V level of the HDMI side an vice versa.</p>
 
-<!--more-->
-
-
 <p>A detailed description of such an level shifter is described in an application note from <a href="http://www.adafruit.com/datasheets/an97055.pdf">Phillips</a>/<a href="http://www.nxp.com/documents/application_note/AN10441.pdf">NXP</a>.</p>
 
 <p>I started with the trace of the EEPROM. I finally found the EEPROM.</p>

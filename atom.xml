@@ -4,7 +4,7 @@
   <title><![CDATA[Sturmschneid]]></title>
   <link href="http://sturmschneid.github.io/atom.xml" rel="self"/>
   <link href="http://sturmschneid.github.io/"/>
-  <updated>2014-10-25T13:59:25+02:00</updated>
+  <updated>2014-10-25T14:03:35+02:00</updated>
   <id>http://sturmschneid.github.io/</id>
   <author>
     <name><![CDATA[Christian Ege]]></name>
@@ -18,7 +18,7 @@
     <link href="http://sturmschneid.github.io/blog/2014/10/25/new-blog-based-on-octopress/"/>
     <updated>2014-10-25T13:40:01+02:00</updated>
     <id>http://sturmschneid.github.io/blog/2014/10/25/new-blog-based-on-octopress</id>
-    <content type="html"><![CDATA[
+    <content type="html"><![CDATA[<p>This is my new Blog based on <a href="http://octopress.org/">Octopress</a> and <a href="http://kaworu.github.io/octostrap3">Octostrap3</a></p>
 ]]></content>
   </entry>
   
@@ -34,9 +34,6 @@
 <p>I&rsquo;ve created a successful <a href="https://github.com/linux-sunxi/meta-sunxi/commit/998cbf354423375ceacf735571dab150b9670502">pull-request</a> to merge my changes into the <a href="https://github.com/linux-sunxi/meta-sunxi">meta-sunxi</a> repository and succeeded with the current master branch. Maybe I also start a pull request for the daisy branch. Due  to the fact that the new yocto release is knocking on the door This is may not needed.</p>
 
 <p>As a big fan of the <a href="https://www.yoctoproject.org/">Yocto Project</a> I decided to run poky on my OLinuXino. Due to the fact that the <a href="https://www.olimex.com/Products/OLinuXino/A20/A20-OLinuXino-LIME-4GB/open-source-hardware">A20-OLinuXino-LIME-4GB</a> is not yet officially supported by the <a href="https://github.com/linux-sunxi/meta-sunxi">meta-sunxi layer</a> there are some patches needed. Those patches are located in <a href="https://github.com/cybertux/meta-sunxi/tree/olimex-a20-lime">my fork</a>. The patch set is against the daisy branch</p>
-
-<!--more-->
-
 
 <h1>Preparation</h1>
 
@@ -196,9 +193,6 @@ arm-poky-linux-gnueabi-gcc -march=armv7-a -mthumb-interwork -mfloat-abi=hard -mf
     <id>http://sturmschneid.github.io/blog/2014/06/15/sti7111-st40-jtag-preparations</id>
     <content type="html"><![CDATA[<p>While I almost smashed my Spark 7111 Box during <a href="http://project-magpie.github.io/2013/10/02/that-was-a-close-shave/">UBI experiments</a> I decided to build a JTAG adapter for the ST40 CPU. After getting a little more familiar with eagle my second design ended in the <a href="https://github.com/project-magpie/jtag-adapter">ST40 JTAG adapter</a>.</p>
 
-<!--more-->
-
-
 <p>I ordered the PCB at <a href="http://www.seeedstudio.com/service/">Seeedstudio Fusion PCB</a> and was impressed how cheap and fast they are.</p>
 
 <p><img src="http://sturmschneid.github.io/images/jtag/jtag_pcb.png"></p>
@@ -321,9 +315,6 @@ Err:   serial
     <id>http://sturmschneid.github.io/blog/2014/04/29/edid-mission-accomplished</id>
     <content type="html"><![CDATA[<p>After my <a href="http://project-magpie.github.io/2014/04/26/pursue-hdmi-edid-bugs/">HDMI EDID analisys</a> I decided getting more in touch with the hardware. I tried to trace the loose ends and checked where the onboard EEPROM is located. The next step was disabling the EEPROM and connecting the STB I2C Bus to the HDMI side.As in my previous <a href="2014/04/26/pursue-hdmi-edid-bugs">post</a> expected the missing SOT-23 parts near the HDMI output form a level shifter which convert the 3.3V I2C STB level to the 5V level of the HDMI side an vice versa.</p>
 
-<!--more-->
-
-
 <p>A detailed description of such an level shifter is described in an application note from <a href="http://www.adafruit.com/datasheets/an97055.pdf">Phillips</a>/<a href="http://www.nxp.com/documents/application_note/AN10441.pdf">NXP</a>.</p>
 
 <p>I started with the trace of the EEPROM. I finally found the EEPROM.</p>
@@ -352,9 +343,6 @@ Err:   serial
     <updated>2014-04-26T00:00:00+02:00</updated>
     <id>http://sturmschneid.github.io/blog/2014/04/26/pursue-hdmi-edid-bugs</id>
     <content type="html"><![CDATA[<p>Today I tried to track down the <a href="http://en.wikipedia.org/wiki/Extended_display_identification_data">EDID (&ldquo;Extended display identification data&rdquo;)</a> bug on my STi7111 (Golden Media 990CR ) spark box. <a href="http://en.wikipedia.org/wiki/Extended_display_identification_data">EDID</a> is needed to detect the display attached to the set-top box. On the newer STi7105 based boxes this works quite good. But on the STi7111 based spark boxes there is a hardware issue.</p>
-
-<!--more-->
-
 
 <p>During EDID query the frame-buffer driver prints out the following warning message:</p>
 
@@ -546,9 +534,6 @@ Checksum: 0x56
     <id>http://sturmschneid.github.io/blog/2014/04/21/assign-static-device-name-for-usb-infrared-toy</id>
     <content type="html"><![CDATA[<p>The last few days I was playing arround with my <a href="http://dangerousprototypes.com/docs/USB_Infrared_Toy">USB Infrared Toy v2</a> from Dangerous Prototypes. Due to the fact that I have attached some more devices which are detected as <strong>/dev/ACM[0-9]</strong> I decided to write an udev rule to assign a static device name.</p>
 
-<!--more-->
-
-
 <p>I stored the rule in the following file: <strong>/etc/udev/rules.d/98-ir-toy-v2.rules</strong></p>
 
 <pre><code>SUBSYSTEM=="tty", ATTRS{manufacturer}=="Dangerous Prototypes", ATTRS{idProduct}=="fd08", SYMLINK+="ir_toy" MODE="0666"
@@ -564,9 +549,6 @@ Checksum: 0x56
     <updated>2013-11-04T00:00:00+01:00</updated>
     <id>http://sturmschneid.github.io/blog/2013/11/04/rewriting-history</id>
     <content type="html"><![CDATA[<p>Sometimes history has to be rewritten. In real life this is hopefully not possible yet. But in case of git this is possible. Some projecs start with a small repository which evolves over the time to a big bloated repository. Other ones start already bloated. In some cases the wish to split-up the repository in smaller chunks emerges. With some advice from <a href="http://seife.kernalert.de/blog/">Stefan Seyfried</a> I learned how to rewrite history</p>
-
-<!--more-->
-
 
 <p>The goal was to extract the driver directory from the <a href="https://gitorious.org/open-duckbox-project-sh4/tdt">tdt</a> repository like <a href="https://gitorious.org/neutrino-mp/tdt-driver">Stefan</a> already did.</p>
 
@@ -741,9 +723,6 @@ tdt-driver/
     <id>http://sturmschneid.github.io/blog/2013/10/22/ubifs-as-rootfs</id>
     <content type="html"><![CDATA[<p>This Post describes how to get startet with an UBIFS root filesystem. I suppose you are using a image generated for the &ldquo;spark&rdquo; device. I have not done any tests with &ldquo;spark7162&rdquo;. For the spark boxes there is automatically a ubifs image generated.</p>
 
-<!--more-->
-
-
 <p>Generate a core-image-minimal for example. This assumes You already have set-up the yocto build environment.</p>
 
 <pre><code>MACHINE=spark bitbake core-image-minimal
@@ -829,9 +808,6 @@ root@spark:~# ubiformat /dev/mtd6 -q -y -f /tmp/image.ubi
     <updated>2013-10-08T00:00:00+02:00</updated>
     <id>http://sturmschneid.github.io/blog/2013/10/08/analyzing-kernel-oops</id>
     <content type="html"><![CDATA[<p>There was a little hickup in the kernel while shutting down or rebooting the system. The result of the hickup was a Kernel Oops. Because it had no big influence on the behaviour of the system I did not spend a lot of time on investigation. Yesterday I did some tests with the yocto workflow for kernel development and tried to fix the hickup.</p>
-
-<!--more-->
-
 
 <h2>The hickup</h2>
 
@@ -967,9 +943,6 @@ Reading symbols from vmlinux...done.
     <id>http://sturmschneid.github.io/blog/2013/10/04/jffs2-vs-ubifs</id>
     <content type="html"><![CDATA[<p>After a successfull merge of the <a href="https://github.com/project-magpie/linux-sh4-2.6.32.y/tree/ubifs-merge">UBIFS patches</a>  I have made some benchmarks. In both cases I have flashed the same image. It was a fresh build of core-image-minimal from the <a href="https://github.com/project-magpie/meta-stlinux/tree/dylan">dylan branch</a>. Maybe these benachmarks have to be repeated with a more representative scenario. More Information regarding <a href="http://en.wikipedia.org/wiki/UBIFS">UBIFS</a> can be found on <a href="http://elinux.org/UBIFS">eLinux</a>. If you are interested in more flash file system Benchmarks you can also have a look a <a href="http://elinux.org/Flash_Filesystem_Benchmarks">eLinux</a>.</p>
 
-<!--more-->
-
-
 <h2>Mounting a JFFS2 Volume</h2>
 
 <pre><code>root@spark:~# time mount /dev/mtdblock6  -tjffs2 /mnt/
@@ -1028,9 +1001,6 @@ sys     0m 0.11s
     <updated>2013-10-02T00:00:00+02:00</updated>
     <id>http://sturmschneid.github.io/blog/2013/10/02/that-was-a-close-shave</id>
     <content type="html"><![CDATA[<p>While fiddling arround with the ubifs port I recently did. I misstyped the MTD Partion and completly erased mtd0. This sounds not that tragically, but on mtd0 u-boot is located. Without a bootloader there is only a small chance that the box will boot again. To reboot the box in such a situation is a absolut no go. Now you have to start brain work &hellip;</p>
-
-<!--more-->
-
 
 <p>For the ubifs tests I have choosen the fresh dylan port of my <a href="https://github.com/project-magpie/meta-stlinux/tree/dylan">meta-stlinux</a> layer. This was a first draft and so I just build the ,,core-image-minimal&#8217;&lsquo;. I included the mtd-utils but I&rsquo;ve forgotten to include a ssh server aswell. This was not a big issue due to the fact that I used the serial line for connection. For testing I booted the box from USB. The USB was connect through a USB extension cable. Which cut me off from installing a fresh u-boot by inserting a USB Stick.</p>
 
@@ -1096,20 +1066,6 @@ IdentID : 09 00 07 00 00 46 d1
 </code></pre>
 
 <p>Except of the little message ,,*** Warning - bad CRC, using default environment&#8217;&lsquo; this was caused because by writing 512kb I have destroyed u-boot environment. I am not sure If this is the right u-boot. I would be happy If someone with a Golden Media Spark reloaded Box can send me a copy of the u-boot.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[New Project Website]]></title>
-    <link href="http://sturmschneid.github.io/blog/2013/09/30/new-website/"/>
-    <updated>2013-09-30T00:00:00+02:00</updated>
-    <id>http://sturmschneid.github.io/blog/2013/09/30/new-website</id>
-    <content type="html"><![CDATA[<p>project magpie now has it&rsquo;s own project website on github. This website is based on <a href="http://jekyllrb.com/">jekyll</a> and <a href="http://getbootstrap.com/2.3.2/">twitter bootstrap</a> and powered by <a href="http://pages.github.com/">github pages</a>.</p>
-
-<!--more-->
-
-
-<p>I decided to start a github page based on jekyll to have an easy an intuitive method to write simple blog posts.</p>
 ]]></content>
   </entry>
   
