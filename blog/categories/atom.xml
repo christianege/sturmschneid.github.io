@@ -1,0 +1,561 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: | Sturmschneid]]></title>
+  <link href="http://sturmschneid.github.io/blog/categories//atom.xml" rel="self"/>
+  <link href="http://sturmschneid.github.io/"/>
+  <updated>2014-10-25T13:59:25+02:00</updated>
+  <id>http://sturmschneid.github.io/</id>
+  <author>
+    <name><![CDATA[Christian Ege]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Sti7111 (ST40) JTAG Preparations]]></title>
+    <link href="http://sturmschneid.github.io/blog/2014/06/15/sti7111-st40-jtag-preparations/"/>
+    <updated>2014-06-15T00:00:00+02:00</updated>
+    <id>http://sturmschneid.github.io/blog/2014/06/15/sti7111-st40-jtag-preparations</id>
+    <content type="html"><![CDATA[<p>While I almost smashed my Spark 7111 Box during <a href="http://project-magpie.github.io/2013/10/02/that-was-a-close-shave/">UBI experiments</a> I decided to build a JTAG adapter for the ST40 CPU. After getting a little more familiar with eagle my second design ended in the <a href="https://github.com/project-magpie/jtag-adapter">ST40 JTAG adapter</a>.</p>
+
+<!--more-->
+
+
+<p>I ordered the PCB at <a href="http://www.seeedstudio.com/service/">Seeedstudio Fusion PCB</a> and was impressed how cheap and fast they are.</p>
+
+<p><img src="/images/jtag/jtag_pcb.png"></p>
+
+<p>After assembly of the PCB the JTAG adapter have to be connected to the STB. If you are unsure about the pinning you can easily check if Pin-2 is connected to GND with a multimeter.</p>
+
+<p><img src="/images/jtag/spark_jtag_pinout.png"></p>
+
+<p>A more detailed version reconstructed in eagle.</p>
+
+<p><img src="/images/jtag/spark_jtag_pinout_eagle.png"></p>
+
+<p>Anyway, most hardware is useless without software. To use the JTAG Adapter the <a href="http://www.st.com/st-web-ui/static/active/en/resource/technical/document/user_manual/CD17379953.pdf">ST40 Micro Toolset</a> is needed. You can grab your version of the ST40 Micro Toolset at the <a href="ftp://ftp.stlinux.com/pub/tools/products/st40tools/ST40_GNU_R5.1.0/">STM ftp server</a>. As usual I decided to take the linux version (R5.1.0). I have tested with Ubuntu 12.04. Maybe the 32bit compatibility libs have to be installed if you are running a 64bit distro. You also need the <a href="ftp://ftp.stlinux.com/pub/tools/products/stmc2/R1.6.0/doc/release_notes.htm">ST Micro Connection Package R1.6.0.</a>. After Installation the folder structure should look like this:</p>
+
+<pre><code>$ tree -L 1 /opt/STM/
+/opt/STM/
+├── ST40R5.1.0
+└── STMCR1.6.0
+</code></pre>
+
+<p>To be able to execute the binaries some modifications to the PATH and LD_LIBRARY_PATH variable have to be made.</p>
+
+<pre><code>export LD_LIBRARY_PATH=/opt/STM/STMCR1.6.0/lib:/opt/STM/ST40R5.1.0/lib
+export PATH=/opt/STM/ST40R5.1.0/bin:/opt/STM/STMCR1.6.0/bin:$PATH
+</code></pre>
+
+<p>Now you sould be able to execute the following command</p>
+
+<pre><code>$ sh4xrun
+usage: /opt/STM/ST40R5.1.0/bin/sh4xrun [-c command] [-d directory] [-e filename] [-f] [-g gdbpath] [-h] [-i filename] [-t     target] [-u gdbname] [-v] [-x filename] [-A command] [-B command] [-C option] [-D] [-T timeout] [-V] [-a|--] [arguments]
+  -a arguments  target program arguments
+  -c command    connection command (default is sh4tp)
+  -d directory  directory in which to search for command files
+  -e filename   executable file to load
+  -f            (ignored)
+  -g gdbpath    specify path to GDB
+  -h            display help
+  -i filename   command script file to source
+  -t target     target specification
+  -u gdbname    specify name of GDB
+  -v            verbose
+  -x filename   use filename instead of .shgdbinit
+  -A command    execute command after running program
+  -B command    execute command before running program
+  -C option     connection command option
+  -D            debug (very verbose)
+  -T timeout    maximum time for executing on target
+  -V            version string
+</code></pre>
+
+<p>With this command a executable can be uploaded and executed right on the box. But what kind of executable is worthwhile to be uploaded? On Avi+ Forum they use a tool called flasher which is upload to the box. I prefer to use a self compiled version of u-boot. And honestly I did not managed to compile a flasher for the sti7111.</p>
+
+<h2>Compilation of U-Boot</h2>
+
+<p>Before we can compile the u-boot boot loader we have to get the source</p>
+
+<pre><code>$ git clone git://git.stlinux.com/stm/u-boot.git
+$ cd u-boot/
+$ git checkout -b stmicro-1.3.1 origin/stmicro-1.3.1
+</code></pre>
+
+<p>I decided to use stmicro-1.3.1 branch It sounds familiar and I was unable to build the stmicro branch. To compile the source I used a toolchain I&rsquo;ve created with to meta-stlinux layer and yocto.</p>
+
+<pre><code>$ source /opt/poky/1.5.1/environment-setup-sh4-poky-linux
+$ export CROSS_COMPILE=sh4-poky-linux-
+$ unset LDFLAGS
+$ make hdk7111_config
+$ vim ./cpu/sh/config.mk
+# remove option  -m4-nofpu
+</code></pre>
+
+<p>After a successful compilation you have a file called u-boot. This can be uploaded by executing:</p>
+
+<pre><code>sh4xrun -c sh4tp -t STMCLT1000_A:sat7111:st40,debug=2 -e /data/src/u-boot/u-boot
+</code></pre>
+
+<p>On a working serial console connected to the STB you should see something like this:</p>
+
+<pre><code>Board: STx7111-HDK  [29-bit mode]
+
+
+U-Boot 1.3.1-dirty (Jun 15 2014 - 18:23:57) - stm23-2011-12-08
+
+DRAM:  256 MiB
+NOR:     8 MiB
+NAND:  Bad block table found at page 262080, version 0x01
+Bad block table found at page 262016, version 0x01
+nand_read_bbt: Bad block at 0x04400000
+nand_read_bbt: Bad block at 0x06580000
+nand_read_bbt: Bad block at 0x065a0000
+nand_read_bbt: Bad block at 0x0e580000
+nand_read_bbt: Bad block at 0x0e5a0000
+nand_read_bbt: Bad block at 0x10c00000
+nand_read_bbt: Bad block at 0x10c20000
+nand_read_bbt: Bad block at 0x16580000
+nand_read_bbt: Bad block at 0x165a0000
+nand_read_bbt: Bad block at 0x18c00000
+nand_read_bbt: Bad block at 0x18c20000
+nand_read_bbt: Bad block at 0x1dc40000
+nand_read_bbt: Bad block at 0x1dc60000
+nand_read_bbt: Bad block at 0x1e580000
+nand_read_bbt: Bad block at 0x1e5a0000
+512 MiB
+SPI:  ERROR: Unknown SPI Device detected, status = 0xff
+*** Warning - bad CRC, using default environment
+
+In:    serial
+Out:   serial
+Err:   serial
+</code></pre>
+
+<p>It looks like the SPI NOR Flash is not supported by this version of u-boot. So work is to do&hellip;.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[EDID Mission Accomplished]]></title>
+    <link href="http://sturmschneid.github.io/blog/2014/04/29/edid-mission-accomplished/"/>
+    <updated>2014-04-29T00:00:00+02:00</updated>
+    <id>http://sturmschneid.github.io/blog/2014/04/29/edid-mission-accomplished</id>
+    <content type="html"><![CDATA[<p>After my <a href="http://project-magpie.github.io/2014/04/26/pursue-hdmi-edid-bugs/">HDMI EDID analisys</a> I decided getting more in touch with the hardware. I tried to trace the loose ends and checked where the onboard EEPROM is located. The next step was disabling the EEPROM and connecting the STB I2C Bus to the HDMI side.As in my previous <a href="2014/04/26/pursue-hdmi-edid-bugs">post</a> expected the missing SOT-23 parts near the HDMI output form a level shifter which convert the 3.3V I2C STB level to the 5V level of the HDMI side an vice versa.</p>
+
+<!--more-->
+
+
+<p>A detailed description of such an level shifter is described in an application note from <a href="http://www.adafruit.com/datasheets/an97055.pdf">Phillips</a>/<a href="http://www.nxp.com/documents/application_note/AN10441.pdf">NXP</a>.</p>
+
+<p>I started with the trace of the EEPROM. I finally found the EEPROM.</p>
+
+<p><img src="/assets/edid/edid_eeprom.jpg" alt="EDID EEPROM" /></p>
+
+<p>There are two serial resistors between I2C SCL and I2C SDA. Which can be more or less easily removed.</p>
+
+<p><img src="/assets/edid/edid_eeprom_disabled.jpg" alt="EDID EEPROM disabled" /></p>
+
+<p>After soldering my very first sot-23 transistor which made me feeling like my soldering iron is too huge for decent jobs. I cursed myself for not taking the box to work where we do have a more professional equipement at least when it comes to soldering irons.</p>
+
+<p>The result looks ugly but seems to work.</p>
+
+<p><img src="/assets/edid/edid_transistor.jpg" alt="EDID Transistor" /></p>
+
+<p>As Transistor I&rsquo;ve chosen some  N-Channel Field Effect Transistor. Anything like a <a href="http://www.fairchildsemi.com/ds/2N/2N7000.pdf">2N7002</a> or a <a href="http://www.fairchildsemi.com/ds/BS/BSS138.pdf">BSS138</a> should do the job.</p>
+
+<p>For me the final result was a working EDID readout of the HDMI monitor&rsquo;s EDID EEPROM. And the first time the STB took the correct HDMI-CEC address. I had not been able to check levels and edges of the 5V signal and the ultimate HDMI-CEC test also have to wait some time. Because my test lab HDMI monitor have no HDMI-CEC support.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Pursue HDMI EDID Bugs]]></title>
+    <link href="http://sturmschneid.github.io/blog/2014/04/26/pursue-hdmi-edid-bugs/"/>
+    <updated>2014-04-26T00:00:00+02:00</updated>
+    <id>http://sturmschneid.github.io/blog/2014/04/26/pursue-hdmi-edid-bugs</id>
+    <content type="html"><![CDATA[<p>Today I tried to track down the <a href="http://en.wikipedia.org/wiki/Extended_display_identification_data">EDID (&ldquo;Extended display identification data&rdquo;)</a> bug on my STi7111 (Golden Media 990CR ) spark box. <a href="http://en.wikipedia.org/wiki/Extended_display_identification_data">EDID</a> is needed to detect the display attached to the set-top box. On the newer STi7105 based boxes this works quite good. But on the STi7111 based spark boxes there is a hardware issue.</p>
+
+<!--more-->
+
+
+<p>During EDID query the frame-buffer driver prints out the following warning message:</p>
+
+<pre><code>stmfb: first EDID byte (255) is corrupt, attempting to fix..
+stmfb: Invalid extension header checksum block0
+stmfb: first EDID byte (255) is corrupt, attempting to fix..
+stmfb: Invalid extension header checksum block0
+stmfb: first EDID byte (255) is corrupt, attempting to fix..
+stmfb: Invalid extension header checksum block0
+stmfb: first EDID byte (255) is corrupt, attempting to fix..
+stmfb: Invalid extension header checksum block0
+stmfb: EDID Read Error, setup safe EDID
+stmfb: Setting Safe EDID
+</code></pre>
+
+<p>So I decided to take a look at the hardware and do some test. Because EDID is needed for a working <a href="http://en.wikipedia.org/wiki/HDMI#CEC">HDMI-CEC</a> set-up. The EDID information is stored inside an <a href="http://en.wikipedia.org/wiki/EEPROM">EEPROM</a> on the Television/Montor. The EEPROM is accessed by the STB via an I2C bus.</p>
+
+<p>The result looks a little bit chaotic isn&rsquo;t it?</p>
+
+<p><img src="/assets/edid/overview.jpg" alt="This is what it all ended." /></p>
+
+<p>The image shows the set-top box, a <a href="https://www.saleae.com/logic16">salea logic16</a> logic analyser and a <a href="http://dangerousprototypes.com/docs/Bus_Pirate">DP Bus Pirate</a>. The salea logic analyser is to listen to I2C communication between the various loose ends. Before we can access the HDMI connector and the I2C EDID data lines we have to remove the Ethernet board. This is achieved by removing just one screw and lifting the complete Ethernet board.</p>
+
+<p><img src="/assets/edid/ethernet_board.jpg" alt="Remove the Ethernet board" /></p>
+
+<p>After removing the Ethernet board it looks like this:</p>
+
+<p><img src="/assets/edid/edid_stuff.jpg" alt="EDID stuff" /></p>
+
+<p>For debugging purposes I soldered some wires to the related components. There are two types of I2C bus involved. The one from HDMI which is a 5V type and the one from the STB which is at a 3.3V level. So the not applied components seems to form a level shifter. If I attach an HDMI monitor to the STB I can see transfers from STB to an EEPROM on the board which response with 0xFF in all bytes. But no communication over HDMI. Because the loose ends are not connected.</p>
+
+<p><img src="/assets/edid/cable_zoom.jpg" alt="EDID details" /></p>
+
+<p>With an attached <a href="http://dangerousprototypes.com/docs/Bus_Pirate">bus pirate</a> to the HDMI I2C bus I can readout the EDID information from the attached monitor.</p>
+
+<pre><code>HiZ&gt;m
+1. HiZ
+2. 1-WIRE
+3. UART
+4. I2C
+5. SPI
+6. 2WIRE
+7. 3WIRE
+8. KEYB
+9. LCD
+10. PIC
+11. DIO
+x. exit(without change)
+
+(1)&gt;4
+I2C mode:
+ 1. Software
+ 2. Hardware
+
+(1)&gt;1
+Set speed:
+ 1. ~5KHz
+ 2. ~50KHz
+ 3. ~100KHz
+ 4. ~400KHz
+</code></pre>
+
+<p>The i2c sequence to read data from the EEPROM have to define a start address where we want to read from:</p>
+
+<pre><code>I2C&gt;[0xa0 0]
+I2C START BIT
+WRITE: 0xA0 ACK
+WRITE: 0x00 ACK
+I2C STOP BIT
+</code></pre>
+
+<p>With this we start from address 0.</p>
+
+<p>So now lets read 128 byte of EDID data:</p>
+
+<pre><code>I2C&gt;[0xa1 r:128]
+I2C START BIT
+WRITE: 0xA1 ACK
+READ: 0x00  ACK 0xFF  ACK 0xFF  ACK 0xFF  ACK 0xFF  ACK 0xFF  ACK 0xFF  ACK 0x00  ACK 0x04  ACK 0x72  ACK 0x30  ACK 0x02  ACK 0x01  ACK 0x00  ACK 0x00  ACK 0x00  ACK 0x08  ACK 0x15  ACK 0x01  ACK 0x03      ACK
+ 0x80  ACK 0x33  ACK 0x1D  ACK 0x78  ACK 0x0A  ACK 0x90  ACK 0x85  ACK 0xA3  ACK 0x58  ACK 0x53  ACK 0x9F  ACK 0x26  ACK 0x0F  ACK 0x50  ACK 0x54  ACK 0xBF  ACK 0x6F  ACK 0x00  ACK 0x71  ACK 0x4F  ACK     0x81
+  ACK 0xC0  ACK 0xD1  ACK 0xC0  ACK 0xB3  ACK 0x00  ACK 0x81  ACK 0x80  ACK 0x01  ACK 0x01  ACK 0x01  ACK 0x01  ACK 0x01  ACK 0x01  ACK 0x02  ACK 0x3A  ACK 0x80  ACK 0x18  ACK 0x71  ACK 0x38  ACK 0x2D      ACK
+ 0x40  ACK 0x58  ACK 0x2C  ACK 0x45  ACK 0x00  ACK 0xFD  ACK 0x1E  ACK 0x11  ACK 0x00  ACK 0x00  ACK 0x18  ACK 0x01  ACK 0x1D  ACK 0x00  ACK 0x72  ACK 0x51  ACK 0xD0  ACK 0x1E  ACK 0x20  ACK 0x6E  ACK     0x28
+  ACK 0x55  ACK 0x00  ACK 0xFD  ACK 0x1E  ACK 0x11  ACK 0x00  ACK 0x00  ACK 0x1E  ACK 0x00  ACK 0x00  ACK 0x00  ACK 0xFD  ACK 0x00  ACK 0x38  ACK 0x4C  ACK 0x1E  ACK 0x4B  ACK 0x0F  ACK 0x00  ACK 0x0A      ACK
+ 0x20  ACK 0x20  ACK 0x20  ACK 0x20  ACK 0x20  ACK 0x20  ACK 0x00  ACK 0x00  ACK 0x00  ACK 0xFC  ACK 0x00  ACK 0x4D  ACK 0x32  ACK 0x33  ACK 0x30  ACK 0x48  ACK 0x44  ACK 0x4C  ACK 0x0A  ACK 0x20  ACK     0x20
+  ACK 0x20  ACK 0x20  ACK 0x20  ACK 0x01  ACK 0x56
+NACK
+I2C STOP BIT
+</code></pre>
+
+<p>We do not need any pull-ups power set-up for the Bus Pirate because the bus is already pulled high by the STB. And due to the fact that I2C only pulls level to low we need no adjustment for 3.3V and 5V.</p>
+
+<p>With some editor regular-expression magic we can form a python snippet to create a binary EDID file we can analyse later.</p>
+
+<pre><code>import struct
+edid_txt = [ '0x00', '0xFF', '0xFF', '0xFF', '0xFF', '0xFF', '0xFF', '0x00',
+             '0x04', '0x72', '0x30', '0x02', '0x01', '0x00', '0x00', '0x00',
+             '0x08', '0x15', '0x01', '0x03', '0x80', '0x33', '0x1D', '0x78',
+             '0x0A', '0x90', '0x85', '0xA3', '0x58', '0x53', '0x9F', '0x26',
+             '0x0F', '0x50', '0x54', '0xBF', '0x6F', '0x00', '0x71', '0x4F',
+             '0x81', '0xC0', '0xD1', '0xC0', '0xB3', '0x00', '0x81', '0x80',
+             '0x01', '0x01', '0x01', '0x01', '0x01', '0x01', '0x02', '0x3A',
+             '0x80', '0x18', '0x71', '0x38', '0x2D', '0x40', '0x58', '0x2C',
+             '0x45', '0x00', '0xFD', '0x1E', '0x11', '0x00', '0x00', '0x18',
+             '0x01', '0x1D', '0x00', '0x72', '0x51', '0xD0', '0x1E', '0x20',
+             '0x6E', '0x28', '0x55', '0x00', '0xFD', '0x1E', '0x11', '0x00',
+             '0x00', '0x1E', '0x00', '0x00', '0x00', '0xFD', '0x00', '0x38',
+             '0x4C', '0x1E', '0x4B', '0x0F', '0x00', '0x0A', '0x20', '0x20',
+             '0x20', '0x20', '0x20', '0x20', '0x00', '0x00', '0x00', '0xFC',
+             '0x00', '0x4D', '0x32', '0x33', '0x30', '0x48', '0x44', '0x4C',
+             '0x0A', '0x20', '0x20', '0x20', '0x20', '0x20', '0x01', '0x56' ]
+
+f = open('edid.bin', 'w')
+
+for i in edid_txt:
+    bin = int(i,16)
+    f.write(struct.pack('B',bin))
+
+f.close()
+</code></pre>
+
+<p>For EDID analysis I&rsquo;ve used to tool &ldquo;read-edid&rdquo; which contains a tool called &ldquo;edid-decode&rdquo;.</p>
+
+<pre><code>$ edid-decode edid.bin
+Extracted contents:
+header:          00 ff ff ff ff ff ff 00
+serial number:   04 72 30 02 01 00 00 00 08 15
+version:         01 03
+basic params:    80 33 1d 78 0a
+chroma info:     90 85 a3 58 53 9f 26 0f 50 54
+established:     bf 6f 00
+standard:        71 4f 81 c0 d1 c0 b3 00 81 80 01 01 01 01 01 01
+descriptor 1:    02 3a 80 18 71 38 2d 40 58 2c 45 00 fd 1e 11 00 00 18
+descriptor 2:    01 1d 00 72 51 d0 1e 20 6e 28 55 00 fd 1e 11 00 00 1e
+descriptor 3:    00 00 00 fd 00 38 4c 1e 4b 0f 00 0a 20 20 20 20 20 20
+descriptor 4:    00 00 00 fc 00 4d 32 33 30 48 44 4c 0a 20 20 20 20 20
+extensions:      01
+checksum:        56
+
+Manufacturer: ACR Model 230 Serial Number 1
+Made week 8 of 2011
+EDID version: 1.3
+Digital display
+Maximum image size: 51 cm x 29 cm
+Gamma: 2.20
+Supported color formats: RGB 4:4:4, YCrCb 4:2:2
+First detailed timing is preferred timing
+Established timings supported:
+  720x400@70Hz
+  640x480@60Hz
+  640x480@67Hz
+  640x480@72Hz
+  640x480@75Hz
+  800x600@56Hz
+  800x600@60Hz
+  800x600@75Hz
+  832x624@75Hz
+  1024x768@60Hz
+  1024x768@70Hz
+  1024x768@75Hz
+  1280x1024@75Hz
+Standard timings supported:
+  1152x864@75Hz
+  1280x768@60Hz
+  1920x1152@60Hz
+  1680x1050@60Hz
+  1280x1024@60Hz
+Detailed mode: Clock 148.500 MHz, 509 mm x 286 mm
+               1920 2008 2052 2200 hborder 0
+               1080 1084 1089 1125 vborder 0
+               -hsync -vsync
+Detailed mode: Clock 74.250 MHz, 509 mm x 286 mm
+               1280 1390 1430 1650 hborder 0
+                720  725  730  750 vborder 0
+               +hsync +vsync
+Monitor ranges: 56-76HZ vertical, 30-75kHz horizontal, max dotclock 150MHz
+Monitor name: M230HDL
+     Has 1 extension blocks
+Checksum: 0x56
+</code></pre>
+
+<p>The result looks quite good isn&rsquo;t it? One of the next step would be to connect the loose ends. Or trying to write useful information to the on board eeprom.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Assign Static Device Name for USB Infrared Toy]]></title>
+    <link href="http://sturmschneid.github.io/blog/2014/04/21/assign-static-device-name-for-usb-infrared-toy/"/>
+    <updated>2014-04-21T00:00:00+02:00</updated>
+    <id>http://sturmschneid.github.io/blog/2014/04/21/assign-static-device-name-for-usb-infrared-toy</id>
+    <content type="html"><![CDATA[<p>The last few days I was playing arround with my <a href="http://dangerousprototypes.com/docs/USB_Infrared_Toy">USB Infrared Toy v2</a> from Dangerous Prototypes. Due to the fact that I have attached some more devices which are detected as <strong>/dev/ACM[0-9]</strong> I decided to write an udev rule to assign a static device name.</p>
+
+<!--more-->
+
+
+<p>I stored the rule in the following file: <strong>/etc/udev/rules.d/98-ir-toy-v2.rules</strong></p>
+
+<pre><code>SUBSYSTEM=="tty", ATTRS{manufacturer}=="Dangerous Prototypes", ATTRS{idProduct}=="fd08", SYMLINK+="ir_toy" MODE="0666"
+</code></pre>
+
+<p>Maybe the field <strong>&ldquo;ATTRS{idProduct}==&#8221;fd08&rdquo;&ldquo;</strong> have to be tweaked for versions differnet of v2. With this rule the IR Toy is accessible via <strong>/dev/ir_toy</strong></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Rewriting History]]></title>
+    <link href="http://sturmschneid.github.io/blog/2013/11/04/rewriting-history/"/>
+    <updated>2013-11-04T00:00:00+01:00</updated>
+    <id>http://sturmschneid.github.io/blog/2013/11/04/rewriting-history</id>
+    <content type="html"><![CDATA[<p>Sometimes history has to be rewritten. In real life this is hopefully not possible yet. But in case of git this is possible. Some projecs start with a small repository which evolves over the time to a big bloated repository. Other ones start already bloated. In some cases the wish to split-up the repository in smaller chunks emerges. With some advice from <a href="http://seife.kernalert.de/blog/">Stefan Seyfried</a> I learned how to rewrite history</p>
+
+<!--more-->
+
+
+<p>The goal was to extract the driver directory from the <a href="https://gitorious.org/open-duckbox-project-sh4/tdt">tdt</a> repository like <a href="https://gitorious.org/neutrino-mp/tdt-driver">Stefan</a> already did.</p>
+
+<p>These are the steps to follow:</p>
+
+<pre><code>$ cd /dev/shm/
+$ git clone --reference /net/transfer/spark71xx/tdt https://git.gitorious.org/open-duckbox-project-sh4/tdt.git tdt-driver
+$ cd tdt-driver/
+$ git filter-branch --subdirectory-filter tdt/cvs/driver
+</code></pre>
+
+<p>The first step speeds up the process of rewriting by doing it all in memory instead of writing everything onto a slow disk device. But please remember to push your work onto a less volatile memory.</p>
+
+<pre><code>$ cd /dev/shm/
+</code></pre>
+
+<p>In the second step the original repository is cloned. To again speedup things I used a local copy as reference. After cloning the directory structure looked like this</p>
+
+<pre><code>$ tree -d -L 3 tdt/
+tdt/
+├── custom
+├── cvs
+│   ├── apps
+│   │   ├── dvb
+│   │   ├── enigma1-hd
+│   │   ├── enigma2
+│   │   ├── misc
+│   │   ├── neutrino
+│   │   ├── tuxbox
+│   │   └── vdr
+│   ├── boot
+│   │   └── u-boot-tufsbox
+│   ├── cdk
+│   │   ├── integrated_firmware
+│   │   ├── make
+│   │   ├── own_build
+│   │   ├── Patches
+│   │   ├── root
+│   │   ├── static
+│   │   └── tfinstaller
+│   ├── driver
+│   │   ├── adb_box_fan
+│   │   ├── avs
+│   │   ├── boxtype
+│   │   ├── bpamem
+│   │   ├── button
+│   │   ├── button_hs5101
+│   │   ├── cec
+│   │   ├── cec_adb_box
+│   │   ├── cic
+│   │   ├── compcache
+│   │   ├── cpu_frequ
+│   │   ├── dvbt
+│   │   ├── e2_proc
+│   │   ├── frontcontroller
+│   │   ├── frontends
+│   │   ├── i2c_spi
+│   │   ├── include
+│   │   ├── ipbox99xx_fan
+│   │   ├── led
+│   │   ├── logfs
+│   │   ├── multicom-3.2.2
+│   │   ├── multicom-3.2.4
+│   │   ├── multicom-3.2.4_rc3
+│   │   ├── multicom-4.0.6
+│   │   ├── old
+│   │   ├── player2_131
+│   │   ├── player2_179
+│   │   ├── player2_191
+│   │   ├── pti
+│   │   ├── rmu
+│   │   ├── sata_switch
+│   │   ├── siinfo
+│   │   ├── simu_button
+│   │   ├── smartcard
+│   │   ├── stgfb
+│   │   ├── tfswitch
+│   │   ├── ufs922_fan
+│   │   └── wireless
+│   └── hostapps
+│       ├── flash
+│       ├── mkfs.jffs2
+│       └── mklibs
+└── flash
+    ├── at7500
+    │   ├── extras
+    │   ├── scripts
+    │   ├── scripts_209
+    │   └── scripts_extended
+    ├── common
+    │   ├── fup.src
+    │   ├── mup.src
+    │   └── pad.src
+    ├── hs7810a
+    │   ├── extras
+    │   └── scripts
+    ├── spark
+    │   ├── extras
+    │   └── scripts
+    ├── tf7700hdpvr
+    ├── ufc960
+    │   ├── extra
+    │   └── scripts
+    ├── ufs910
+    │   └── scripts
+    ├── ufs912
+    │   ├── extras
+    │   └── scripts
+    └── ufs913
+        ├── extra
+        ├── scripts
+        └── test
+</code></pre>
+
+<p>The last step extracts just the directory  &lsquo;&#8217;tdt/cvs/driver&rsquo;&#8217;</p>
+
+<pre><code>$ git filter-branch --subdirectory-filter tdt/cvs/driver
+</code></pre>
+
+<p>After this step the filesystem looks like this:</p>
+
+<pre><code>$ tree -d -L 1 tdt-driver/
+tdt-driver/
+├── adb_box_fan
+├── avs
+├── boxtype
+├── bpamem
+├── button
+├── button_hs5101
+├── cec
+├── cec_adb_box
+├── cic
+├── compcache
+├── cpu_frequ
+├── dvbt
+├── e2_proc
+├── frontcontroller
+├── frontends
+├── i2c_spi
+├── include
+├── ipbox99xx_fan
+├── led
+├── logfs
+├── multicom-3.2.2
+├── multicom-3.2.4
+├── multicom-3.2.4_rc3
+├── multicom-4.0.6
+├── old
+├── player2_131
+├── player2_179
+├── player2_191
+├── pti
+├── rmu
+├── sata_switch
+├── siinfo
+├── simu_button
+├── smartcard
+├── stgfb
+├── tfswitch
+├── ufs922_fan
+└── wireless
+</code></pre>
+
+<p>There are more steps recommended in a <a href="http://stackoverflow.com/questions/359424/detach-subdirectory-into-separate-git-repository/1591174#1591174">stackoverflow</a> article. These steps had not been necessary for my example.</p>
+]]></content>
+  </entry>
+  
+</feed>

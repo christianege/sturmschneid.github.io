@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Analyzing Kernel Oops - Sturmschneid</title>
+  <meta name="author" content="Christian Ege">
+
+  <meta name="description" content="">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://sturmschneid.github.io/blog/2013/10/08/analyzing-kernel-oops">
+  <link href="/favicon.png" type="image/png" rel="icon">
+  <link href="/atom.xml" rel="alternate" title="Sturmschneid" type="application/atom+xml">
+
+  <!-- http://opengraphprotocol.org/ -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="http://sturmschneid.github.io/blog/2013/10/08/analyzing-kernel-oops">
+  <meta property="og:title" content="Analyzing Kernel Oops - Sturmschneid">
+  <meta property="og:description" content="">
+
+  <script src="/javascripts/libs/jquery/jquery-2.0.3.min.js"></script>
+
+<link href="/assets/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="/assets/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css">
+
+
+  
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+  <body   >
+    <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+    <div id="wrap">
+      <header role="banner">
+        <nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Sturmschneid</a>
+        </div>
+
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="active">
+                    <a rel="index" href="/">Blog</a>
+                </li>
+                <li >
+                    <a href="/blog/archives">Archives</a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a class="subscribe-rss" href="/atom.xml" title="subscribe via RSS">
+                        <span class="visible-xs">RSS</span>
+                        <img class="hidden-xs" src="/images/rss.png" alt="RSS">
+                    </a>
+                </li>
+                
+            </ul>
+            
+                <form class="search navbar-form navbar-right" action="https://www.google.com/search" method="GET">
+                    <input type="hidden" name="q" value="site:sturmschneid.github.io">
+                    <div class="form-group">
+                        <input class="form-control" type="text" name="q" placeholder="Search">
+                    </div>
+                </form>
+            
+        </div>
+    </div>
+</nav>
+
+
+      </header>
+      <div id="main" role="main" class="container">
+        <div id="content">
+          <div class="row">
+  <div class="page-content col-md-9" itemscope itemtype="http://schema.org/Blog">
+    <meta itemprop="name" content="Sturmschneid" />
+    
+    <meta itemprop="url" content="http://sturmschneid.github.io" />
+    <article class="hentry" role="article" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+      
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2013-10-08T00:00:00+02:00"  data-updated="true" itemprop="datePublished dateCreated">ordinal</time>
+        
+      </p>
+    
+    
+    <h1 class="entry-title" itemprop="name headline">
+        Analyzing Kernel Oops
+        
+    </h1>
+    
+  </header>
+
+
+<div class="entry-content clearfix" itemprop="articleBody description"><p>There was a little hickup in the kernel while shutting down or rebooting the system. The result of the hickup was a Kernel Oops. Because it had no big influence on the behaviour of the system I did not spend a lot of time on investigation. Yesterday I did some tests with the yocto workflow for kernel development and tried to fix the hickup.</p>
+
+<!--more-->
+
+
+<h2>The hickup</h2>
+
+<p>The Kernel Oops looked like this one</p>
+
+<pre><code>Unmounting local filesystems...
+[ 2135.692000] umount: sending ioctl 4c01 to a partition!
+[ 2135.696000] umount: sending ioctl 4c01 to a partition!
+Rebooting... [ 2137.744000] ------------[ cut here ]------------
+[ 2137.744000] Badness at 80a859a0 [verbose debug info unavailable]
+[ 2137.744000]
+[ 2137.744000] Pid : 855, Comm:                 reboot
+[ 2137.744000] CPU : 0                  Not tainted  (2.6.32.59_stm24_0211 #2)
+[ 2137.744000]
+[ 2137.744000] PC  : 80a859a0 SP  : 8928be48 SR  : 400080f1 TEA : c113ae28
+[ 2137.744000] R0  : 00000000 R1  : 00000000 R2  : 80c22e7c R3  : 00002000
+[ 2137.744000] R4  : 80c22ba4 R5  : 80a85610 R6  : 00000000 R7  : 00003fff
+[ 2137.744000] R8  : 80c229cc R9  : 80a855fe R10 : 89ec440c R11 : 00000000
+[ 2137.744000] R12 : fffff000 R13 : 80a859e0 R14 : 00000000
+[ 2137.744000] MACH: 000000de MACL: 00000014 GBR : 296c1470 PR  : 80a859cc
+[ 2137.744000]
+[ 2137.744000] Call trace:
+[ 2137.744000]  [&lt;80a85a04&gt;] 0x80a85a04
+[ 2137.744000]  [&lt;80a5347a&gt;] 0x80a5347a
+[ 2137.744000]  [&lt;809db332&gt;] 0x809db332
+[ 2137.744000]  [&lt;8081f610&gt;] 0x8081f610
+[ 2137.744000]  [&lt;8081f636&gt;] 0x8081f636
+[ 2137.744000]  [&lt;8081f780&gt;] 0x8081f780
+</code></pre>
+
+<p>For me under yocto the best way to get in touch with the source is to start a devshell.</p>
+
+<pre><code>bitbake -cdevshell virtual/kernel
+</code></pre>
+
+<p>While the occurence of the Oops the PC (program counter) was at address 0x80a859a0. So my first approach was loading the vmlinux in gdb. This was not that succefull because the kernel had no debug symbols included. The next source of information is the Sytem.map file:</p>
+
+<pre><code>cat cat System.map | grep 80a859
+80a85904 T _clk_disable
+</code></pre>
+
+<p>This looks like the cause of the problem is located in this function. To get a closer look I decided to compile the kernel with debug symbols. So I added the following config options:</p>
+
+<pre><code>CONFIG_DEBUG_KERNEL=y
+CONFIG_DETECT_SOFTLOCKUP=y
+CONFIG_BOOTPARAM_SOFTLOCKUP_PANIC_VALUE=0
+CONFIG_DETECT_HUNG_TASK=y
+CONFIG_BOOTPARAM_HUNG_TASK_PANIC_VALUE=0
+CONFIG_SCHED_DEBUG=y
+CONFIG_DEBUG_PREEMPT=y
+CONFIG_DEBUG_BUGVERBOSE=y
+CONFIG_DEBUG_INFO=y
+</code></pre>
+
+<p>And recompiled the kernel</p>
+
+<pre><code>bitbake -ccompile -f virtual/kernel
+bitbake -cdeploy -f virtual/kernel
+</code></pre>
+
+<p>And finally copied the kernel onto the USB pendrive. Because I do the most of my testing while booting from USB.</p>
+
+<pre><code>cp  tmp/deploy/images/uImage-spark.bin  /media/spark/uImage
+</code></pre>
+
+<p>After unmounting the pendrive I tested on the box with the follwing results:</p>
+
+<pre><code>Unmounting local filesystems...
+[   38.764000] umount: sending ioctl 4c01 to a partition!
+[   38.768000] umount: sending ioctl 4c01 to a partition!
+Rebooting... [   40.816000] ------------[ cut here ]------------
+[   40.816000] Badness at drivers/stm/clk.c:190
+[   40.816000]
+[   40.816000] Pid : 779, Comm:                 reboot
+[   40.816000] CPU : 0                  Not tainted  (2.6.32.59_stm24_0211 #2)
+[   40.816000]
+[   40.816000] PC  : 80a8b7e4 SP  : 88e59e44 SR  : 400080f1 TEA : c16772ac
+[   40.816000] R0  : 00000000 R1  : 00000000 R2  : 80c2fe58 R3  : 00002000
+[   40.816000] R4  : 80c2fb80 R5  : 80a8b438 R6  : 00000000 R7  : 00003fff
+[   40.816000] R8  : 80c2f9a8 R9  : 80a8b426 R10 : 89e2048c R11 : 00000000
+[   40.816000] R12 : fffff000 R13 : 80a8b824 R14 : 00000000
+[   40.816000] MACH: 000000de MACL: 00000014 GBR : 296c1470 PR  : 80a8b810
+[   40.816000]
+[   40.816000] Call trace:
+[   40.816000]  [&lt;80a8b84a&gt;] 0x80a8b84a
+[   40.816000]  [&lt;80a58f9e&gt;] 0x80a58f9e
+[   40.816000]  [&lt;809e055a&gt;] 0x809e055a
+[   40.816000]  [&lt;8082188c&gt;] 0x8082188c
+</code></pre>
+
+<p>The Oops now tells me where I do have to look at:</p>
+
+<pre><code>[   40.816000] Badness at drivers/stm/clk.c:190
+</code></pre>
+
+<p>The next test is to try what gdb tells me the address varies, because this is the kernel with the fix applied. But the mechanism is the same.</p>
+
+<pre><code># sh4-poky-linux-gdb vmlinux
+GNU gdb (GDB) 7.5.1
+Copyright (C) 2012 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "--host=x86_64-linux --target=sh4-poky-linux".
+For bug reporting instructions, please see:
+&lt;http://www.gnu.org/software/gdb/bugs/&gt;...
+Reading symbols from vmlinux...done.
+(gdb) list *(0x80a8b460)
+0x80a8b460 is in _clk_disable (drivers/stm/clk.c:187).
+182     return ret;
+183 }
+184 EXPORT_SYMBOL(clk_enable);
+185
+186 void _clk_disable(struct clk *clk)
+187 {
+188     int ret;
+189
+190
+191     if (clk_is_always_enabled(clk)) {
+(gdb)
+</code></pre>
+
+<p>With this information gdb can help to narrow the source of the problem. In my case I just googled the keywords stm and _clk_disable and found the following patch:
+<a href="http://code.google.com/p/tdt-amiko/source/browse/tdt/cvs/cdk/Patches/linux-sh4-fix-crash-usb-reboot_stm24_0211.diff?spec=svnbf027b5e899cd26fbc20ac0745385c69ab385923&amp;r=bf027b5e899cd26fbc20ac0745385c69ab385923">linux-sh4-fix-crash-usb-reboot_stm24_0211.diff</a></p>
+</div>
+
+
+      <footer>
+        <p class="meta text-muted">
+          
+  
+
+<span class="glyphicon glyphicon-user"></span> <span class="byline author vcard" itemprop="author" itemscope itemtype="http://schema.org/Person">Posted by <span class="fn" itemprop="name">Christian Ege</span></span>
+
+          
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2013-10-08T00:00:00+02:00"  data-updated="true" itemprop="datePublished dateCreated">ordinal</time>
+          
+
+<span class="glyphicon glyphicon-tags"></span>&nbsp;
+<span class="categories">
+  
+    <a class='category' href='/blog/categories//'></a>
+  
+</span>
+
+
+        </p>
+        
+          <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://sturmschneid.github.io/blog/2013/10/08/analyzing-kernel-oops/" data-via="" data-counturl="http://sturmschneid.github.io/blog/2013/10/08/analyzing-kernel-oops/" >Tweet</a>
+  
+  
+  
+</div>
+
+        
+        
+          <ul class="meta text-muted pager">
+            
+            <li class="previous"><a href="/blog/2013/10/04/jffs2-vs-ubifs/" title="Previous Post: JFFS2 vs. UBIFS">&laquo; JFFS2 vs. UBIFS</a></li>
+            
+            
+            <li class="next"><a href="/blog/2013/10/22/ubifs-as-rootfs/" title="Next Post: UBIFS as rootfs">UBIFS as rootfs &raquo;</a></li>
+            
+          </ul>
+        
+      </footer>
+    </article>
+    
+  </div>
+
+  
+  <aside class="sidebar col-md-3">
+    
+      <section class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Recent Posts</h3>
+  </div>
+  
+  <div id="recent_posts" class="list-group">
+    
+    <a class="list-group-item " href="/blog/2014/10/25/new-blog-based-on-octopress/">New Blog Based on Octopress</a>
+    
+    <a class="list-group-item " href="/blog/2014/09/26/building-a-yocto-image-for-the-a20-olinuxino-lime/">Building a Yocto Image for the A20 OLinuXino LIME</a>
+    
+    <a class="list-group-item " href="/blog/2014/06/15/sti7111-st40-jtag-preparations/">Sti7111 (ST40) JTAG Preparations</a>
+    
+    <a class="list-group-item " href="/blog/2014/04/29/edid-mission-accomplished/">EDID Mission Accomplished</a>
+    
+    <a class="list-group-item " href="/blog/2014/04/26/pursue-hdmi-edid-bugs/">Pursue HDMI EDID Bugs</a>
+    
+  </div>
+</section>
+
+
+
+
+
+
+    
+  </aside>
+  
+</div>
+
+        </div>
+      </div>
+    </div>
+    <footer role="contentinfo"><div class="container">
+    <p class="text-muted credits">
+  Copyright &copy; 2014 - Christian Ege<br>
+  <small>
+      <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>,
+      <span class="credit">customized with <a href="https://github.com/kAworu/octostrap3">octostrap3</a></span>.
+  </small>
+</p>
+
+</div>
+</footer>
+    
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+<script src="/assets/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="/javascripts/modernizr-2.0.js"></script>
+
+
+  </body>
+</html>
