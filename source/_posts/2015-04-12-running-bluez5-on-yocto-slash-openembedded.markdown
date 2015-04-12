@@ -3,7 +3,8 @@ layout: post
 title: "Running BlueZ5 on Yocto/OpenEmbedded"
 date: 2015-04-12 07:09:49 +0200
 comments: true
-categories:
+sharing: true
+categories: [BlueZ5, BlueZ, Yocto]
 ---
 
 At the moment yocto/openembedded ships with [BlueZ4](http://www.bluez.org) as the Linux Bluetooth protocol stack. Due to the fact that [Bluetooth low energy](http://en.wikipedia.org/wiki/Bluetooth_low_energy) is only supported in BlueZ5 this is a bit of a disappointment. There is a long-standing bug report on this [#5031 ](https://bugzilla.yoctoproject.org/show_bug.cgi?id=5031). But since the commit [1139cc4e...](http://git.yoctoproject.org/cgit/cgit.cgi/poky/commit/?id=1139cc4eef305fc14bc5db19a5f8729e7b3bf27a) the used BlueZ version can be selected. According to the reference manual BlueZ5 can be enabled by adding bluez5 to the [DISTRO_FEATURES](http://www.yoctoproject.org/docs/1.8/ref-manual/ref-manual.html#var-DISTRO_FEATURES) for me the easiest way to to this was adding the following line to my conf/local.conf in the [Build Directory](http://www.yoctoproject.org/docs/1.8/dev-manual/dev-manual.html#build-directory).
