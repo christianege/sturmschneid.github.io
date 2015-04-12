@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://sturmschneid.github.io/blog/2015/04/12/orico-bta-402-usb-bluetooth-4-dot-0-low-energy-micro-adapter-on-odroid-c1/</loc>
+    <lastmod>2015-04-12T09:11:53+02:00</lastmod>
+  </url>
+  <url>
     <loc>http://sturmschneid.github.io/blog/2015/04/12/running-bluez5-on-yocto-slash-openembedded/</loc>
     <lastmod>2015-04-12T07:09:49+02:00</lastmod>
   </url>
@@ -59,5 +63,17 @@
   </url>
   <url>
     <loc>http://sturmschneid.github.io/blog/categories/yocto/</loc>
+  </url>
+  <url>
+    <loc>http://sturmschneid.github.io/blog/categories/bluez5/</loc>
+  </url>
+  <url>
+    <loc>http://sturmschneid.github.io/blog/categories/bluez/</loc>
+  </url>
+  <url>
+    <loc>http://sturmschneid.github.io/blog/categories/odroid-c1/</loc>
+  </url>
+  <url>
+    <loc>http://sturmschneid.github.io/blog/categories/ble-bluetooth-low-energy/</loc>
   </url>
 </urlset>

@@ -114,6 +114,162 @@
 
 
 
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2015-04-12T09:11:53+02:00"  data-updated="true" itemprop="datePublished dateCreated">ordinal</time>
+        
+      </p>
+    
+    
+      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2015/04/12/orico-bta-402-usb-bluetooth-4-dot-0-low-energy-micro-adapter-on-odroid-c1/" itemprop="url">ORICO BTA-402 USB Bluetooth 4.0 Low Energy Micro Adapter on ODROID-C1</a></h2>
+    
+  </header>
+
+
+  <div class="entry-content clearfix" itemprop="articleBody description"><p>Today I had some fun with <a href="http://en.wikipedia.org/wiki/Bluetooth_low_energy">Bluetooth Low Energy</a> and my <a href="http://www.hardkernel.com/main/products/prdt_info.php">ODROID C1</a> In an earlier <a href="/blog/2015/04/12/running-bluez5-on-yocto-slash-openembedded/">Blog Post</a> I described how to enable Bluetooth Low Energy Support in Yocto.</p>
+
+<p>Recently I bought this <a href="http://www.amazon.de/gp/product/B00K5TJP02?psc=1&amp;redirect=true&amp;ref_=oh_aui_detailpage_o04_s00">ORICO BTA-402 USB Bluetooth 4.0 Low Energy Micro Adapter</a> on Amazon to play with Bluetooth Low Energy. The USB Dongle was automatically detected by my <a href="https://github.com/project-magpie/meta-amlogic">meta-amlogic&rsquo;s</a> kernel configuration for the <a href="http://www.hardkernel.com/main/products/prdt_info.php">ODROID C1</a></p>
+
+<p>I used the New <a href="http://www.ti.com/tool/cc2650stk">SimpleLink™ Bluetooth Smart®/Multi-Standard SensorTag</a> as the device to connect to.</p>
+
+<p><img src="/images/SensorTag2.png"></p>
+
+<p>On the ODROID-C1 device run the following commands:</p>
+
+<pre><code>root@odroidc1:~# hciconfig
+hci0:   Type: BR/EDR  Bus: USB
+    BD Address: 00:1A:7D:DA:71:09  ACL MTU: 310:10  SCO MTU: 64:8
+    DOWN
+    RX bytes:547 acl:0 sco:0 events:27 errors:0
+    TX bytes:384 acl:0 sco:0 commands:27 errors:0
+</code></pre>
+
+<p>Check if your adapter is DOWN as you can see in the example above. If the adapter is down you have to bring it up befare any other action can take place</p>
+
+<pre><code>hciconfig device up
+</code></pre>
+
+<p>After this you can re-check if your adapter is UP and RUNNING</p>
+
+<pre><code>root@odroidc1:~# hciconfig
+hci0:   Type: BR/EDR  Bus: USB
+        BD Address: 00:1A:7D:DA:71:09  ACL MTU: 310:10  SCO MTU: 64:8
+        UP RUNNING
+        RX bytes:10116 acl:72 sco:0 events:364 errors:0
+        TX bytes:1858 acl:73 sco:0 commands:66 errors:0
+</code></pre>
+
+<p>Now you can scan for Bluetooth Low Energy devices Please ensure that your SensorTag is in Advertise Mode. Whith the default Firmware this can be achieved by pressing the Power Button.</p>
+
+<pre><code>root@odroidc1:~# hcitool lescan
+LE Scan ...
+50:C4:7F:6C:18:2C (unknown)
+50:C4:7F:6C:18:2C (unknown)
+50:C4:7F:6C:18:2C (unknown)
+50:C4:7F:6C:18:2C (unknown)
+50:C4:7F:6C:18:2C (unknown)
+68:C9:0B:06:EF:0B (unknown)
+68:C9:0B:06:EF:0B CC2650 SensorTag
+68:C9:0B:06:EF:0B (unknown)
+68:C9:0B:06:EF:0B CC2650 SensorTag
+68:C9:0B:06:EF:0B (unknown)
+68:C9:0B:06:EF:0B CC2650 SensorTag
+68:C9:0B:06:EF:0B (unknown)
+68:C9:0B:06:EF:0B CC2650 SensorTag
+50:C4:7F:6C:18:2C (unknown)
+</code></pre>
+
+<p>After a successful scan we can query some information from the SensorTag</p>
+
+<pre><code>root@odroidc1:~# hcitool leinfo 68:C9:0B:06:EF:0B
+Requesting information ...
+        Handle: 71 (0x0047)
+        LMP Version: 4.1 (0x7) LMP Subversion: 0x200
+        Manufacturer: Texas Instruments Inc. (13)
+        Features: 0x01 0x00 0x00 0x00 0x00 0x00 0x00 0x00
+</code></pre>
+
+<p>Now lets connect to the SensorTag</p>
+
+<pre><code>root@odroidc1:~# hcitool lecc 68:C9:0B:06:EF:0B
+Connection handle 71
+</code></pre>
+
+<p>After this we can use the gatttool from the BlueZ5 package to connect to the GATT Server on the SensorTag</p>
+
+<pre><code>root@odroidc1:~# gatttool -b 68:C9:0B:06:EF:0B --interactive
+[68:C9:0B:06:EF:0B][LE]&gt;
+</code></pre>
+
+<p>Establish a connection to the GATT Server</p>
+
+<pre><code> [68:C9:0B:06:EF:0B][LE]&gt; connect
+ Attempting to connect to 68:C9:0B:06:EF:0B
+ Connection successful
+</code></pre>
+
+<p>Scan for Primary UUIDs</p>
+
+<pre><code>[68:C9:0B:06:EF:0B][LE]&gt; primary
+attr handle: 0x0001, end grp handle: 0x0007 uuid: 00001800-0000-1000-8000-00805f9b34fb
+attr handle: 0x0008, end grp handle: 0x000b uuid: 00001801-0000-1000-8000-00805f9b34fb
+attr handle: 0x000c, end grp handle: 0x001e uuid: 0000180a-0000-1000-8000-00805f9b34fb
+attr handle: 0x001f, end grp handle: 0x0026 uuid: f000aa00-0451-4000-b000-000000000000
+attr handle: 0x0027, end grp handle: 0x002e uuid: f000aa20-0451-4000-b000-000000000000
+attr handle: 0x002f, end grp handle: 0x0036 uuid: f000aa40-0451-4000-b000-000000000000
+attr handle: 0x0037, end grp handle: 0x003e uuid: f000aa80-0451-4000-b000-000000000000
+attr handle: 0x003f, end grp handle: 0x0046 uuid: f000aa70-0451-4000-b000-000000000000
+attr handle: 0x0047, end grp handle: 0x004b uuid: 0000ffe0-0000-1000-8000-00805f9b34fb
+attr handle: 0x004c, end grp handle: 0x0050 uuid: f000aa64-0451-4000-b000-000000000000
+attr handle: 0x0051, end grp handle: 0x0058 uuid: f000ac00-0451-4000-b000-000000000000
+attr handle: 0x0059, end grp handle: 0x0060 uuid: f000ccc0-0451-4000-b000-000000000000
+attr handle: 0x0061, end grp handle: 0xffff uuid: f000ffc0-0451-4000-b000-000000000000
+</code></pre>
+
+<p>To receive notifications on Key Press Events send the following to the device</p>
+
+<pre><code>[68:C9:0B:06:EF:0B][LE]&gt; char-write-req 4a 0100
+Notification handle = 0x0049 value: 01
+Notification handle = 0x0049 value: 00
+Notification handle = 0x0049 value: 01
+Notification handle = 0x0049 value: 00
+Notification handle = 0x0049 value: 01
+Notification handle = 0x0049 value: 00
+Notification handle = 0x0049 value: 01
+Notification handle = 0x0049 value: 00
+</code></pre>
+
+<p>Now each key press and release should be displayed in the gatttool. Frankly this key press event notification is just copy past from this <a href="https://vine.co/v/OVbOXVwBeYu">vine</a> posting.</p>
+
+<iframe src="https://vine.co/v/OVbOXVwBeYu/embed/simple" width="600" height="600" frameborder="0"></iframe>
+
+
+<script src="https://platform.vine.co/static/scripts/embed.js"></script>
+
+</div>
+  
+  
+
+
+        </article>
+      
+      
+        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+          
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
 <span class="glyphicon glyphicon-calendar"></span> <time datetime="2015-04-12T07:09:49+02:00"  data-updated="true" itemprop="datePublished dateCreated">ordinal</time>
         
       </p>
@@ -1179,168 +1335,6 @@ root@spark:~# ubiformat /dev/mtd6 -q -y -f /tmp/image.ubi
 
         </article>
       
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-
-
-
-
-
-
-
-
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2013-10-08T00:00:00+02:00"  data-updated="true" itemprop="datePublished dateCreated">ordinal</time>
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2013/10/08/analyzing-kernel-oops/" itemprop="url">Analyzing Kernel Oops</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>There was a little hickup in the kernel while shutting down or rebooting the system. The result of the hickup was a Kernel Oops. Because it had no big influence on the behaviour of the system I did not spend a lot of time on investigation. Yesterday I did some tests with the yocto workflow for kernel development and tried to fix the hickup.</p>
-
-<h2>The hickup</h2>
-
-<p>The Kernel Oops looked like this one</p>
-
-<pre><code>Unmounting local filesystems...
-[ 2135.692000] umount: sending ioctl 4c01 to a partition!
-[ 2135.696000] umount: sending ioctl 4c01 to a partition!
-Rebooting... [ 2137.744000] ------------[ cut here ]------------
-[ 2137.744000] Badness at 80a859a0 [verbose debug info unavailable]
-[ 2137.744000]
-[ 2137.744000] Pid : 855, Comm:                 reboot
-[ 2137.744000] CPU : 0                  Not tainted  (2.6.32.59_stm24_0211 #2)
-[ 2137.744000]
-[ 2137.744000] PC  : 80a859a0 SP  : 8928be48 SR  : 400080f1 TEA : c113ae28
-[ 2137.744000] R0  : 00000000 R1  : 00000000 R2  : 80c22e7c R3  : 00002000
-[ 2137.744000] R4  : 80c22ba4 R5  : 80a85610 R6  : 00000000 R7  : 00003fff
-[ 2137.744000] R8  : 80c229cc R9  : 80a855fe R10 : 89ec440c R11 : 00000000
-[ 2137.744000] R12 : fffff000 R13 : 80a859e0 R14 : 00000000
-[ 2137.744000] MACH: 000000de MACL: 00000014 GBR : 296c1470 PR  : 80a859cc
-[ 2137.744000]
-[ 2137.744000] Call trace:
-[ 2137.744000]  [&lt;80a85a04&gt;] 0x80a85a04
-[ 2137.744000]  [&lt;80a5347a&gt;] 0x80a5347a
-[ 2137.744000]  [&lt;809db332&gt;] 0x809db332
-[ 2137.744000]  [&lt;8081f610&gt;] 0x8081f610
-[ 2137.744000]  [&lt;8081f636&gt;] 0x8081f636
-[ 2137.744000]  [&lt;8081f780&gt;] 0x8081f780
-</code></pre>
-
-<p>For me under yocto the best way to get in touch with the source is to start a devshell.</p>
-
-<pre><code>bitbake -cdevshell virtual/kernel
-</code></pre>
-
-<p>While the occurence of the Oops the PC (program counter) was at address 0x80a859a0. So my first approach was loading the vmlinux in gdb. This was not that succefull because the kernel had no debug symbols included. The next source of information is the Sytem.map file:</p>
-
-<pre><code>cat cat System.map | grep 80a859
-80a85904 T _clk_disable
-</code></pre>
-
-<p>This looks like the cause of the problem is located in this function. To get a closer look I decided to compile the kernel with debug symbols. So I added the following config options:</p>
-
-<pre><code>CONFIG_DEBUG_KERNEL=y
-CONFIG_DETECT_SOFTLOCKUP=y
-CONFIG_BOOTPARAM_SOFTLOCKUP_PANIC_VALUE=0
-CONFIG_DETECT_HUNG_TASK=y
-CONFIG_BOOTPARAM_HUNG_TASK_PANIC_VALUE=0
-CONFIG_SCHED_DEBUG=y
-CONFIG_DEBUG_PREEMPT=y
-CONFIG_DEBUG_BUGVERBOSE=y
-CONFIG_DEBUG_INFO=y
-</code></pre>
-
-<p>And recompiled the kernel</p>
-
-<pre><code>bitbake -ccompile -f virtual/kernel
-bitbake -cdeploy -f virtual/kernel
-</code></pre>
-
-<p>And finally copied the kernel onto the USB pendrive. Because I do the most of my testing while booting from USB.</p>
-
-<pre><code>cp  tmp/deploy/images/uImage-spark.bin  /media/spark/uImage
-</code></pre>
-
-<p>After unmounting the pendrive I tested on the box with the follwing results:</p>
-
-<pre><code>Unmounting local filesystems...
-[   38.764000] umount: sending ioctl 4c01 to a partition!
-[   38.768000] umount: sending ioctl 4c01 to a partition!
-Rebooting... [   40.816000] ------------[ cut here ]------------
-[   40.816000] Badness at drivers/stm/clk.c:190
-[   40.816000]
-[   40.816000] Pid : 779, Comm:                 reboot
-[   40.816000] CPU : 0                  Not tainted  (2.6.32.59_stm24_0211 #2)
-[   40.816000]
-[   40.816000] PC  : 80a8b7e4 SP  : 88e59e44 SR  : 400080f1 TEA : c16772ac
-[   40.816000] R0  : 00000000 R1  : 00000000 R2  : 80c2fe58 R3  : 00002000
-[   40.816000] R4  : 80c2fb80 R5  : 80a8b438 R6  : 00000000 R7  : 00003fff
-[   40.816000] R8  : 80c2f9a8 R9  : 80a8b426 R10 : 89e2048c R11 : 00000000
-[   40.816000] R12 : fffff000 R13 : 80a8b824 R14 : 00000000
-[   40.816000] MACH: 000000de MACL: 00000014 GBR : 296c1470 PR  : 80a8b810
-[   40.816000]
-[   40.816000] Call trace:
-[   40.816000]  [&lt;80a8b84a&gt;] 0x80a8b84a
-[   40.816000]  [&lt;80a58f9e&gt;] 0x80a58f9e
-[   40.816000]  [&lt;809e055a&gt;] 0x809e055a
-[   40.816000]  [&lt;8082188c&gt;] 0x8082188c
-</code></pre>
-
-<p>The Oops now tells me where I do have to look at:</p>
-
-<pre><code>[   40.816000] Badness at drivers/stm/clk.c:190
-</code></pre>
-
-<p>The next test is to try what gdb tells me the address varies, because this is the kernel with the fix applied. But the mechanism is the same.</p>
-
-<pre><code># sh4-poky-linux-gdb vmlinux
-GNU gdb (GDB) 7.5.1
-Copyright (C) 2012 Free Software Foundation, Inc.
-License GPLv3+: GNU GPL version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;
-This is free software: you are free to change and redistribute it.
-There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
-and "show warranty" for details.
-This GDB was configured as "--host=x86_64-linux --target=sh4-poky-linux".
-For bug reporting instructions, please see:
-&lt;http://www.gnu.org/software/gdb/bugs/&gt;...
-Reading symbols from vmlinux...done.
-(gdb) list *(0x80a8b460)
-0x80a8b460 is in _clk_disable (drivers/stm/clk.c:187).
-182     return ret;
-183 }
-184 EXPORT_SYMBOL(clk_enable);
-185
-186 void _clk_disable(struct clk *clk)
-187 {
-188     int ret;
-189
-190
-191     if (clk_is_always_enabled(clk)) {
-(gdb)
-</code></pre>
-
-<p>With this information gdb can help to narrow the source of the problem. In my case I just googled the keywords stm and _clk_disable and found the following patch:
-<a href="http://code.google.com/p/tdt-amiko/source/browse/tdt/cvs/cdk/Patches/linux-sh4-fix-crash-usb-reboot_stm24_0211.diff?spec=svnbf027b5e899cd26fbc20ac0745385c69ab385923&amp;r=bf027b5e899cd26fbc20ac0745385c69ab385923">linux-sh4-fix-crash-usb-reboot_stm24_0211.diff</a></p>
-</div>
-  
-  
-
-
-        </article>
-      
     </div>
 
     <ul class="pager">
@@ -1364,6 +1358,8 @@ Reading symbols from vmlinux...done.
   
   <div id="recent_posts" class="list-group">
     
+    <a class="list-group-item " href="/blog/2015/04/12/orico-bta-402-usb-bluetooth-4-dot-0-low-energy-micro-adapter-on-odroid-c1/">ORICO BTA-402 USB Bluetooth 4.0 Low Energy Micro Adapter on ODROID-C1</a>
+    
     <a class="list-group-item " href="/blog/2015/04/12/running-bluez5-on-yocto-slash-openembedded/">Running BlueZ5 on Yocto/OpenEmbedded</a>
     
     <a class="list-group-item " href="/blog/2014/10/25/new-blog-based-on-octopress/">New Blog Based on Octopress</a>
@@ -1371,8 +1367,6 @@ Reading symbols from vmlinux...done.
     <a class="list-group-item " href="/blog/2014/09/26/building-a-yocto-image-for-the-a20-olinuxino-lime/">Building a Yocto Image for the A20 OLinuXino LIME</a>
     
     <a class="list-group-item " href="/blog/2014/06/15/sti7111-st40-jtag-preparations/">Sti7111 (ST40) JTAG Preparations</a>
-    
-    <a class="list-group-item " href="/blog/2014/04/29/edid-mission-accomplished/">EDID Mission Accomplished</a>
     
   </div>
 </section>
