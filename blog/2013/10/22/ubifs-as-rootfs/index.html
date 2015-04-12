@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>UBIFS as Rootfs - Sturmschneid</title>
+  <meta name="author" content="Christian Ege">
+
+  <meta name="description" content="">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://sturmschneid.github.io/blog/2013/10/22/ubifs-as-rootfs">
+  <link href="/favicon.png" type="image/png" rel="icon">
+  <link href="/atom.xml" rel="alternate" title="Sturmschneid" type="application/atom+xml">
+
+  <!-- http://opengraphprotocol.org/ -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="http://sturmschneid.github.io/blog/2013/10/22/ubifs-as-rootfs">
+  <meta property="og:title" content="UBIFS as Rootfs - Sturmschneid">
+  <meta property="og:description" content="">
+
+  <script src="/javascripts/libs/jquery/jquery-2.0.3.min.js"></script>
+
+<link href="/assets/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="/assets/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css">
+
+
+  
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+  <body   >
+    <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+    <div id="wrap">
+      <header role="banner">
+        <nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Sturmschneid</a>
+        </div>
+
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="active">
+                    <a rel="index" href="/">Blog</a>
+                </li>
+                <li >
+                    <a href="/blog/archives">Archives</a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a class="subscribe-rss" href="/atom.xml" title="subscribe via RSS">
+                        <span class="visible-xs">RSS</span>
+                        <img class="hidden-xs" src="/images/rss.png" alt="RSS">
+                    </a>
+                </li>
+                
+            </ul>
+            
+                <form class="search navbar-form navbar-right" action="https://www.google.com/search" method="GET">
+                    <input type="hidden" name="q" value="site:sturmschneid.github.io">
+                    <div class="form-group">
+                        <input class="form-control" type="text" name="q" placeholder="Search">
+                    </div>
+                </form>
+            
+        </div>
+    </div>
+</nav>
+
+
+      </header>
+      <div id="main" role="main" class="container">
+        <div id="content">
+          <div class="row">
+  <div class="page-content col-md-9" itemscope itemtype="http://schema.org/Blog">
+    <meta itemprop="name" content="Sturmschneid" />
+    
+    <meta itemprop="url" content="http://sturmschneid.github.io" />
+    <article class="hentry" role="article" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+      
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2013-10-22T00:00:00+02:00"  data-updated="true" itemprop="datePublished dateCreated">ordinal</time>
+        
+      </p>
+    
+    
+    <h1 class="entry-title" itemprop="name headline">
+        UBIFS as Rootfs
+        
+    </h1>
+    
+  </header>
+
+
+<div class="entry-content clearfix" itemprop="articleBody description"><p>This Post describes how to get startet with an UBIFS root filesystem. I suppose you are using a image generated for the &ldquo;spark&rdquo; device. I have not done any tests with &ldquo;spark7162&rdquo;. For the spark boxes there is automatically a ubifs image generated.</p>
+
+<p>Generate a core-image-minimal for example. This assumes You already have set-up the yocto build environment.</p>
+
+<pre><code>MACHINE=spark bitbake core-image-minimal
+</code></pre>
+
+<p>The resulting image can be found here</p>
+
+<pre><code>tmp/deploy/images/core-image-minimal-spark.ubi
+</code></pre>
+
+<p>This is a ubivolume which can be burned to flash &hellip;</p>
+
+<h1>The Linux Way</h1>
+
+<p>For flashing from Linux <a href="https://github.com/project-magpie/meta-stlinux/wiki/Boot-from-USB-Stick">booting over USB</a> is recommended. Be cause we do not want to bite the hand that feeds us. For debugging and configuration purposes a Nullmodem Cable and a Terminal Emulator is recommended.</p>
+
+<h2>Flashing the image</h2>
+
+<p>To get a list with the mtd devices just dump the content of &ldquo;/proc/mtd&rdquo;</p>
+
+<pre><code>root@spark:~# cat /proc/mtd
+dev:    size   erasesize  name
+mtd0: 00080000 00010000 "Boot firmware"
+mtd1: 00700000 00010000 "Kernel"
+mtd2: 00080000 00010000 "Reserve"
+mtd3: 00800000 00020000 "Spark Kernel"
+mtd4: 17800000 00020000 "Spark Rootfs"
+mtd5: 00800000 00020000 "E2 Kernel"
+mtd6: 05000000 00020000 "E2 RootFs"
+</code></pre>
+
+<p>We want to modify the Partion number &ldquo;6&rdquo; also known as &ldquo;E2 RootFs&rdquo;. Be carefull to not erase Number &ldquo;0&rdquo; otherwise your bootloader is blown.
+At first you have to transfer the image. In absence of any other tools I do use netcat again.</p>
+
+<p>On the host (quadros) run this</p>
+
+<pre><code>$ cat tmp/deploy/images/core-image-minimal-spark.ubi | nc -l -v 3333
+</code></pre>
+
+<p>On the target run this</p>
+
+<pre><code>root@spark:~# nc  quadros 3333 &gt; /tmp/image.ubi
+</code></pre>
+
+<p>Now we can burn the image onto the flash</p>
+
+<pre><code>root@spark:~# flash_eraseall /dev/mtd6
+root@spark:~# ubiformat /dev/mtd6 -q -y -f /tmp/image.ubi
+</code></pre>
+
+<h2>Choosing the right commandline</h2>
+
+<p>I had a some difficulties with the console. The default bootagrs point to &ldquo;ttyAS1&rdquo; but I have to use ttyAS0. So I have to check this. This is the command line which works for me.</p>
+
+<pre><code>setenv bootargs 'console=ttyAS0,115200 rw init=/bin/devinit coprocessor_mem=4m@0x40000000,4m@0x40400000 printk=1 nwhwconf=device:eth0,hwaddr:00:80:E1:12:40:61 rw ip=172.100.100.249:172.100.100.174:172.100.100.174:255.255.0.0:LINUX7109:eth0:off bigphysarea=6000 stmmaceth=msglvl:0,phyaddr:2,watchdog:5000 ubi.mtd=6 rootfstype=ubifs root=ubi0:rootfs'
+</code></pre>
+
+<h1>The spark u-boot</h1>
+
+<p>The spark bootloader has a nice menu integrated. With this you can also write images from a USB stick to the flash. Notice this is not the recommended way. Using ubiformat keeps all required information about the underlying flash device. To get started you need a USB-Stick which is supported by the spark u-noot. To boot the UBI image the commandline also have be tweaked to use ubi instead jffs2. Please have a look at the The Linux Way section for advise.</p>
+
+<ul>
+<li>Format USB-thumb drive with a single FAT32 partition</li>
+<li>Create an enigma2 folder on the USB-thumb drive</li>
+<li>Copy the file core-image-minimal-spark.ubi to the enigma2 folder and rename it to e2jffs2.img</li>
+<li>Copy the file uImage-spark.bin to the enigma2 folder as-well and rename it to uImage</li>
+<li>Turn the Set-Top-Box off by the power switch</li>
+<li>Put the USB-Stick into the USB-Slot at the back of the STB. Not the front one!</li>
+<li>Press the OK at the Front-Panel and keep it pressed.</li>
+<li>Turn on the box by the power switch.</li>
+<li>Wait until you read &ldquo;Forc&rdquo; on the display</li>
+<li>Release the OK Button. Now you can press the Button V+ -> (right).</li>
+<li>After this you can read &ldquo;U LD&rdquo; on the display.</li>
+<li>The flashing of the image may take some minutes. After successfull flashing &ldquo;SUCC&rdquo; is written on the display and the box reboots.</li>
+</ul>
+
+</div>
+
+
+      <footer>
+        <p class="meta text-muted">
+          
+  
+
+<span class="glyphicon glyphicon-user"></span> <span class="byline author vcard" itemprop="author" itemscope itemtype="http://schema.org/Person">Posted by <span class="fn" itemprop="name">Christian Ege</span></span>
+
+          
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2013-10-22T00:00:00+02:00"  data-updated="true" itemprop="datePublished dateCreated">ordinal</time>
+          
+
+<span class="glyphicon glyphicon-tags"></span>&nbsp;
+<span class="categories">
+  
+    <a class='category' href='/blog/categories//'></a>
+  
+</span>
+
+
+        </p>
+        
+          <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://sturmschneid.github.io/blog/2013/10/22/ubifs-as-rootfs/" data-via="" data-counturl="http://sturmschneid.github.io/blog/2013/10/22/ubifs-as-rootfs/" >Tweet</a>
+  
+  
+  
+</div>
+
+        
+        
+          <ul class="meta text-muted pager">
+            
+            <li class="previous"><a href="/blog/2013/10/08/analyzing-kernel-oops/" title="Previous Post: Analyzing Kernel Oops">&laquo; Analyzing Kernel Oops</a></li>
+            
+            
+            <li class="next"><a href="/blog/2013/11/04/rewriting-history/" title="Next Post: Rewriting history">Rewriting history &raquo;</a></li>
+            
+          </ul>
+        
+      </footer>
+    </article>
+    
+  </div>
+
+  
+  <aside class="sidebar col-md-3">
+    
+      <section class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Recent Posts</h3>
+  </div>
+  
+  <div id="recent_posts" class="list-group">
+    
+    <a class="list-group-item " href="/blog/2015/04/12/running-bluez5-on-yocto-slash-openembedded/">Running BlueZ5 on Yocto/OpenEmbedded</a>
+    
+    <a class="list-group-item " href="/blog/2014/10/25/new-blog-based-on-octopress/">New Blog Based on Octopress</a>
+    
+    <a class="list-group-item " href="/blog/2014/09/26/building-a-yocto-image-for-the-a20-olinuxino-lime/">Building a Yocto Image for the A20 OLinuXino LIME</a>
+    
+    <a class="list-group-item " href="/blog/2014/06/15/sti7111-st40-jtag-preparations/">Sti7111 (ST40) JTAG Preparations</a>
+    
+    <a class="list-group-item " href="/blog/2014/04/29/edid-mission-accomplished/">EDID Mission Accomplished</a>
+    
+  </div>
+</section>
+
+
+
+
+
+
+    
+  </aside>
+  
+</div>
+
+        </div>
+      </div>
+    </div>
+    <footer role="contentinfo"><div class="container">
+    <p class="text-muted credits">
+  Copyright &copy; 2015 - Christian Ege<br>
+  <small>
+      <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>,
+      <span class="credit">customized with <a href="https://github.com/kAworu/octostrap3">octostrap3</a></span>.
+  </small>
+</p>
+
+</div>
+</footer>
+    
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+<script src="/assets/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="/javascripts/modernizr-2.0.js"></script>
+
+
+  </body>
+</html>

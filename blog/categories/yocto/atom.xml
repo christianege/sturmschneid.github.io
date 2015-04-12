@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Yocto | Sturmschneid]]></title>
+  <link href="http://sturmschneid.github.io/blog/categories/yocto/atom.xml" rel="self"/>
+  <link href="http://sturmschneid.github.io/"/>
+  <updated>2015-04-12T07:39:05+02:00</updated>
+  <id>http://sturmschneid.github.io/</id>
+  <author>
+    <name><![CDATA[Christian Ege]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Building a Yocto Image for the A20 OLinuXino LIME]]></title>
+    <link href="http://sturmschneid.github.io/blog/2014/09/26/building-a-yocto-image-for-the-a20-olinuxino-lime/"/>
+    <updated>2014-09-26T00:00:00+02:00</updated>
+    <id>http://sturmschneid.github.io/blog/2014/09/26/building-a-yocto-image-for-the-a20-olinuxino-lime</id>
+    <content type="html"><![CDATA[<p>Some time ago I ordered a <a href="https://www.olimex.com/Products/OLinuXino/A20/A20-OLinuXino-LIME-4GB/open-source-hardware">A20-OLinuXino-LIME-4GB</a> board. This was planed as a replacement for my not so beloved Raspberry PI. I am not that big fan of the PI because of the wacky SD-Card holder and the USB stability. I hope the 4GB NAND of the <a href="https://www.olimex.com/Products/OLinuXino/A20/A20-OLinuXino-LIME-4GB/open-source-hardware">A20-OLinuXino-LIME-4GB</a> Will improve the stability of my target application.</p>
+
+<h3>[Update - 2014-10-01]</h3>
+
+<p>I&rsquo;ve created a successful <a href="https://github.com/linux-sunxi/meta-sunxi/commit/998cbf354423375ceacf735571dab150b9670502">pull-request</a> to merge my changes into the <a href="https://github.com/linux-sunxi/meta-sunxi">meta-sunxi</a> repository and succeeded with the current master branch. Maybe I also start a pull request for the daisy branch. Due  to the fact that the new yocto release is knocking on the door This is may not needed.</p>
+
+<p>As a big fan of the <a href="https://www.yoctoproject.org/">Yocto Project</a> I decided to run poky on my OLinuXino. Due to the fact that the <a href="https://www.olimex.com/Products/OLinuXino/A20/A20-OLinuXino-LIME-4GB/open-source-hardware">A20-OLinuXino-LIME-4GB</a> is not yet officially supported by the <a href="https://github.com/linux-sunxi/meta-sunxi">meta-sunxi layer</a> there are some patches needed. Those patches are located in <a href="https://github.com/cybertux/meta-sunxi/tree/olimex-a20-lime">my fork</a>. The patch set is against the daisy branch</p>
+
+<h1>Preparation</h1>
+
+<p>Clone the git repositories and switch to the daisy branch.</p>
+
+<pre><code>mkdir /data/src/yocto
+cd /data/src/yocto
+git clone git://git.yoctoproject.org/poky
+git clone https://github.com/cybertux/meta-sunxi.git
+cd poky
+git checkout -b daisy origin/daisy
+cd ../meta-sunxi
+git checkout -b daisy origin/olimex-a20-lime
+</code></pre>
+
+<p>Prepare a warm and cozy environment for the build</p>
+
+<pre><code>cd /data/src/yocto/poky
+mkdir -p ../build/a20-lime
+source oe-init-build-env ../build/a20-lime
+</code></pre>
+
+<p>Add the <a href="https://github.com/linux-sunxi/meta-sunxi">sunxi meta-layer</a> to the build environment</p>
+
+<pre><code>--- a/conf/bblayers.conf
++++ b/conf/bblayers.conf
+@@ -9,6 +9,7 @@ BBLAYERS ?= " \
+   /data/src/yocto/poky/meta \
+   /data/src/yocto/poky/meta-yocto \
+   /data/src/yocto/poky/meta-yocto-bsp \
++  /data/src/yocto/meta-sunxi \
+   "
+ BBLAYERS_NON_REMOVABLE ?= " \
+   /data/src/yocto/poky/meta \
+</code></pre>
+
+<p>Set the correct target machine and tuning parameters</p>
+
+<pre><code>diff --git a/conf/local.conf b/conf/local.conf
+index bcb0864..6a793e6 100644
+--- a/conf/local.conf
++++ b/conf/local.conf
+@@ -55,7 +55,7 @@ PARALLEL_MAKE ?= "-j ${@oe.utils.cpu_count()}"
+ #MACHINE ?= "edgerouter"
+ #
+ # This sets the default machine to be qemux86 if no other machine is selected:
+-MACHINE ??= "qemux86"
++MACHINE ??= "olinuxino-a20-lime"
+
+ #
+ # Where to place downloads
+@@ -125,7 +125,7 @@ DISTRO ?= "poky"
+ #  - 'package_rpm' for rpm style packages
+ # E.g.: PACKAGE_CLASSES ?= "package_rpm package_deb package_ipk"
+ # We default to rpm:
+-PACKAGE_CLASSES ?= "package_rpm"
++PACKAGE_CLASSES ?= "package_ipk"
+
+ #
+ # SDK/ADT target architecture
+@@ -134,7 +134,19 @@ PACKAGE_CLASSES ?= "package_rpm"
+ # you can build the SDK packages for architectures other than the machine you are
+ # running the build on (i.e. building i686 packages on an x86_64 host).
+ # Supported values are i686 and x86_64
+-#SDKMACHINE ?= "i686"
++SDKMACHINE ?= "i686"
++
++#
++# The default machine settings are meant to be the lowest common denominator,
++# maximizing generality. Significantly better performance (2x-3x) can be achieved
++# with the following settings:
++#
++# Allwinner A20
++#
++# For Allwinner A20 (Cubieboard2/CubieTruck), the following tuning options are recommended:
++#
++# Enable hardfloat, thumb2 and neon capabilities
++DEFAULTTUNE = "cortexa7hf-neon-vfpv4"
+
+ #
+ # Extra image configuration defaults
+</code></pre>
+
+<h1>Building the image</h1>
+
+<p>Now the image can be build, lean back and grap some coffee, beer, &hellip;</p>
+
+<pre><code>bitbake core-image-base
+
+[...]
+Build Configuration:
+BB_VERSION        = "1.22.0"
+BUILD_SYS         = "x86_64-linux"
+NATIVELSBSTRING   = "Ubuntu-12.04"
+TARGET_SYS        = "arm-poky-linux-gnueabi"
+MACHINE           = "olinuxino-a20-lime"
+DISTRO            = "poky"
+DISTRO_VERSION    = "1.6.1"
+TUNE_FEATURES     = "armv7a vfp neon callconvention-hard vfpv4 cortexa7"
+TARGET_FPU        = "vfp-vfpv4-neon"
+meta
+meta-yocto
+meta-yocto-bsp    = "daisy:a4d8015687cf9ddd6ef563e29cf840698f81c099"
+meta-sunxi        = "olimex-a20-lime:5bb9da72c24a442eecd827a9b85f903281357815"
+[...]
+</code></pre>
+
+<p>After a successful build all images are located in the folder</p>
+
+<pre><code>/data/src/yocto/build/a20-lime/tmp/deploy/images/olinuxino-a20-lime/
+</code></pre>
+
+<h1>Building the SDK</h1>
+
+<p>Sometimes it is handy to have a toolchain apart from the whole yocto/poky environment. So lets build some</p>
+
+<pre><code>bitbake -cpopulate_sdk core-image-base
+</code></pre>
+
+<p>This will take mostly as long as the image build so again grab some coffee, beer or &hellip;..
+The result is located here:</p>
+
+<pre><code>/data/src/yocto/build/a20-lime/tmp/deploy/sdk/olinuxino-a20-lime/poky-eglibc-i686-core-image-base-cortexa7hf-vfp-vfpv4-neon-toolchain-1.6.1.sh
+</code></pre>
+
+<h1>Installation of the Toolchain</h1>
+
+<p>You may need root access to install in /opt</p>
+
+<pre><code>sudo  tmp/deploy/sdk/poky-eglibc-i686-core-image-base-cortexa7hf-vfp-vfpv4-neon-toolchain-1.6.1.sh
+Enter target directory for SDK (default: /opt/poky/1.6.1):
+You are about to install the SDK to "/opt/poky/1.6.1". Proceed[Y/n]?y
+Extracting SDK...
+Setting it up...done
+SDK has been successfully set up and is ready to be used.
+</code></pre>
+
+<h1>Using the SDK</h1>
+
+<p>To use the SDK we have to source the set-up script</p>
+
+<pre><code>source  /opt/poky/1.6.1/environment-setup-cortexa7hf-vfp-vfpv4-neon-poky-linux-gnueabi
+</code></pre>
+
+<p>After this some variables should be set like this</p>
+
+<pre><code>echo $CC
+arm-poky-linux-gnueabi-gcc -march=armv7-a -mthumb-interwork -mfloat-abi=hard -mfpu=neon-vfpv4 -mtune=cortex-a7 --sysroot=/opt/poky/1.6.1/sysroots/cortexa7hf-vfp-vfpv4-neon-poky-linux-gnueabi
+</code></pre>
+]]></content>
+  </entry>
+  
+</feed>

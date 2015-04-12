@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Sti7111 (ST40) JTAG Preparations - Sturmschneid</title>
+  <meta name="author" content="Christian Ege">
+
+  <meta name="description" content="">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://sturmschneid.github.io/blog/2014/06/15/sti7111-st40-jtag-preparations">
+  <link href="/favicon.png" type="image/png" rel="icon">
+  <link href="/atom.xml" rel="alternate" title="Sturmschneid" type="application/atom+xml">
+
+  <!-- http://opengraphprotocol.org/ -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="http://sturmschneid.github.io/blog/2014/06/15/sti7111-st40-jtag-preparations">
+  <meta property="og:title" content="Sti7111 (ST40) JTAG Preparations - Sturmschneid">
+  <meta property="og:description" content="">
+
+  <script src="/javascripts/libs/jquery/jquery-2.0.3.min.js"></script>
+
+<link href="/assets/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="/assets/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css">
+
+
+  
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+  <body   >
+    <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+    <div id="wrap">
+      <header role="banner">
+        <nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Sturmschneid</a>
+        </div>
+
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="active">
+                    <a rel="index" href="/">Blog</a>
+                </li>
+                <li >
+                    <a href="/blog/archives">Archives</a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a class="subscribe-rss" href="/atom.xml" title="subscribe via RSS">
+                        <span class="visible-xs">RSS</span>
+                        <img class="hidden-xs" src="/images/rss.png" alt="RSS">
+                    </a>
+                </li>
+                
+            </ul>
+            
+                <form class="search navbar-form navbar-right" action="https://www.google.com/search" method="GET">
+                    <input type="hidden" name="q" value="site:sturmschneid.github.io">
+                    <div class="form-group">
+                        <input class="form-control" type="text" name="q" placeholder="Search">
+                    </div>
+                </form>
+            
+        </div>
+    </div>
+</nav>
+
+
+      </header>
+      <div id="main" role="main" class="container">
+        <div id="content">
+          <div class="row">
+  <div class="page-content col-md-9" itemscope itemtype="http://schema.org/Blog">
+    <meta itemprop="name" content="Sturmschneid" />
+    
+    <meta itemprop="url" content="http://sturmschneid.github.io" />
+    <article class="hentry" role="article" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+      
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2014-06-15T00:00:00+02:00"  data-updated="true" itemprop="datePublished dateCreated">ordinal</time>
+        
+      </p>
+    
+    
+    <h1 class="entry-title" itemprop="name headline">
+        Sti7111 (ST40) JTAG Preparations
+        
+    </h1>
+    
+  </header>
+
+
+<div class="entry-content clearfix" itemprop="articleBody description"><p>While I almost smashed my Spark 7111 Box during <a href="http://project-magpie.github.io/2013/10/02/that-was-a-close-shave/">UBI experiments</a> I decided to build a JTAG adapter for the ST40 CPU. After getting a little more familiar with eagle my second design ended in the <a href="https://github.com/project-magpie/jtag-adapter">ST40 JTAG adapter</a>.</p>
+
+<p>I ordered the PCB at <a href="http://www.seeedstudio.com/service/">Seeedstudio Fusion PCB</a> and was impressed how cheap and fast they are.</p>
+
+<p><img src="/images/jtag/jtag_pcb.png"></p>
+
+<p>After assembly of the PCB the JTAG adapter have to be connected to the STB. If you are unsure about the pinning you can easily check if Pin-2 is connected to GND with a multimeter.</p>
+
+<p><img src="/images/jtag/spark_jtag_pinout.png"></p>
+
+<p>A more detailed version reconstructed in eagle.</p>
+
+<p><img src="/images/jtag/spark_jtag_pinout_eagle.png"></p>
+
+<p>Anyway, most hardware is useless without software. To use the JTAG Adapter the <a href="http://www.st.com/st-web-ui/static/active/en/resource/technical/document/user_manual/CD17379953.pdf">ST40 Micro Toolset</a> is needed. You can grab your version of the ST40 Micro Toolset at the <a href="ftp://ftp.stlinux.com/pub/tools/products/st40tools/ST40_GNU_R5.1.0/">STM ftp server</a>. As usual I decided to take the linux version (R5.1.0). I have tested with Ubuntu 12.04. Maybe the 32bit compatibility libs have to be installed if you are running a 64bit distro. You also need the <a href="ftp://ftp.stlinux.com/pub/tools/products/stmc2/R1.6.0/doc/release_notes.htm">ST Micro Connection Package R1.6.0.</a>. After Installation the folder structure should look like this:</p>
+
+<pre><code>$ tree -L 1 /opt/STM/
+/opt/STM/
+├── ST40R5.1.0
+└── STMCR1.6.0
+</code></pre>
+
+<p>To be able to execute the binaries some modifications to the PATH and LD_LIBRARY_PATH variable have to be made.</p>
+
+<pre><code>export LD_LIBRARY_PATH=/opt/STM/STMCR1.6.0/lib:/opt/STM/ST40R5.1.0/lib
+export PATH=/opt/STM/ST40R5.1.0/bin:/opt/STM/STMCR1.6.0/bin:$PATH
+</code></pre>
+
+<p>Now you sould be able to execute the following command</p>
+
+<pre><code>$ sh4xrun
+usage: /opt/STM/ST40R5.1.0/bin/sh4xrun [-c command] [-d directory] [-e filename] [-f] [-g gdbpath] [-h] [-i filename] [-t     target] [-u gdbname] [-v] [-x filename] [-A command] [-B command] [-C option] [-D] [-T timeout] [-V] [-a|--] [arguments]
+  -a arguments  target program arguments
+  -c command    connection command (default is sh4tp)
+  -d directory  directory in which to search for command files
+  -e filename   executable file to load
+  -f            (ignored)
+  -g gdbpath    specify path to GDB
+  -h            display help
+  -i filename   command script file to source
+  -t target     target specification
+  -u gdbname    specify name of GDB
+  -v            verbose
+  -x filename   use filename instead of .shgdbinit
+  -A command    execute command after running program
+  -B command    execute command before running program
+  -C option     connection command option
+  -D            debug (very verbose)
+  -T timeout    maximum time for executing on target
+  -V            version string
+</code></pre>
+
+<p>With this command a executable can be uploaded and executed right on the box. But what kind of executable is worthwhile to be uploaded? On Avi+ Forum they use a tool called flasher which is upload to the box. I prefer to use a self compiled version of u-boot. And honestly I did not managed to compile a flasher for the sti7111.</p>
+
+<h2>Compilation of U-Boot</h2>
+
+<p>Before we can compile the u-boot boot loader we have to get the source</p>
+
+<pre><code>$ git clone git://git.stlinux.com/stm/u-boot.git
+$ cd u-boot/
+$ git checkout -b stmicro-1.3.1 origin/stmicro-1.3.1
+</code></pre>
+
+<p>I decided to use stmicro-1.3.1 branch It sounds familiar and I was unable to build the stmicro branch. To compile the source I used a toolchain I&rsquo;ve created with to meta-stlinux layer and yocto.</p>
+
+<pre><code>$ source /opt/poky/1.5.1/environment-setup-sh4-poky-linux
+$ export CROSS_COMPILE=sh4-poky-linux-
+$ unset LDFLAGS
+$ make hdk7111_config
+$ vim ./cpu/sh/config.mk
+# remove option  -m4-nofpu
+</code></pre>
+
+<p>After a successful compilation you have a file called u-boot. This can be uploaded by executing:</p>
+
+<pre><code>sh4xrun -c sh4tp -t STMCLT1000_A:sat7111:st40,debug=2 -e /data/src/u-boot/u-boot
+</code></pre>
+
+<p>On a working serial console connected to the STB you should see something like this:</p>
+
+<pre><code>Board: STx7111-HDK  [29-bit mode]
+
+
+U-Boot 1.3.1-dirty (Jun 15 2014 - 18:23:57) - stm23-2011-12-08
+
+DRAM:  256 MiB
+NOR:     8 MiB
+NAND:  Bad block table found at page 262080, version 0x01
+Bad block table found at page 262016, version 0x01
+nand_read_bbt: Bad block at 0x04400000
+nand_read_bbt: Bad block at 0x06580000
+nand_read_bbt: Bad block at 0x065a0000
+nand_read_bbt: Bad block at 0x0e580000
+nand_read_bbt: Bad block at 0x0e5a0000
+nand_read_bbt: Bad block at 0x10c00000
+nand_read_bbt: Bad block at 0x10c20000
+nand_read_bbt: Bad block at 0x16580000
+nand_read_bbt: Bad block at 0x165a0000
+nand_read_bbt: Bad block at 0x18c00000
+nand_read_bbt: Bad block at 0x18c20000
+nand_read_bbt: Bad block at 0x1dc40000
+nand_read_bbt: Bad block at 0x1dc60000
+nand_read_bbt: Bad block at 0x1e580000
+nand_read_bbt: Bad block at 0x1e5a0000
+512 MiB
+SPI:  ERROR: Unknown SPI Device detected, status = 0xff
+*** Warning - bad CRC, using default environment
+
+In:    serial
+Out:   serial
+Err:   serial
+</code></pre>
+
+<p>It looks like the SPI NOR Flash is not supported by this version of u-boot. So work is to do&hellip;.</p>
+</div>
+
+
+      <footer>
+        <p class="meta text-muted">
+          
+  
+
+<span class="glyphicon glyphicon-user"></span> <span class="byline author vcard" itemprop="author" itemscope itemtype="http://schema.org/Person">Posted by <span class="fn" itemprop="name">Christian Ege</span></span>
+
+          
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2014-06-15T00:00:00+02:00"  data-updated="true" itemprop="datePublished dateCreated">ordinal</time>
+          
+
+<span class="glyphicon glyphicon-tags"></span>&nbsp;
+<span class="categories">
+  
+    <a class='category' href='/blog/categories//'></a>
+  
+</span>
+
+
+        </p>
+        
+          <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://sturmschneid.github.io/blog/2014/06/15/sti7111-st40-jtag-preparations/" data-via="" data-counturl="http://sturmschneid.github.io/blog/2014/06/15/sti7111-st40-jtag-preparations/" >Tweet</a>
+  
+  
+  
+</div>
+
+        
+        
+          <ul class="meta text-muted pager">
+            
+            <li class="previous"><a href="/blog/2014/04/29/edid-mission-accomplished/" title="Previous Post: EDID Mission accomplished">&laquo; EDID Mission accomplished</a></li>
+            
+            
+            <li class="next"><a href="/blog/2014/09/26/building-a-yocto-image-for-the-a20-olinuxino-lime/" title="Next Post: Building a Yocto image for the A20 OLinuXino LIME">Building a Yocto image for the A20 OLinuXino LIME &raquo;</a></li>
+            
+          </ul>
+        
+      </footer>
+    </article>
+    
+  </div>
+
+  
+  <aside class="sidebar col-md-3">
+    
+      <section class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Recent Posts</h3>
+  </div>
+  
+  <div id="recent_posts" class="list-group">
+    
+    <a class="list-group-item " href="/blog/2015/04/12/running-bluez5-on-yocto-slash-openembedded/">Running BlueZ5 on Yocto/OpenEmbedded</a>
+    
+    <a class="list-group-item " href="/blog/2014/10/25/new-blog-based-on-octopress/">New Blog Based on Octopress</a>
+    
+    <a class="list-group-item " href="/blog/2014/09/26/building-a-yocto-image-for-the-a20-olinuxino-lime/">Building a Yocto Image for the A20 OLinuXino LIME</a>
+    
+    <a class="list-group-item active" href="/blog/2014/06/15/sti7111-st40-jtag-preparations/">Sti7111 (ST40) JTAG Preparations</a>
+    
+    <a class="list-group-item " href="/blog/2014/04/29/edid-mission-accomplished/">EDID Mission Accomplished</a>
+    
+  </div>
+</section>
+
+
+
+
+
+
+    
+  </aside>
+  
+</div>
+
+        </div>
+      </div>
+    </div>
+    <footer role="contentinfo"><div class="container">
+    <p class="text-muted credits">
+  Copyright &copy; 2015 - Christian Ege<br>
+  <small>
+      <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>,
+      <span class="credit">customized with <a href="https://github.com/kAworu/octostrap3">octostrap3</a></span>.
+  </small>
+</p>
+
+</div>
+</footer>
+    
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+<script src="/assets/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="/javascripts/modernizr-2.0.js"></script>
+
+
+  </body>
+</html>
