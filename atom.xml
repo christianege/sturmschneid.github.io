@@ -4,7 +4,7 @@
   <title><![CDATA[Sturmschneid]]></title>
   <link href="http://sturmschneid.github.io/atom.xml" rel="self"/>
   <link href="http://sturmschneid.github.io/"/>
-  <updated>2015-04-12T07:39:05+02:00</updated>
+  <updated>2015-04-12T07:44:51+02:00</updated>
   <id>http://sturmschneid.github.io/</id>
   <author>
     <name><![CDATA[Christian Ege]]></name>
@@ -52,7 +52,7 @@ packagegroup-base-bluetooth - 1.0-r83 - Bluetooth support  Merge machine and dis
 <pre><code>bluez5-testtools, bluez5-noinst-tools
 </code></pre>
 
-<p>The later bluez5-noinst-tools was required for the gatttool.</p>
+<p>The later <strong>bluez5-noinst-tools</strong> was required for the gatttool.</p>
 ]]></content>
   </entry>
   
