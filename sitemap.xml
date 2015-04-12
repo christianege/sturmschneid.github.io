@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://sturmschneid.github.io/blog/2015/04/12/using-the-segger-j-link-to-access-the-ti-cc2650-chip/</loc>
+    <lastmod>2015-04-12T17:07:32+02:00</lastmod>
+  </url>
+  <url>
     <loc>http://sturmschneid.github.io/blog/2015/04/12/orico-bta-402-usb-bluetooth-4-dot-0-low-energy-micro-adapter-on-odroid-c1/</loc>
     <lastmod>2015-04-12T09:11:53+02:00</lastmod>
   </url>
@@ -75,5 +79,26 @@
   </url>
   <url>
     <loc>http://sturmschneid.github.io/blog/categories/ble-bluetooth-low-energy/</loc>
+  </url>
+  <url>
+    <loc>http://sturmschneid.github.io/blog/categories/segger/</loc>
+  </url>
+  <url>
+    <loc>http://sturmschneid.github.io/blog/categories/j-link/</loc>
+  </url>
+  <url>
+    <loc>http://sturmschneid.github.io/blog/categories/cc2650/</loc>
+  </url>
+  <url>
+    <loc>http://sturmschneid.github.io/blog/categories/cc2650f128/</loc>
+  </url>
+  <url>
+    <loc>http://sturmschneid.github.io/blog/categories/sensortag/</loc>
+  </url>
+  <url>
+    <loc>http://sturmschneid.github.io/blog/categories/linux/</loc>
+  </url>
+  <url>
+    <loc>http://sturmschneid.github.io/blog/categories/simplelink/</loc>
   </url>
 </urlset>
