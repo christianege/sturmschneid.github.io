@@ -218,6 +218,8 @@ sys     0m 0.11s
   <a href="//twitter.com/share" class="twitter-share-button" data-url="http://sturmschneid.github.io/blog/2013/10/04/jffs2-vs-ubifs/" data-via="" data-counturl="http://sturmschneid.github.io/blog/2013/10/04/jffs2-vs-ubifs/" >Tweet</a>
   
   
+  <div class="g-plusone" data-size="medium"></div>
+  
   
 </div>
 
@@ -260,8 +262,52 @@ sys     0m 0.11s
   </div>
 </section>
 
+<section class="panel panel-default clearfix">
+  <div class="panel-heading">
+      <h3 class="panel-title">GitHub Repos</h3>
+  </div>
+  <div class="list-group" id="gh_repos">
+    <p class="loading">Status updating&#8230;</p>
+  </div>
+  
+    <div class="gh-profile-link pull-right text-muted">
+      <a href="https://github.com/graugans">@graugans</a> on GitHub
+    </div>
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'graugans',
+            count: 5,
+            skip_forks: false,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
 
 
+
+
+<section class="googleplus panel panel-default">
+  <div class="panel-body">
+    <h2>
+      <a href="https://plus.google.com/+ChristianEge?rel=author">
+        <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+        Google+
+      </a>
+    </h2>
+  </div>
+</section>
 
 
 
@@ -302,6 +348,14 @@ sys     0m 0.11s
 
 
 
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
 
 
 
