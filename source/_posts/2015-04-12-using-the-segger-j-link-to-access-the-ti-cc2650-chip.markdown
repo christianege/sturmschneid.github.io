@@ -3,7 +3,7 @@ layout: post
 title: "Using the SEGGER J-Link to access the TI CC2650 Chip"
 date: 2015-04-12 17:07:32 +0200
 comments: true
-categories: [SEGGER, J-Link, CC2650, CC2650F128, SensorTag, Linux, SimpleLink]
+categories: [SEGGER, J-Link, CC2650, CC2650F128, SensorTag, Linux, SimpleLink™]
 ---
 
 Before you get started install the [newest host tools](https://www.segger.com/jlink-software.html) for your SEGGER in my case I installed the Debian package of version **V4.98b**. On first start the **JLinExe** installs the apropriate Firmware.
