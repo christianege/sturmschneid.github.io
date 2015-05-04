@@ -2,10 +2,10 @@
 <html class="no-js" lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Running BlueZ5 on Yocto/OpenEmbedded - Sturmschneid</title>
+  <title>Category: Cryptography - Sturmschneid</title>
   <meta name="author" content="Christian Ege">
 
-  
+  <meta name="description" content="Category: cryptography">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -14,16 +14,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://sturmschneid.github.io/blog/2015/04/12/running-bluez5-on-yocto-slash-openembedded">
+  <link rel="canonical" href="http://sturmschneid.github.io/blog/categories/cryptography">
   <link href="/favicon.png" type="image/png" rel="icon">
   <link href="/atom.xml" rel="alternate" title="Sturmschneid" type="application/atom+xml">
 
   <!-- http://opengraphprotocol.org/ -->
   <meta name="twitter:card" content="summary_large_image">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="http://sturmschneid.github.io/blog/2015/04/12/running-bluez5-on-yocto-slash-openembedded">
-  <meta property="og:title" content="Running BlueZ5 on Yocto/OpenEmbedded - Sturmschneid">
-  
+  <meta property="og:url" content="http://sturmschneid.github.io/blog/categories/cryptography">
+  <meta property="og:title" content="Category: Cryptography - Sturmschneid">
+  <meta property="og:description" content="Category: cryptography">
 
   <script src="/javascripts/libs/jquery/jquery-2.0.3.min.js"></script>
 
@@ -55,10 +55,10 @@
 
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li class="active">
+                <li >
                     <a rel="index" href="/">Blog</a>
                 </li>
-                <li >
+                <li class="active">
                     <a href="/blog/archives">Archives</a>
                 </li>
             </ul>
@@ -88,90 +88,36 @@
       <div id="main" role="main" class="container">
         <div id="content">
           <div class="row">
-  <div class="page-content col-md-9" itemscope itemtype="http://schema.org/Blog">
-    <meta itemprop="name" content="Sturmschneid" />
-    
-    <meta itemprop="url" content="http://sturmschneid.github.io" />
-    <article class="hentry" role="article" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="page-content col-md-9">
+    <article role="article">
       
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-
-
-
-
-
-
-
-
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2015-04-12T07:09:49+02:00"  data-updated="true" itemprop="datePublished dateCreated">ordinal</time>
-        
-           | <a href="#disqus_thread" itemprop="discussionUrl"
-             data-disqus-identifier="http://sturmschneid.github.io">Comments</a>
-        
-      </p>
-    
-    
-    <h1 class="entry-title" itemprop="name headline">
-        Running BlueZ5 on Yocto/OpenEmbedded
-        
-    </h1>
-    
-  </header>
-
-
-<div class="entry-content clearfix" itemprop="articleBody description"><p>At the moment yocto/openembedded ships with <a href="http://www.bluez.org">BlueZ4</a> as the Linux Bluetooth protocol stack. Due to the fact that <a href="http://en.wikipedia.org/wiki/Bluetooth_low_energy">Bluetooth low energy</a> is only supported in BlueZ5 this is a bit of a disappointment. There is a long-standing bug report on this <a href="https://bugzilla.yoctoproject.org/show_bug.cgi?id=5031">#5031 </a>. But since the commit <a href="http://git.yoctoproject.org/cgit/cgit.cgi/poky/commit/?id=1139cc4eef305fc14bc5db19a5f8729e7b3bf27a">1139cc4e&hellip;</a> the used BlueZ version can be selected. According to the reference manual BlueZ5 can be enabled by adding bluez5 to the <a href="http://www.yoctoproject.org/docs/1.8/ref-manual/ref-manual.html#var-DISTRO_FEATURES">DISTRO_FEATURES</a> for me the easiest way to to this was adding the following line to my conf/local.conf in the <a href="http://www.yoctoproject.org/docs/1.8/dev-manual/dev-manual.html#build-directory">Build Directory</a>.</p>
-
-<pre><code>DISTRO_FEATURES = "ext2 alsa wifi usbhost bluetooth bluez5 ${DISTRO_FEATURES_LIBC}"
-</code></pre>
-
-<p>This disables x11 for example. But you may also could add something like this:</p>
-
-<pre><code>DISTRO_FEATURES_append = "bluez5"
-</code></pre>
-
-<p>After this run an build of your preferred image. In my case this was &ldquo;core-image-base&rdquo;</p>
-
-<pre><code>bitbake core-image-base
-</code></pre>
-
-<p>To have full bluetooth support on the target I needed to install some extra packages. To get a list of all bluetooth related packages run the following command. For this you need a <a href="http://www.yoctoproject.org/docs/1.8/ref-manual/ref-manual.html#package-feeds-dev-environment">opkg/ipkg feed</a> server.</p>
-
-<pre><code>root@odroidc1:~# opkg list | grep blue
-bluez5 - 5.29-r0 - Linux Bluetooth Stack Userland V5  Linux Bluetooth stack V5 userland
-bluez5-dbg - 5.29-r0 - Linux Bluetooth Stack Userland V5 - Debugging files  Linux Bluetooth
-bluez5-dev - 5.29-r0 - Linux Bluetooth Stack Userland V5 - Development files  Linux Bluetooth
-bluez5-doc - 5.29-r0 - Linux Bluetooth Stack Userland V5 - Documentation files  Linux Bluetooth
-bluez5-noinst-tools - 5.29-r0 - Linux Bluetooth Stack Userland V5  Linux Bluetooth stack V5 userland
-bluez5-obex - 5.29-r0 - Linux Bluetooth Stack Userland V5  Linux Bluetooth stack V5 userland
-bluez5-testtools - 5.29-r0 - Linux Bluetooth Stack Userland V5  Linux Bluetooth stack V5 userland
-libasound-module-bluez - 5.29-r0 - Linux Bluetooth Stack Userland V5  Linux Bluetooth stack V5 userland
-packagegroup-base-bluetooth - 1.0-r83 - Bluetooth support  Merge machine and distro options to create a basic
-</code></pre>
-
-<p>I installed the following packages:</p>
-
-<pre><code>bluez5-testtools, bluez5-noinst-tools
-</code></pre>
-
-<p>The later <strong>bluez5-noinst-tools</strong> was required for the gatttool.</p>
-</div>
-
-
-      <footer>
-        <p class="meta text-muted">
+        <header class="page-header">
           
+          
+            <h1 class="entry-title">
+              Category: Cryptography
+              
+            </h1>
+          
+        </header>
+      
+      <div class="entry-content">
+        <div id="blog-archives" class="category" itemscope itemtype="http://schema.org/Blog">
+<meta itemprop="name" content="Sturmschneid" />
+
+<meta itemprop="url" content="http://sturmschneid.github.io" />
+
+
+
+  
+  <h2 class="year">2015</h2>
+
+<article class="page-header" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+  
+<h2 class="post-title" itemprop="name headline"><a href="/blog/2015/05/04/using-h-slash-w-randaom-generator-on-odrod-c1-with-yocto/" itemprop="url">Using H/W Randaom Generator on ODROD-C1 With Yocto</a></h2>
+<p class="meta text-muted">
   
 
-<span class="glyphicon glyphicon-user"></span> <span class="byline author vcard" itemprop="author" itemscope itemtype="http://schema.org/Person">Posted by <span class="fn" itemprop="name">Christian Ege</span></span>
-
-          
 
 
 
@@ -183,56 +129,33 @@ packagegroup-base-bluetooth - 1.0-r83 - Bluetooth support  Merge machine and dis
 
 
 
-
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2015-04-12T07:09:49+02:00"  data-updated="true" itemprop="datePublished dateCreated">ordinal</time>
-          
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2015-05-04T05:30:18+02:00"  data-updated="true" itemprop="datePublished dateCreated">ordinal</time>
+  
 
 <span class="glyphicon glyphicon-tags"></span>&nbsp;
 <span class="categories">
   
-    <a class='category' href='/blog/categories/bluez/'>bluez</a>, <a class='category' href='/blog/categories/bluez5/'>bluez5</a>, <a class='category' href='/blog/categories/yocto/'>yocto</a>
+    <a class='category' href='/blog/categories/cryptography/'>cryptography</a>, <a class='category' href='/blog/categories/linux/'>linux</a>, <a class='category' href='/blog/categories/odroid-c1/'>odroid-c1</a>, <a class='category' href='/blog/categories/prng/'>prng</a>, <a class='category' href='/blog/categories/yocto/'>yocto</a>
   
 </span>
 
 
-        </p>
-        
-          <div class="sharing">
-  
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://sturmschneid.github.io/blog/2015/04/12/running-bluez5-on-yocto-slash-openembedded/" data-via="" data-counturl="http://sturmschneid.github.io/blog/2015/04/12/running-bluez5-on-yocto-slash-openembedded/" >Tweet</a>
-  
-  
-  <div class="g-plusone" data-size="medium"></div>
-  
-  
+</p>
+
+</article>
+
 </div>
 
-        
-        
-          <ul class="meta text-muted pager">
-            
-            <li class="previous"><a href="/blog/2014/10/25/new-blog-based-on-octopress/" title="Previous Post: New Blog based on Octopress">&laquo; New Blog based on Octopress</a></li>
-            
-            
-            <li class="next"><a href="/blog/2015/04/12/orico-bta-402-usb-bluetooth-4-dot-0-low-energy-micro-adapter-on-odroid-c1/" title="Next Post: ORICO BTA-402 USB Bluetooth 4.0 Low Energy Micro Adapter on ODROID-C1">ORICO BTA-402 USB Bluetooth 4.0 Low Energy Micro Adapter on ODROID-C1 &raquo;</a></li>
-            
-          </ul>
-        
-      </footer>
+      </div>
+      
     </article>
-    
-      <section>
-        <h2>Comments</h2>
-        <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-</div>
-      </section>
     
   </div>
 
   
-  <aside class="sidebar col-md-3">
-    
-      <section class="panel panel-default">
+    <aside class="sidebar col-md-3">
+      
+        <section class="panel panel-default">
   <div class="panel-heading">
     <h3 class="panel-title">Recent Posts</h3>
   </div>
@@ -245,7 +168,7 @@ packagegroup-base-bluetooth - 1.0-r83 - Bluetooth support  Merge machine and dis
     
     <a class="list-group-item " href="/blog/2015/04/12/orico-bta-402-usb-bluetooth-4-dot-0-low-energy-micro-adapter-on-odroid-c1/">ORICO BTA-402 USB Bluetooth 4.0 Low Energy Micro Adapter on ODROID-C1</a>
     
-    <a class="list-group-item active" href="/blog/2015/04/12/running-bluez5-on-yocto-slash-openembedded/">Running BlueZ5 on Yocto/OpenEmbedded</a>
+    <a class="list-group-item " href="/blog/2015/04/12/running-bluez5-on-yocto-slash-openembedded/">Running BlueZ5 on Yocto/OpenEmbedded</a>
     
     <a class="list-group-item " href="/blog/2014/10/25/new-blog-based-on-octopress/">New Blog Based on Octopress</a>
     
@@ -301,8 +224,8 @@ packagegroup-base-bluetooth - 1.0-r83 - Bluetooth support  Merge machine and dis
 
 
 
-    
-  </aside>
+      
+    </aside>
   
 </div>
 
@@ -326,10 +249,7 @@ packagegroup-base-bluetooth - 1.0-r83 - Bluetooth support  Merge machine and dis
       var disqus_shortname = 'sturmschneid';
       
         
-        // var disqus_developer = 1;
-        var disqus_identifier = 'http://sturmschneid.github.io/blog/2015/04/12/running-bluez5-on-yocto-slash-openembedded/';
-        var disqus_url = 'http://sturmschneid.github.io/blog/2015/04/12/running-bluez5-on-yocto-slash-openembedded/';
-        var disqus_script = 'embed.js';
+        var disqus_script = 'count.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
