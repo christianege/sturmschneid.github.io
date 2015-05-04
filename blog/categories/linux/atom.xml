@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Linux | Sturmschneid]]></title>
   <link href="http://sturmschneid.github.io/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://sturmschneid.github.io/"/>
-  <updated>2015-05-04T09:26:21+02:00</updated>
+  <updated>2015-05-04T13:36:51+02:00</updated>
   <id>http://sturmschneid.github.io/</id>
   <author>
     <name><![CDATA[Christian Ege]]></name>
@@ -12,6 +12,42 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[ODROID-C1 Enabling Bootlogo on Yocto Builds]]></title>
+    <link href="http://sturmschneid.github.io/blog/2015/05/04/odroid-c1-enabling-bootlogo-on-yocto-builds/"/>
+    <updated>2015-05-04T11:40:53+02:00</updated>
+    <id>http://sturmschneid.github.io/blog/2015/05/04/odroid-c1-enabling-bootlogo-on-yocto-builds</id>
+    <content type="html"><![CDATA[<p>The U-Boot for the Amlogic S805 from <a href="https://github.com/hardkernel/u-boot/tree/odroidc-v2011.03">Hardkernel</a> has the capabilities to display a bootlogo. It is not that easy to find any bootlogo that complies to a licence which can be used in comercial and in open source environments. Using the yocto logo is most probably prohibited, so I decided to design my own logo. And saved it to <strong> 24-bit Windows BMP image</strong> with the dimension of <strong>1280×720</strong> as statet in the <a href="http://odroid.com/dokuwiki/doku.php?id=en:c1_tips#logo_file_format">ODROID-C1 Wiki</a></p>
+
+<p><img class="<a" src="href="https://raw.githubusercontent.com/linux-meson/meta-amlogic/fido/recipes-bsp/u-boot/u-boot-odroidc1/odroidc1/bootlogo.png">https://raw.githubusercontent.com/linux-meson/meta-amlogic/fido/recipes-bsp/u-boot/u-boot-odroidc1/odroidc1/bootlogo.png</a>&#8221;></p>
+
+<h2>Modifying boot.ini</h2>
+
+<p>In my Amlogic meta layer for the yocto build system I do not use a Fat32 boot partition so the <a href="">original bootlogo loading command</a> needed some minor modifications. The bootlogo is name bootlogo.bmp and should be copied to /boot.</p>
+
+<pre><code># loading and displaying bootlogo
+logo size ${outputmode}
+video open
+video clear
+video dev open ${outputmode}
+ext4load mmc 0:1 ${loadaddr_logo} /boot/bootlogo.bmp
+bmp display ${loadaddr_logo}
+bmp scale
+</code></pre>
+
+<p>You can either add this to your boot.ini or wait until I pushed a patch for <a href="https://github.com/linux-meson/meta-amlogic">meta-amlogic</a>.</p>
+
+<h2>Modifying the U-Boot environment</h2>
+
+<p>Another option is to change the U-Boot environment. There is already a variable called <em>preloadlogo</em>. We can update the command to load the bootlogo from ext4 instead of Fat32</p>
+
+<pre><code>setenv preloadlogo 'logo size ${outputmode};video open;video clear;video dev open ${outputmode};ext4load mmc 0:1 ${loadaddr_logo} /boot/bootlogo.bmp;bmp display ${loadaddr_logo};bmp scale'
+</code></pre>
+
+<p>Pleas ensure, that you paste this as a single line.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Using H/W Randaom Generator on ODROD-C1 With Yocto]]></title>

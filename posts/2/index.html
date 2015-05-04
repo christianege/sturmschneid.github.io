@@ -116,6 +116,53 @@
 
 
 
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2014-04-21T00:00:00+02:00"  data-updated="true" itemprop="datePublished dateCreated">Mon 21 Apr 2014, 12:00 AM</time>
+        
+           | <a href="/blog/2014/04/21/assign-static-device-name-for-usb-infrared-toy/#disqus_thread" itemprop="discussionUrl"
+             data-disqus-identifier="http://sturmschneid.github.io/blog/2014/04/21/assign-static-device-name-for-usb-infrared-toy/">Comments</a>
+        
+      </p>
+    
+    
+      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2014/04/21/assign-static-device-name-for-usb-infrared-toy/" itemprop="url">Assign Static Device Name for USB Infrared Toy</a></h2>
+    
+  </header>
+
+
+  <div class="entry-content clearfix" itemprop="articleBody description"><p>The last few days I was playing arround with my <a href="http://dangerousprototypes.com/docs/USB_Infrared_Toy">USB Infrared Toy v2</a> from Dangerous Prototypes. Due to the fact that I have attached some more devices which are detected as <strong>/dev/ACM[0-9]</strong> I decided to write an udev rule to assign a static device name.</p>
+
+<p>I stored the rule in the following file: <strong>/etc/udev/rules.d/98-ir-toy-v2.rules</strong></p>
+
+<pre><code>SUBSYSTEM=="tty", ATTRS{manufacturer}=="Dangerous Prototypes", ATTRS{idProduct}=="fd08", SYMLINK+="ir_toy" MODE="0666"
+</code></pre>
+
+<p>Maybe the field <strong>&ldquo;ATTRS{idProduct}==&#8221;fd08&rdquo;&ldquo;</strong> have to be tweaked for versions differnet of v2. With this rule the IR Toy is accessible via <strong>/dev/ir_toy</strong></p>
+</div>
+  
+  
+
+
+        </article>
+      
+      
+        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+          
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
 <span class="glyphicon glyphicon-calendar"></span> <time datetime="2013-11-04T00:00:00+01:00"  data-updated="true" itemprop="datePublished dateCreated">Mon  4 Nov 2013, 12:00 AM</time>
         
            | <a href="/blog/2013/11/04/rewriting-history/#disqus_thread" itemprop="discussionUrl"
@@ -801,6 +848,8 @@ IdentID : 09 00 07 00 00 46 d1
   
   <div id="recent_posts" class="list-group">
     
+    <a class="list-group-item " href="/blog/2015/05/04/odroid-c1-enabling-bootlogo-on-yocto-builds/">ODROID-C1 Enabling Bootlogo on Yocto Builds</a>
+    
     <a class="list-group-item " href="/blog/2015/05/04/using-h-slash-w-randaom-generator-on-odrod-c1-with-yocto/">Using H/W Randaom Generator on ODROD-C1 With Yocto</a>
     
     <a class="list-group-item " href="/blog/2015/04/12/using-the-segger-j-link-to-access-the-ti-cc2650-chip/">Using the SEGGER J-Link to Access the TI CC2650 Chip</a>
@@ -808,8 +857,6 @@ IdentID : 09 00 07 00 00 46 d1
     <a class="list-group-item " href="/blog/2015/04/12/orico-bta-402-usb-bluetooth-4-dot-0-low-energy-micro-adapter-on-odroid-c1/">ORICO BTA-402 USB Bluetooth 4.0 Low Energy Micro Adapter on ODROID-C1</a>
     
     <a class="list-group-item " href="/blog/2015/04/12/running-bluez5-on-yocto-slash-openembedded/">Running BlueZ5 on Yocto/OpenEmbedded</a>
-    
-    <a class="list-group-item " href="/blog/2014/10/25/new-blog-based-on-octopress/">New Blog Based on Octopress</a>
     
   </div>
 </section>
