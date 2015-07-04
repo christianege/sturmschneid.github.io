@@ -6,7 +6,7 @@ comments: true
 categories: [NIM, USB, DVB-S2, DVB, OSS, linux, SP2246, STV6111, STV0913 ]
 ---
 
-Some time ago I thought it would be fun to build a USB DVB-S2 device which runs on 100% OpenSource Software. Due to the fact I do not have any tooling for soldering complex chips I decided to build this project on hardware which is already available. For interconnection of the DVB part with the PC or a Single board computer like the ODROID-C1 or Raspberry PI my decision was to use a [Cypress FX2 CY7C68013A](http://www.cypress.com/?id=193) evaluation board. You can buy them for under 10€ in far east on ebay. I bought one of the [Lcsoft Mini Boards](http://sigrok.org/wiki/Lcsoft_Mini_Board) 
+Some time ago I thought it would be fun to build a USB DVB-S2 device which runs on 100% OpenSource Software. Due to the fact I do not have any tooling for soldering complex chips I decided to build this project on hardware which is already available. For interconnection of the DVB part with the PC or a Single board computer like the ODROID-C1 or Raspberry PI my decision was to use a [Cypress FX2 CY7C68013A](http://www.cypress.com/?id=193) evaluation board. You can buy them for under 10€ in far east on ebay. I bought one of the [Lcsoft Mini Boards](http://sigrok.org/wiki/Lcsoft_Mini_Board). The coreboot project provides a [schematic for the Lcsoft board](http://www.coreboot.org/File:Fx2lp_lcsoft_schematic_A.pdf).
 
 {%  img http://sigrok.org/wimg/e/ec/Lcsoft-miniboard-front.png 'Lcsoft Mini Board CC-BY 3.0' %}
 
