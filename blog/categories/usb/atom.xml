@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Usb | Sturmschneid]]></title>
   <link href="http://ch.ege.io/blog/categories/usb/atom.xml" rel="self"/>
   <link href="http://ch.ege.io/"/>
-  <updated>2015-07-04T23:08:03+02:00</updated>
+  <updated>2015-07-04T23:13:40+02:00</updated>
   <id>http://ch.ege.io/</id>
   <author>
     <name><![CDATA[Christian Ege]]></name>
@@ -18,7 +18,7 @@
     <link href="http://ch.ege.io/blog/2015/07/04/full-open-source-dvb-s2-board/"/>
     <updated>2015-07-04T19:43:00+02:00</updated>
     <id>http://ch.ege.io/blog/2015/07/04/full-open-source-dvb-s2-board</id>
-    <content type="html"><![CDATA[<p>Some time ago I thought it would be fun to build a USB DVB-S2 device which runs 100% OpenSource Software. Due to the fact I do not have any tooling for soldering complex chips I decided to build this project on hardware which is already available. For interconnection of the DVB part with the PC or a Single board computer like the ODROID-C1 or Raspberry PI my decision was to use a <a href="http://www.cypress.com/?id=193">Cypress FX2 CY7C68013A</a> evaluation board. You can buy them for under 10€ in far east on ebay. I bought one of the <a href="http://sigrok.org/wiki/Lcsoft_Mini_Board">Lcsoft Mini Boards</a></p>
+    <content type="html"><![CDATA[<p>Some time ago I thought it would be fun to build a USB DVB-S2 device which runs on 100% OpenSource Software. Due to the fact I do not have any tooling for soldering complex chips I decided to build this project on hardware which is already available. For interconnection of the DVB part with the PC or a Single board computer like the ODROID-C1 or Raspberry PI my decision was to use a <a href="http://www.cypress.com/?id=193">Cypress FX2 CY7C68013A</a> evaluation board. You can buy them for under 10€ in far east on ebay. I bought one of the <a href="http://sigrok.org/wiki/Lcsoft_Mini_Board">Lcsoft Mini Boards</a></p>
 
 <p><img class="<a" src="href="http://sigrok.org/wimg/e/ec/Lcsoft-miniboard-front.png">http://sigrok.org/wimg/e/ec/Lcsoft-miniboard-front.png</a>&#8221; title=&#8221;&lsquo;Lcsoft Mini Board CC-BY 3.0&rsquo;&#8221; ></p>
 
