@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Nim | Sturmschneid]]></title>
+  <link href="http://ch.ege.io/blog/categories/nim/atom.xml" rel="self"/>
+  <link href="http://ch.ege.io/"/>
+  <updated>2015-07-04T23:08:03+02:00</updated>
+  <id>http://ch.ege.io/</id>
+  <author>
+    <name><![CDATA[Christian Ege]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Full Open Source DVB-S2 Board]]></title>
+    <link href="http://ch.ege.io/blog/2015/07/04/full-open-source-dvb-s2-board/"/>
+    <updated>2015-07-04T19:43:00+02:00</updated>
+    <id>http://ch.ege.io/blog/2015/07/04/full-open-source-dvb-s2-board</id>
+    <content type="html"><![CDATA[<p>Some time ago I thought it would be fun to build a USB DVB-S2 device which runs 100% OpenSource Software. Due to the fact I do not have any tooling for soldering complex chips I decided to build this project on hardware which is already available. For interconnection of the DVB part with the PC or a Single board computer like the ODROID-C1 or Raspberry PI my decision was to use a <a href="http://www.cypress.com/?id=193">Cypress FX2 CY7C68013A</a> evaluation board. You can buy them for under 10€ in far east on ebay. I bought one of the <a href="http://sigrok.org/wiki/Lcsoft_Mini_Board">Lcsoft Mini Boards</a></p>
+
+<p><img class="<a" src="href="http://sigrok.org/wimg/e/ec/Lcsoft-miniboard-front.png">http://sigrok.org/wimg/e/ec/Lcsoft-miniboard-front.png</a>&#8221; title=&#8221;&lsquo;Lcsoft Mini Board CC-BY 3.0&rsquo;&#8221; ></p>
+
+<p>The <a href="http://www.cypress.com/?id=193">Cypress FX2 CY7C68013A</a> is based on a 8051 core. Not one of my favorite hacking platform but I&rsquo;ll give it a try. There is a Open Source Framework for firmware development it is called <a href="https://github.com/djmuhlestein/fx2lib">fxlib</a>. After some research on Google I found the project <a href="http://qanu.de/termini.php">Termini</a>. The firmware for the Termini hardware is available via the linuxtv.org <a href="http://linuxtv.org/cgi-bin/viewvc.cgi/dvb-hw/dvbusb-fx2/termini/">CVS repository</a>. They provide a specification for the <a href="http://qanu.de/docs/dvbt-usb-spec.pdf">USB communication</a> between the host controller and the FX2. There are already some USB 2.0 USB DVB-S2 devices based on the <a href="http://www.cypress.com/?id=193">Cypress FX2 CY7C68013A</a> like the <a href="http://www.linuxtv.org/wiki/index.php/DVBSKY_S960">DVBSKY S960</a>.</p>
+
+<p>The last part in the jigsaw puzzle is the DVB-S2 tuner and demodulator part. Some of the linux based Set-Top-Boxes provide swappable tuner modules one of them is the manufacturer GigaBlue. They sell a <a href="http://www.gigablue.de/portfolio-item/gigablue-dvb-s2-tuner/">DVB-S2 Tuner</a> based on the Serit <a href="http://serit.hk/Products_Details.aspx?IDX=144">SP2246 NIM for DVB-S2</a>. The SP2246 is based on the <a href="http://www.st.com/web/catalog/mmc/FM131/SC1003/PF251478">STV6111</a> tuner and the <a href="http://www.st.com/web/catalog/mmc/FM131/SC628/SS1334/PF252767?s_searchtype=partnumber">STV0913</a> demodulator. It looks like the tuner module is connected via a <a href="https://en.wikipedia.org/wiki/PCI_Express#Form_factors">PCI-Express x1 36Pin</a> connector. Serit provides a very detailed <a href="http://serit.hk/Manager/Public/pdf/201212070342307ead.pdf">data sheet</a> so at least a few of the PINs should be easily mappable with a multi meter.</p>
+
+<p><img src="/images/posts/sp2246.jpg"></p>
+]]></content>
+  </entry>
+  
+</feed>

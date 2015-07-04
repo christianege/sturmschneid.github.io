@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Sturmschneid</title>
+  <meta name="author" content="Christian Ege">
+
+  
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://ch.ege.io/posts/2/">
+  <link href="/favicon.png" type="image/png" rel="icon">
+  <link href="/atom.xml" rel="alternate" title="Sturmschneid" type="application/atom+xml">
+
+  <!-- http://opengraphprotocol.org/ -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="http://ch.ege.io/posts/2/">
+  <meta property="og:title" content="Sturmschneid">
+  
+
+  <script src="/javascripts/libs/jquery/jquery-2.1.3.min.js"></script>
+
+<link href="/assets/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="/assets/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css">
+
+
+  
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+  <body   >
+    <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+    <div id="wrap">
+      <header role="banner">
+        <nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" title="toggle navbar" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Sturmschneid</a>
+        </div>
+
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="active">
+                    <a rel="index" href="/">Blog</a>
+                </li>
+                <li >
+                    <a href="/blog/archives">Archives</a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <form class="search navbar-form navbar-right" action="https://www.google.com/search" method="GET">
+                            <input type="hidden" name="sitesearch" value="ch.ege.io">
+                            <div class="form-group">
+                                <input class="form-control" type="text" name="q" placeholder="Search">
+                            </div>
+                        </form>
+                    </li>
+                
+                <li>
+                    <a class="subscribe-rss" href="/atom.xml" title="subscribe via RSS">
+                        <span class="visible-xs">RSS</span>
+                        <img class="hidden-xs" src="/images/rss.png" alt="RSS">
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+      </header>
+      <div id="main" role="main" class="container">
+        <div id="content">
+          <div class="row">
+  <div class="page-content col-md-9">
+    <div class="blog-index" itemscope itemtype="http://schema.org/Blog">
+    <meta itemprop="name" content="Sturmschneid" />
+    
+    <meta itemprop="url" content="http://ch.ege.io" />
+      
+      
+      
+        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+          
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2014-04-21T00:00:00+02:00"  data-updated="true" itemprop="datePublished dateCreated">Mon 21 Apr 2014, 12:00 AM</time>
+        
+           | <a href="/blog/2014/04/21/assign-static-device-name-for-usb-infrared-toy/#disqus_thread" itemprop="discussionUrl"
+             data-disqus-identifier="http://ch.ege.io/blog/2014/04/21/assign-static-device-name-for-usb-infrared-toy/">Comments</a>
+        
+      </p>
+    
+    
+      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2014/04/21/assign-static-device-name-for-usb-infrared-toy/" itemprop="url">Assign Static Device Name for USB Infrared Toy</a></h2>
+    
+  </header>
+
+
+  <div class="entry-content clearfix" itemprop="articleBody description"><p>The last few days I was playing arround with my <a href="http://dangerousprototypes.com/docs/USB_Infrared_Toy">USB Infrared Toy v2</a> from Dangerous Prototypes. Due to the fact that I have attached some more devices which are detected as <strong>/dev/ACM[0-9]</strong> I decided to write an udev rule to assign a static device name.</p>
+
+<p>I stored the rule in the following file: <strong>/etc/udev/rules.d/98-ir-toy-v2.rules</strong></p>
+
+<pre><code>SUBSYSTEM=="tty", ATTRS{manufacturer}=="Dangerous Prototypes", ATTRS{idProduct}=="fd08", SYMLINK+="ir_toy" MODE="0666"
+</code></pre>
+
+<p>Maybe the field <strong>&ldquo;ATTRS{idProduct}==&#8221;fd08&rdquo;&ldquo;</strong> have to be tweaked for versions differnet of v2. With this rule the IR Toy is accessible via <strong>/dev/ir_toy</strong></p>
+</div>
+  
+  
+
+
+        </article>
+      
+      
+        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+          
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2013-11-04T00:00:00+01:00"  data-updated="true" itemprop="datePublished dateCreated">Mon  4 Nov 2013, 12:00 AM</time>
+        
+           | <a href="/blog/2013/11/04/rewriting-history/#disqus_thread" itemprop="discussionUrl"
+             data-disqus-identifier="http://ch.ege.io/blog/2013/11/04/rewriting-history/">Comments</a>
+        
+      </p>
+    
+    
+      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2013/11/04/rewriting-history/" itemprop="url">Rewriting History</a></h2>
+    
+  </header>
+
+
+  <div class="entry-content clearfix" itemprop="articleBody description"><p>Sometimes history has to be rewritten. In real life this is hopefully not possible yet. But in case of git this is possible. Some projecs start with a small repository which evolves over the time to a big bloated repository. Other ones start already bloated. In some cases the wish to split-up the repository in smaller chunks emerges. With some advice from <a href="http://seife.kernalert.de/blog/">Stefan Seyfried</a> I learned how to rewrite history</p>
+
+<p>The goal was to extract the driver directory from the <a href="https://gitorious.org/open-duckbox-project-sh4/tdt">tdt</a> repository like <a href="https://gitorious.org/neutrino-mp/tdt-driver">Stefan</a> already did.</p>
+
+<p>These are the steps to follow:</p>
+
+<pre><code>$ cd /dev/shm/
+$ git clone --reference /net/transfer/spark71xx/tdt https://git.gitorious.org/open-duckbox-project-sh4/tdt.git tdt-driver
+$ cd tdt-driver/
+$ git filter-branch --subdirectory-filter tdt/cvs/driver
+</code></pre>
+
+<p>The first step speeds up the process of rewriting by doing it all in memory instead of writing everything onto a slow disk device. But please remember to push your work onto a less volatile memory.</p>
+
+<pre><code>$ cd /dev/shm/
+</code></pre>
+
+<p>In the second step the original repository is cloned. To again speedup things I used a local copy as reference. After cloning the directory structure looked like this</p>
+
+<pre><code>$ tree -d -L 3 tdt/
+tdt/
+├── custom
+├── cvs
+│   ├── apps
+│   │   ├── dvb
+│   │   ├── enigma1-hd
+│   │   ├── enigma2
+│   │   ├── misc
+│   │   ├── neutrino
+│   │   ├── tuxbox
+│   │   └── vdr
+│   ├── boot
+│   │   └── u-boot-tufsbox
+│   ├── cdk
+│   │   ├── integrated_firmware
+│   │   ├── make
+│   │   ├── own_build
+│   │   ├── Patches
+│   │   ├── root
+│   │   ├── static
+│   │   └── tfinstaller
+│   ├── driver
+│   │   ├── adb_box_fan
+│   │   ├── avs
+│   │   ├── boxtype
+│   │   ├── bpamem
+│   │   ├── button
+│   │   ├── button_hs5101
+│   │   ├── cec
+│   │   ├── cec_adb_box
+│   │   ├── cic
+│   │   ├── compcache
+│   │   ├── cpu_frequ
+│   │   ├── dvbt
+│   │   ├── e2_proc
+│   │   ├── frontcontroller
+│   │   ├── frontends
+│   │   ├── i2c_spi
+│   │   ├── include
+│   │   ├── ipbox99xx_fan
+│   │   ├── led
+│   │   ├── logfs
+│   │   ├── multicom-3.2.2
+│   │   ├── multicom-3.2.4
+│   │   ├── multicom-3.2.4_rc3
+│   │   ├── multicom-4.0.6
+│   │   ├── old
+│   │   ├── player2_131
+│   │   ├── player2_179
+│   │   ├── player2_191
+│   │   ├── pti
+│   │   ├── rmu
+│   │   ├── sata_switch
+│   │   ├── siinfo
+│   │   ├── simu_button
+│   │   ├── smartcard
+│   │   ├── stgfb
+│   │   ├── tfswitch
+│   │   ├── ufs922_fan
+│   │   └── wireless
+│   └── hostapps
+│       ├── flash
+│       ├── mkfs.jffs2
+│       └── mklibs
+└── flash
+    ├── at7500
+    │   ├── extras
+    │   ├── scripts
+    │   ├── scripts_209
+    │   └── scripts_extended
+    ├── common
+    │   ├── fup.src
+    │   ├── mup.src
+    │   └── pad.src
+    ├── hs7810a
+    │   ├── extras
+    │   └── scripts
+    ├── spark
+    │   ├── extras
+    │   └── scripts
+    ├── tf7700hdpvr
+    ├── ufc960
+    │   ├── extra
+    │   └── scripts
+    ├── ufs910
+    │   └── scripts
+    ├── ufs912
+    │   ├── extras
+    │   └── scripts
+    └── ufs913
+        ├── extra
+        ├── scripts
+        └── test
+</code></pre>
+
+<p>The last step extracts just the directory  &lsquo;&#8217;tdt/cvs/driver&rsquo;&#8217;</p>
+
+<pre><code>$ git filter-branch --subdirectory-filter tdt/cvs/driver
+</code></pre>
+
+<p>After this step the filesystem looks like this:</p>
+
+<pre><code>$ tree -d -L 1 tdt-driver/
+tdt-driver/
+├── adb_box_fan
+├── avs
+├── boxtype
+├── bpamem
+├── button
+├── button_hs5101
+├── cec
+├── cec_adb_box
+├── cic
+├── compcache
+├── cpu_frequ
+├── dvbt
+├── e2_proc
+├── frontcontroller
+├── frontends
+├── i2c_spi
+├── include
+├── ipbox99xx_fan
+├── led
+├── logfs
+├── multicom-3.2.2
+├── multicom-3.2.4
+├── multicom-3.2.4_rc3
+├── multicom-4.0.6
+├── old
+├── player2_131
+├── player2_179
+├── player2_191
+├── pti
+├── rmu
+├── sata_switch
+├── siinfo
+├── simu_button
+├── smartcard
+├── stgfb
+├── tfswitch
+├── ufs922_fan
+└── wireless
+</code></pre>
+
+<p>There are more steps recommended in a <a href="http://stackoverflow.com/questions/359424/detach-subdirectory-into-separate-git-repository/1591174#1591174">stackoverflow</a> article. These steps had not been necessary for my example.</p>
+</div>
+  
+  
+
+
+        </article>
+      
+      
+        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+          
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2013-10-22T00:00:00+02:00"  data-updated="true" itemprop="datePublished dateCreated">Tue 22 Oct 2013, 12:00 AM</time>
+        
+           | <a href="/blog/2013/10/22/ubifs-as-rootfs/#disqus_thread" itemprop="discussionUrl"
+             data-disqus-identifier="http://ch.ege.io/blog/2013/10/22/ubifs-as-rootfs/">Comments</a>
+        
+      </p>
+    
+    
+      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2013/10/22/ubifs-as-rootfs/" itemprop="url">UBIFS as Rootfs</a></h2>
+    
+  </header>
+
+
+  <div class="entry-content clearfix" itemprop="articleBody description"><p>This Post describes how to get startet with an UBIFS root filesystem. I suppose you are using a image generated for the &ldquo;spark&rdquo; device. I have not done any tests with &ldquo;spark7162&rdquo;. For the spark boxes there is automatically a ubifs image generated.</p>
+
+<p>Generate a core-image-minimal for example. This assumes You already have set-up the yocto build environment.</p>
+
+<pre><code>MACHINE=spark bitbake core-image-minimal
+</code></pre>
+
+<p>The resulting image can be found here</p>
+
+<pre><code>tmp/deploy/images/core-image-minimal-spark.ubi
+</code></pre>
+
+<p>This is a ubivolume which can be burned to flash &hellip;</p>
+
+<h1>The Linux Way</h1>
+
+<p>For flashing from Linux <a href="https://github.com/project-magpie/meta-stlinux/wiki/Boot-from-USB-Stick">booting over USB</a> is recommended. Be cause we do not want to bite the hand that feeds us. For debugging and configuration purposes a Nullmodem Cable and a Terminal Emulator is recommended.</p>
+
+<h2>Flashing the image</h2>
+
+<p>To get a list with the mtd devices just dump the content of &ldquo;/proc/mtd&rdquo;</p>
+
+<pre><code>root@spark:~# cat /proc/mtd
+dev:    size   erasesize  name
+mtd0: 00080000 00010000 "Boot firmware"
+mtd1: 00700000 00010000 "Kernel"
+mtd2: 00080000 00010000 "Reserve"
+mtd3: 00800000 00020000 "Spark Kernel"
+mtd4: 17800000 00020000 "Spark Rootfs"
+mtd5: 00800000 00020000 "E2 Kernel"
+mtd6: 05000000 00020000 "E2 RootFs"
+</code></pre>
+
+<p>We want to modify the Partion number &ldquo;6&rdquo; also known as &ldquo;E2 RootFs&rdquo;. Be carefull to not erase Number &ldquo;0&rdquo; otherwise your bootloader is blown.
+At first you have to transfer the image. In absence of any other tools I do use netcat again.</p>
+
+<p>On the host (quadros) run this</p>
+
+<pre><code>$ cat tmp/deploy/images/core-image-minimal-spark.ubi | nc -l -v 3333
+</code></pre>
+
+<p>On the target run this</p>
+
+<pre><code>root@spark:~# nc  quadros 3333 &gt; /tmp/image.ubi
+</code></pre>
+
+<p>Now we can burn the image onto the flash</p>
+
+<pre><code>root@spark:~# flash_eraseall /dev/mtd6
+root@spark:~# ubiformat /dev/mtd6 -q -y -f /tmp/image.ubi
+</code></pre>
+
+<h2>Choosing the right commandline</h2>
+
+<p>I had a some difficulties with the console. The default bootagrs point to &ldquo;ttyAS1&rdquo; but I have to use ttyAS0. So I have to check this. This is the command line which works for me.</p>
+
+<pre><code>setenv bootargs 'console=ttyAS0,115200 rw init=/bin/devinit coprocessor_mem=4m@0x40000000,4m@0x40400000 printk=1 nwhwconf=device:eth0,hwaddr:00:80:E1:12:40:61 rw ip=172.100.100.249:172.100.100.174:172.100.100.174:255.255.0.0:LINUX7109:eth0:off bigphysarea=6000 stmmaceth=msglvl:0,phyaddr:2,watchdog:5000 ubi.mtd=6 rootfstype=ubifs root=ubi0:rootfs'
+</code></pre>
+
+<h1>The spark u-boot</h1>
+
+<p>The spark bootloader has a nice menu integrated. With this you can also write images from a USB stick to the flash. Notice this is not the recommended way. Using ubiformat keeps all required information about the underlying flash device. To get started you need a USB-Stick which is supported by the spark u-noot. To boot the UBI image the commandline also have be tweaked to use ubi instead jffs2. Please have a look at the The Linux Way section for advise.</p>
+
+<ul>
+<li>Format USB-thumb drive with a single FAT32 partition</li>
+<li>Create an enigma2 folder on the USB-thumb drive</li>
+<li>Copy the file core-image-minimal-spark.ubi to the enigma2 folder and rename it to e2jffs2.img</li>
+<li>Copy the file uImage-spark.bin to the enigma2 folder as-well and rename it to uImage</li>
+<li>Turn the Set-Top-Box off by the power switch</li>
+<li>Put the USB-Stick into the USB-Slot at the back of the STB. Not the front one!</li>
+<li>Press the OK at the Front-Panel and keep it pressed.</li>
+<li>Turn on the box by the power switch.</li>
+<li>Wait until you read &ldquo;Forc&rdquo; on the display</li>
+<li>Release the OK Button. Now you can press the Button V+ -> (right).</li>
+<li>After this you can read &ldquo;U LD&rdquo; on the display.</li>
+<li>The flashing of the image may take some minutes. After successfull flashing &ldquo;SUCC&rdquo; is written on the display and the box reboots.</li>
+</ul>
+
+</div>
+  
+  
+
+
+        </article>
+      
+      
+        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+          
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2013-10-08T00:00:00+02:00"  data-updated="true" itemprop="datePublished dateCreated">Tue  8 Oct 2013, 12:00 AM</time>
+        
+           | <a href="/blog/2013/10/08/analyzing-kernel-oops/#disqus_thread" itemprop="discussionUrl"
+             data-disqus-identifier="http://ch.ege.io/blog/2013/10/08/analyzing-kernel-oops/">Comments</a>
+        
+      </p>
+    
+    
+      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2013/10/08/analyzing-kernel-oops/" itemprop="url">Analyzing Kernel Oops</a></h2>
+    
+  </header>
+
+
+  <div class="entry-content clearfix" itemprop="articleBody description"><p>There was a little hickup in the kernel while shutting down or rebooting the system. The result of the hickup was a Kernel Oops. Because it had no big influence on the behaviour of the system I did not spend a lot of time on investigation. Yesterday I did some tests with the yocto workflow for kernel development and tried to fix the hickup.</p>
+
+<h2>The hickup</h2>
+
+<p>The Kernel Oops looked like this one</p>
+
+<pre><code>Unmounting local filesystems...
+[ 2135.692000] umount: sending ioctl 4c01 to a partition!
+[ 2135.696000] umount: sending ioctl 4c01 to a partition!
+Rebooting... [ 2137.744000] ------------[ cut here ]------------
+[ 2137.744000] Badness at 80a859a0 [verbose debug info unavailable]
+[ 2137.744000]
+[ 2137.744000] Pid : 855, Comm:                 reboot
+[ 2137.744000] CPU : 0                  Not tainted  (2.6.32.59_stm24_0211 #2)
+[ 2137.744000]
+[ 2137.744000] PC  : 80a859a0 SP  : 8928be48 SR  : 400080f1 TEA : c113ae28
+[ 2137.744000] R0  : 00000000 R1  : 00000000 R2  : 80c22e7c R3  : 00002000
+[ 2137.744000] R4  : 80c22ba4 R5  : 80a85610 R6  : 00000000 R7  : 00003fff
+[ 2137.744000] R8  : 80c229cc R9  : 80a855fe R10 : 89ec440c R11 : 00000000
+[ 2137.744000] R12 : fffff000 R13 : 80a859e0 R14 : 00000000
+[ 2137.744000] MACH: 000000de MACL: 00000014 GBR : 296c1470 PR  : 80a859cc
+[ 2137.744000]
+[ 2137.744000] Call trace:
+[ 2137.744000]  [&lt;80a85a04&gt;] 0x80a85a04
+[ 2137.744000]  [&lt;80a5347a&gt;] 0x80a5347a
+[ 2137.744000]  [&lt;809db332&gt;] 0x809db332
+[ 2137.744000]  [&lt;8081f610&gt;] 0x8081f610
+[ 2137.744000]  [&lt;8081f636&gt;] 0x8081f636
+[ 2137.744000]  [&lt;8081f780&gt;] 0x8081f780
+</code></pre>
+
+<p>For me under yocto the best way to get in touch with the source is to start a devshell.</p>
+
+<pre><code>bitbake -cdevshell virtual/kernel
+</code></pre>
+
+<p>While the occurence of the Oops the PC (program counter) was at address 0x80a859a0. So my first approach was loading the vmlinux in gdb. This was not that succefull because the kernel had no debug symbols included. The next source of information is the Sytem.map file:</p>
+
+<pre><code>cat cat System.map | grep 80a859
+80a85904 T _clk_disable
+</code></pre>
+
+<p>This looks like the cause of the problem is located in this function. To get a closer look I decided to compile the kernel with debug symbols. So I added the following config options:</p>
+
+<pre><code>CONFIG_DEBUG_KERNEL=y
+CONFIG_DETECT_SOFTLOCKUP=y
+CONFIG_BOOTPARAM_SOFTLOCKUP_PANIC_VALUE=0
+CONFIG_DETECT_HUNG_TASK=y
+CONFIG_BOOTPARAM_HUNG_TASK_PANIC_VALUE=0
+CONFIG_SCHED_DEBUG=y
+CONFIG_DEBUG_PREEMPT=y
+CONFIG_DEBUG_BUGVERBOSE=y
+CONFIG_DEBUG_INFO=y
+</code></pre>
+
+<p>And recompiled the kernel</p>
+
+<pre><code>bitbake -ccompile -f virtual/kernel
+bitbake -cdeploy -f virtual/kernel
+</code></pre>
+
+<p>And finally copied the kernel onto the USB pendrive. Because I do the most of my testing while booting from USB.</p>
+
+<pre><code>cp  tmp/deploy/images/uImage-spark.bin  /media/spark/uImage
+</code></pre>
+
+<p>After unmounting the pendrive I tested on the box with the follwing results:</p>
+
+<pre><code>Unmounting local filesystems...
+[   38.764000] umount: sending ioctl 4c01 to a partition!
+[   38.768000] umount: sending ioctl 4c01 to a partition!
+Rebooting... [   40.816000] ------------[ cut here ]------------
+[   40.816000] Badness at drivers/stm/clk.c:190
+[   40.816000]
+[   40.816000] Pid : 779, Comm:                 reboot
+[   40.816000] CPU : 0                  Not tainted  (2.6.32.59_stm24_0211 #2)
+[   40.816000]
+[   40.816000] PC  : 80a8b7e4 SP  : 88e59e44 SR  : 400080f1 TEA : c16772ac
+[   40.816000] R0  : 00000000 R1  : 00000000 R2  : 80c2fe58 R3  : 00002000
+[   40.816000] R4  : 80c2fb80 R5  : 80a8b438 R6  : 00000000 R7  : 00003fff
+[   40.816000] R8  : 80c2f9a8 R9  : 80a8b426 R10 : 89e2048c R11 : 00000000
+[   40.816000] R12 : fffff000 R13 : 80a8b824 R14 : 00000000
+[   40.816000] MACH: 000000de MACL: 00000014 GBR : 296c1470 PR  : 80a8b810
+[   40.816000]
+[   40.816000] Call trace:
+[   40.816000]  [&lt;80a8b84a&gt;] 0x80a8b84a
+[   40.816000]  [&lt;80a58f9e&gt;] 0x80a58f9e
+[   40.816000]  [&lt;809e055a&gt;] 0x809e055a
+[   40.816000]  [&lt;8082188c&gt;] 0x8082188c
+</code></pre>
+
+<p>The Oops now tells me where I do have to look at:</p>
+
+<pre><code>[   40.816000] Badness at drivers/stm/clk.c:190
+</code></pre>
+
+<p>The next test is to try what gdb tells me the address varies, because this is the kernel with the fix applied. But the mechanism is the same.</p>
+
+<pre><code># sh4-poky-linux-gdb vmlinux
+GNU gdb (GDB) 7.5.1
+Copyright (C) 2012 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "--host=x86_64-linux --target=sh4-poky-linux".
+For bug reporting instructions, please see:
+&lt;http://www.gnu.org/software/gdb/bugs/&gt;...
+Reading symbols from vmlinux...done.
+(gdb) list *(0x80a8b460)
+0x80a8b460 is in _clk_disable (drivers/stm/clk.c:187).
+182     return ret;
+183 }
+184 EXPORT_SYMBOL(clk_enable);
+185
+186 void _clk_disable(struct clk *clk)
+187 {
+188     int ret;
+189
+190
+191     if (clk_is_always_enabled(clk)) {
+(gdb)
+</code></pre>
+
+<p>With this information gdb can help to narrow the source of the problem. In my case I just googled the keywords stm and _clk_disable and found the following patch:
+<a href="http://code.google.com/p/tdt-amiko/source/browse/tdt/cvs/cdk/Patches/linux-sh4-fix-crash-usb-reboot_stm24_0211.diff?spec=svnbf027b5e899cd26fbc20ac0745385c69ab385923&amp;r=bf027b5e899cd26fbc20ac0745385c69ab385923">linux-sh4-fix-crash-usb-reboot_stm24_0211.diff</a></p>
+</div>
+  
+  
+
+
+        </article>
+      
+      
+        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+          
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2013-10-04T00:00:00+02:00"  data-updated="true" itemprop="datePublished dateCreated">Fri  4 Oct 2013, 12:00 AM</time>
+        
+           | <a href="/blog/2013/10/04/jffs2-vs-ubifs/#disqus_thread" itemprop="discussionUrl"
+             data-disqus-identifier="http://ch.ege.io/blog/2013/10/04/jffs2-vs-ubifs/">Comments</a>
+        
+      </p>
+    
+    
+      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2013/10/04/jffs2-vs-ubifs/" itemprop="url">JFFS2 vs. UBIFS</a></h2>
+    
+  </header>
+
+
+  <div class="entry-content clearfix" itemprop="articleBody description"><p>After a successfull merge of the <a href="https://github.com/project-magpie/linux-sh4-2.6.32.y/tree/ubifs-merge">UBIFS patches</a>  I have made some benchmarks. In both cases I have flashed the same image. It was a fresh build of core-image-minimal from the <a href="https://github.com/project-magpie/meta-stlinux/tree/dylan">dylan branch</a>. Maybe these benachmarks have to be repeated with a more representative scenario. More Information regarding <a href="http://en.wikipedia.org/wiki/UBIFS">UBIFS</a> can be found on <a href="http://elinux.org/UBIFS">eLinux</a>. If you are interested in more flash file system Benchmarks you can also have a look a <a href="http://elinux.org/Flash_Filesystem_Benchmarks">eLinux</a>.</p>
+
+<h2>Mounting a JFFS2 Volume</h2>
+
+<pre><code>root@spark:~# time mount /dev/mtdblock6  -tjffs2 /mnt/
+real    0m 2.06s
+user    0m 0.00s
+sys     0m 2.06s
+</code></pre>
+
+<h2>Mounting a UBIFS volume</h2>
+
+<pre><code>root@spark:~# time ubiattach -m6 &amp;&amp; time mount -tubifs ubi0:rootfs /mnt/
+[  663.748000] UBI: attaching mtd6 to ubi0
+[  663.752000] UBI: physical eraseblock size:   131072 bytes (128 KiB)
+[  663.760000] UBI: logical eraseblock size:    129024 bytes
+[  663.764000] UBI: smallest flash I/O unit:    2048
+[  663.768000] UBI: sub-page size:              512
+[  663.776000] UBI: VID header offset:          512 (aligned 512)
+[  663.780000] UBI: data offset:                2048
+[  663.940000] UBI: max. sequence number:       28
+[  663.960000] UBI: attached mtd6 to ubi0
+[  663.972000] UBI: MTD device name:            "E2 RootFs"
+[  663.976000] UBI: MTD device size:            80 MiB
+[  663.980000] UBI: number of good PEBs:        638
+[  663.988000] UBI: number of bad PEBs:         2
+[  663.992000] UBI: number of corrupted PEBs:   0
+[  663.996000] UBI: max. allowed volumes:       128
+[  664.000000] UBI: wear-leveling threshold:    4096
+[  664.008000] UBI: number of internal volumes: 1
+[  664.012000] UBI: number of user volumes:     1
+[  664.016000] UBI: available PEBs:             0
+[  664.020000] UBI: total number of reserved PEBs: 638
+[  664.024000] UBI: number of PEBs reserved for bad PEB handling: 6
+[  664.028000] UBI: max/mean erase counter: 1/0
+[  664.032000] UBI: image sequence number:  1037100788
+[  664.040000] UBI: background thread "ubi_bgt0d" started, PID 553
+UBI device number 0, total 638 LEBs (82317312 bytes, 78.5 MiB), available 0 LEBs (0 bytes), LEB size 129024 bytes (126.0 KiB)
+real    0m 0.31s
+user    0m 0.00s
+sys     0m 0.28s
+[  664.092000] UBIFS: background thread "ubifs_bgt0_0" started, PID 556
+[  664.160000] UBIFS: mounted UBI device 0, volume 0, name "rootfs"&lt;NULL&gt;
+[  664.164000] UBIFS: LEB size: 129024 bytes (126 KiB), min./max. I/O unit sizes: 2048 bytes/2048 bytes
+[  664.168000] UBIFS: FS size: 79607808 bytes (75 MiB, 617 LEBs), journal size 9033728 bytes (8 MiB, 71 LEBs)
+[  664.172000] UBIFS: reserved for root: 0 bytes (0 KiB)
+[  664.176000] UBIFS: media format: w4/r0 (latest is w4/r0), , small LPT model
+real    0m 0.14s
+user    0m 0.00s
+sys     0m 0.11s
+</code></pre>
+</div>
+  
+  
+
+
+        </article>
+      
+      
+        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+          
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2013-10-02T00:00:00+02:00"  data-updated="true" itemprop="datePublished dateCreated">Wed  2 Oct 2013, 12:00 AM</time>
+        
+           | <a href="/blog/2013/10/02/that-was-a-close-shave/#disqus_thread" itemprop="discussionUrl"
+             data-disqus-identifier="http://ch.ege.io/blog/2013/10/02/that-was-a-close-shave/">Comments</a>
+        
+      </p>
+    
+    
+      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2013/10/02/that-was-a-close-shave/" itemprop="url">That Was a Close Shave!</a></h2>
+    
+  </header>
+
+
+  <div class="entry-content clearfix" itemprop="articleBody description"><p>While fiddling arround with the ubifs port I recently did. I misstyped the MTD Partion and completly erased mtd0. This sounds not that tragically, but on mtd0 u-boot is located. Without a bootloader there is only a small chance that the box will boot again. To reboot the box in such a situation is a absolut no go. Now you have to start brain work &hellip;</p>
+
+<p>For the ubifs tests I have choosen the fresh dylan port of my <a href="https://github.com/project-magpie/meta-stlinux/tree/dylan">meta-stlinux</a> layer. This was a first draft and so I just build the ,,core-image-minimal&#8217;&lsquo;. I included the mtd-utils but I&rsquo;ve forgotten to include a ssh server aswell. This was not a big issue due to the fact that I used the serial line for connection. For testing I booted the box from USB. The USB was connect through a USB extension cable. Which cut me off from installing a fresh u-boot by inserting a USB Stick.</p>
+
+<h2>What are the options?</h2>
+
+<ul>
+<li>Transfer the u-boot by zmodem</li>
+<li>Transfer the u-boot by ethernet.</li>
+</ul>
+
+
+<p>The name minimal definitly means minimal. There was no serial command I did know to transer data. On the ethernet no SSH no telnet and of course no FTP. Okay lets start thinking&hellip;</p>
+
+<p>BANG!!! my good old friend ,,netcat&#8217;&lsquo; one little test and yes there is a ,,nc&rsquo;&lsquo; command. The rest was easy going.</p>
+
+<h2>How I solved the issue</h2>
+
+<p>On the host PC start the server</p>
+
+<pre><code>cat ~/uboot-alien.bin | nc -v -l 3333
+</code></pre>
+
+<p>Yes I do know alien is not the correct name for a golden media GM990 Box. But this was the only image I have found.</p>
+
+<p>On the box I used this commands</p>
+
+<pre><code># nc 192.168.24.157 3333 &gt; u-boot.bin
+# du u-boot.bin
+520     u-boot.bin
+# flash_eraseall -j /dev/mtd0
+flash_eraseall has been replaced by `flash_erase &lt;mtddev&gt; 0 0`; please use it
+Erasing 64 Kibyte @ 0 --  0 % complete flash_erase:  Cleanmarker written at 0
+Erasing 64 Kibyte @ 10000 -- 12 % complete flash_erase:  Cleanmarker written at 10000
+Erasing 64 Kibyte @ 20000 -- 25 % complete flash_erase:  Cleanmarker written at 20000
+Erasing 64 Kibyte @ 30000 -- 37 % complete flash_erase:  Cleanmarker written at 30000
+Erasing 64 Kibyte @ 40000 -- 50 % complete flash_erase:  Cleanmarker written at 40000
+Erasing 64 Kibyte @ 50000 -- 62 % complete flash_erase:  Cleanmarker written at 50000
+Erasing 64 Kibyte @ 60000 -- 75 % complete flash_erase:  Cleanmarker written at 60000
+Erasing 64 Kibyte @ 70000 -- 87 % complete flash_erase:  Cleanmarker written at 70000
+Erasing 64 Kibyte @ 70000 -- 100 % complete
+# flashcp u-boot.bin /dev/mtd0
+# reboot
+</code></pre>
+
+<p>Now it was time to to keep one&rsquo;s fingers crossed. One deep breath later the box bootet like every time before.</p>
+
+<pre><code>Board: STx7111-Mboard (MB618)  [32-bit mode]
+info: Disregarding any EPLD
+
+
+U-Boot 1.3.1 (Oct 19 2010 - 18:08:50) - stm23_0043 - YW 1.0.017 Rel
+
+DRAM:  128 MiB
+NOR:     8 MiB
+NAND:  512 MiB
+*** Warning - bad CRC, using default environment
+
+In:    serial
+Out:   serial
+Err:   serial
+IdentID : 09 00 07 00 00 46 d1
+0  ESC to stop autoboot:  3
+</code></pre>
+
+<p>Except of the little message ,,*** Warning - bad CRC, using default environment&#8217;&lsquo; this was caused because by writing 512kb I have destroyed u-boot environment. I am not sure If this is the right u-boot. I would be happy If someone with a Golden Media Spark reloaded Box can send me a copy of the u-boot.</p>
+</div>
+  
+  
+
+
+        </article>
+      
+    </div>
+
+    <ul class="pager">
+      
+        <li class="previous disabled"><a href="#">&larr;&nbsp;Older</a></li>
+      
+      <li><a href="/blog/archives">Blog Archives</a></li>
+      
+        <li class="next"><a href="/index.html">Newer&nbsp;&rarr;</a></li>
+      
+    </ul>
+  </div>
+
+  
+    <aside class="sidebar col-md-3">
+      
+        <section class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Recent Posts</h3>
+  </div>
+  
+  <div id="recent_posts" class="list-group">
+    
+    <a class="list-group-item " href="/blog/2015/07/04/full-open-source-dvb-s2-board/">Full Open Source DVB-S2 Board</a>
+    
+    <a class="list-group-item " href="/blog/2015/05/04/using-h-slash-w-randaom-generator-on-odrod-c1-with-yocto/">Using H/W Randaom Generator on ODROD-C1 With Yocto</a>
+    
+    <a class="list-group-item " href="/blog/2015/04/12/using-the-segger-j-link-to-access-the-ti-cc2650-chip/">Using the SEGGER J-Link to Access the TI CC2650 Chip</a>
+    
+    <a class="list-group-item " href="/blog/2015/04/12/orico-bta-402-usb-bluetooth-4-dot-0-low-energy-micro-adapter-on-odroid-c1/">ORICO BTA-402 USB Bluetooth 4.0 Low Energy Micro Adapter on ODROID-C1</a>
+    
+    <a class="list-group-item " href="/blog/2015/04/12/running-bluez5-on-yocto-slash-openembedded/">Running BlueZ5 on Yocto/OpenEmbedded</a>
+    
+  </div>
+</section>
+
+
+
+
+<section class="googleplus googleplus-hidden panel panel-default">
+  <div class="panel-body">
+    <h2>
+      <a href="https://plus.google.com/+ChristianEge?rel=author">
+        <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+        Google+
+      </a>
+    </h2>
+  </div>
+</section>
+
+
+
+      
+    </aside>
+  
+</div>
+
+        </div>
+      </div>
+    </div>
+    <footer role="contentinfo"><div class="container">
+    <p class="text-muted credits">
+  Copyright &copy; 2015 - Christian Ege<br>
+  <small>
+      <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>,
+      <span class="credit">customized with <a href="https://github.com/kAworu/octostrap3">octostrap3</a></span>.
+  </small>
+</p>
+
+</div>
+</footer>
+    
+
+<script type="text/javascript">
+      var disqus_shortname = 'sturmschneid';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+<script src="/assets/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="/javascripts/modernizr.js"></script>
+
+
+  </body>
+</html>
