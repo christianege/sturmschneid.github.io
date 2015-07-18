@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://ch.ege.io/blog/2015/07/18/pci-express-connectors-from-china/</loc>
+    <lastmod>2015-07-18T07:40:11+02:00</lastmod>
+  </url>
+  <url>
     <loc>http://ch.ege.io/blog/2015/07/04/full-open-source-dvb-s2-board/</loc>
     <lastmod>2015-07-04T19:43:00+02:00</lastmod>
   </url>
@@ -141,6 +145,9 @@
   </url>
   <url>
     <loc>http://ch.ege.io/blog/categories/stv0913/</loc>
+  </url>
+  <url>
+    <loc>http://ch.ege.io/blog/categories/tyco/</loc>
   </url>
   <url>
     <loc>http://ch.ege.io/posts/2/</loc>
