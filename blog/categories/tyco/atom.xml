@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Tyco | Sturmschneid]]></title>
   <link href="http://ch.ege.io/blog/categories/tyco/atom.xml" rel="self"/>
   <link href="http://ch.ege.io/"/>
-  <updated>2015-07-18T08:19:04+02:00</updated>
+  <updated>2015-07-19T09:02:20+02:00</updated>
   <id>http://ch.ege.io/</id>
   <author>
     <name><![CDATA[Christian Ege]]></name>
@@ -23,6 +23,10 @@
 <p><img src="/images/posts/IMG_5144.jpg"></p>
 
 <p>I have not found any data sheet for this connector yet. On one side it has an engraving with <a href="http://www.te.com">,,tyco/Electronics&#8221;</a> and on the other side some code ,,08306ED&#8217;&lsquo;.</p>
+
+<h2>Update</h2>
+
+<p>After some research I found a ,,data sheet&#8217;&lsquo; <a href="http://www.te.com/usa-en/product-4-1775800-2.html">ENG_DS_4-1773442-7_0308-2.pdf</a> but it lacks detailed drawings about the PIN pitch. After some research I discovered that those connectors are described in the <a href="https://www.google.com/search?q=PCI+Express+Card+Electromechanical+Specification">PCI Express Card Electromechanical Specification</a>.</p>
 ]]></content>
   </entry>
   

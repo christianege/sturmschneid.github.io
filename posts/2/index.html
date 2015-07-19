@@ -116,6 +116,66 @@
 
 
 
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2014-04-29T00:00:00+02:00"  data-updated="true" itemprop="datePublished dateCreated">Tue 29 Apr 2014, 12:00 AM</time>
+        
+           | <a href="/blog/2014/04/29/edid-mission-accomplished/#disqus_thread" itemprop="discussionUrl"
+             data-disqus-identifier="http://ch.ege.io/blog/2014/04/29/edid-mission-accomplished/">Comments</a>
+        
+      </p>
+    
+    
+      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2014/04/29/edid-mission-accomplished/" itemprop="url">EDID Mission Accomplished</a></h2>
+    
+  </header>
+
+
+  <div class="entry-content clearfix" itemprop="articleBody description"><p>After my <a href="http://project-magpie.github.io/2014/04/26/pursue-hdmi-edid-bugs/">HDMI EDID analisys</a> I decided getting more in touch with the hardware. I tried to trace the loose ends and checked where the onboard EEPROM is located. The next step was disabling the EEPROM and connecting the STB I2C Bus to the HDMI side.As in my previous <a href="2014/04/26/pursue-hdmi-edid-bugs">post</a> expected the missing SOT-23 parts near the HDMI output form a level shifter which convert the 3.3V I2C STB level to the 5V level of the HDMI side an vice versa.</p>
+
+<p>A detailed description of such an level shifter is described in an application note from <a href="http://www.adafruit.com/datasheets/an97055.pdf">Phillips</a>/<a href="http://www.nxp.com/documents/application_note/AN10441.pdf">NXP</a>.</p>
+
+<p>I started with the trace of the EEPROM. I finally found the EEPROM.</p>
+
+<p><img src="http://ch.ege.io/assets/edid/edid_eeprom.jpg" alt="EDID EEPROM" /></p>
+
+<p>There are two serial resistors between I2C SCL and I2C SDA. Which can be more or less easily removed.</p>
+
+<p><img src="http://ch.ege.io/assets/edid/edid_eeprom_disabled.jpg" alt="EDID EEPROM disabled" /></p>
+
+<p>After soldering my very first sot-23 transistor which made me feeling like my soldering iron is too huge for decent jobs. I cursed myself for not taking the box to work where we do have a more professional equipement at least when it comes to soldering irons.</p>
+
+<p>The result looks ugly but seems to work.</p>
+
+<p><img src="http://ch.ege.io/assets/edid/edid_transistor.jpg" alt="EDID Transistor" /></p>
+
+<p>As Transistor I&rsquo;ve chosen some  N-Channel Field Effect Transistor. Anything like a <a href="http://www.fairchildsemi.com/ds/2N/2N7000.pdf">2N7002</a> or a <a href="http://www.fairchildsemi.com/ds/BS/BSS138.pdf">BSS138</a> should do the job.</p>
+
+<p>For me the final result was a working EDID readout of the HDMI monitor&rsquo;s EDID EEPROM. And the first time the STB took the correct HDMI-CEC address. I had not been able to check levels and edges of the 5V signal and the ultimate HDMI-CEC test also have to wait some time. Because my test lab HDMI monitor have no HDMI-CEC support.</p>
+</div>
+  
+  
+
+
+        </article>
+      
+      
+        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+          
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
 <span class="glyphicon glyphicon-calendar"></span> <time datetime="2014-04-26T00:00:00+02:00"  data-updated="true" itemprop="datePublished dateCreated">Sat 26 Apr 2014, 12:00 AM</time>
         
            | <a href="/blog/2014/04/26/pursue-hdmi-edid-bugs/#disqus_thread" itemprop="discussionUrl"
@@ -1069,6 +1129,8 @@ IdentID : 09 00 07 00 00 46 d1
   
   <div id="recent_posts" class="list-group">
     
+    <a class="list-group-item " href="/blog/2015/07/18/nim-dvb-s-slash-s2-v1-dot-0-pinout/">NIM_DVB-S/S2 V1.0 Pinout</a>
+    
     <a class="list-group-item " href="/blog/2015/07/18/pci-express-connectors-from-china/">PCI-Express Connectors From China</a>
     
     <a class="list-group-item " href="/blog/2015/07/04/full-open-source-dvb-s2-board/">Full Open Source DVB-S2 Board</a>
@@ -1076,8 +1138,6 @@ IdentID : 09 00 07 00 00 46 d1
     <a class="list-group-item " href="/blog/2015/05/04/using-h-slash-w-randaom-generator-on-odrod-c1-with-yocto/">Using H/W Randaom Generator on ODROD-C1 With Yocto</a>
     
     <a class="list-group-item " href="/blog/2015/04/12/using-the-segger-j-link-to-access-the-ti-cc2650-chip/">Using the SEGGER J-Link to Access the TI CC2650 Chip</a>
-    
-    <a class="list-group-item " href="/blog/2015/04/12/orico-bta-402-usb-bluetooth-4-dot-0-low-energy-micro-adapter-on-odroid-c1/">ORICO BTA-402 USB Bluetooth 4.0 Low Energy Micro Adapter on ODROID-C1</a>
     
   </div>
 </section>
