@@ -4,7 +4,7 @@
   <title><![CDATA[Sturmschneid]]></title>
   <link href="http://ch.ege.io/atom.xml" rel="self"/>
   <link href="http://ch.ege.io/"/>
-  <updated>2015-07-19T09:02:20+02:00</updated>
+  <updated>2015-07-19T09:09:16+02:00</updated>
   <id>http://ch.ege.io/</id>
   <author>
     <name><![CDATA[Christian Ege]]></name>
@@ -14,11 +14,13 @@
 
   
   <entry>
-    <title type="html"><![CDATA[NIM_DVB-S/S2 V1.0 Pinout]]></title>
+    <title type="html"><![CDATA[[WIP] NIM_DVB-S/S2 V1.0 Pinout]]></title>
     <link href="http://ch.ege.io/blog/2015/07/18/nim-dvb-s-slash-s2-v1-dot-0-pinout/"/>
     <updated>2015-07-18T08:26:39+02:00</updated>
     <id>http://ch.ege.io/blog/2015/07/18/nim-dvb-s-slash-s2-v1-dot-0-pinout</id>
-    <content type="html"><![CDATA[<table>
+    <content type="html"><![CDATA[<p>This is a work in progress article and will be updated over time.</p>
+
+<table>
 <thead>
 <tr>
 <th style="text-align:center;"> PIN </th>
