@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Sturmschneid]]></title>
-  <link href="http://sturmschneid.github.io/atom.xml" rel="self"/>
-  <link href="http://sturmschneid.github.io/"/>
-  <updated>2015-05-04T13:36:51+02:00</updated>
-  <id>http://sturmschneid.github.io/</id>
+  <link href="http://ch.ege.io/atom.xml" rel="self"/>
+  <link href="http://ch.ege.io/"/>
+  <updated>2015-09-19T20:11:07+02:00</updated>
+  <id>http://ch.ege.io/</id>
   <author>
     <name><![CDATA[Christian Ege]]></name>
     
@@ -14,10 +14,276 @@
 
   
   <entry>
+    <title type="html"><![CDATA[OpenEmbedded Support for the Upcomming UDOO Neo]]></title>
+    <link href="http://ch.ege.io/blog/2015/09/19/openembedded-support-for-the-upcomming-udoo-neo/"/>
+    <updated>2015-09-19T19:18:03+02:00</updated>
+    <id>http://ch.ege.io/blog/2015/09/19/openembedded-support-for-the-upcomming-udoo-neo</id>
+    <content type="html"><![CDATA[<p>After beeing part of the <a href="https://www.kickstarter.com/projects/udoo/udoo-neo-raspberry-pi-arduino-wi-fi-bt-40-sensors/?src=i1">Kickstarter campaign</a> for the <a href="http://www.udoo.org/udoo-neo/">UDOO NEO board</a>. I am looking forward to play with this little beast.</p>
+
+<p><img class="center" src="http://cdn.udoo.org/wp-content/uploads/2015/03/UDOO_neo_up2_ks_funded.png"></p>
+
+<p>During the meantime I decided to add the <a href="http://www.udoo.org/udoo-neo/">UDOO NEO board</a> to the <a href="https://github.com/Freescale/meta-fsl-arm-extra">Freescale OpenEmbedded community layer</a>. Due to the fact my board did not yet arrived I&rsquo;ve not yet created a patch to ask for integration into the official <a href="https://github.com/Freescale/meta-fsl-arm-extra">Freescale OpenEmbedded community layer</a>. This will be done when I&rsquo;ve tested the layer.</p>
+
+<p>If you are interested in my work you can find my personal fork right <a href="https://github.com/graugans/meta-fsl-arm-extra/">here at github</a>.
+You have to use the <a href="https://github.com/graugans/meta-fsl-arm-extra/tree/fido">fido</a> branch. To keep things simple I&rsquo;ve created my own
+branch of the <a href="https://github.com/graugans/fsl-community-bsp-platform">fsl-community-bsp-platform</a> repo repository.</p>
+
+<h1>Installing the BSP</h1>
+
+<p>To get the BSP you need to have repo installed and use it as:</p>
+
+<p>Install the repo utility:</p>
+
+<pre><code>$: mkdir ~/bin
+$: curl http://commondatastorage.googleapis.com/git-repo-downloads/repo &gt; ~/bin/repo
+$: chmod a+x ~/bin/repo
+</code></pre>
+
+<p>Download the BSP source:</p>
+
+<pre><code>$: PATH=${PATH}:~/bin
+$: mkdir fsl-community-bsp
+$: cd fsl-community-bsp
+$: repo init -u https://github.com/graugans/fsl-community-bsp-platform -b fido
+$: repo sync
+</code></pre>
+
+<p>At the end of the commands you have every metadata you need to start work with.</p>
+
+<h1>Building the Image</h1>
+
+<p>To start a base image build execute the following command on a decent machine and grab some coffee&hellip;</p>
+
+<p>$: source ./setup-environment udooneo-build
+$: bitbake core-image-base</p>
+
+<p>If everything was build fine you&rsquo;ll find a SD-Card image right here:</p>
+
+<pre><code>tmp/deploy/images/udooneo/core-image-base-udooneo.sdcard
+</code></pre>
+
+<p>You can write this image directly to any supported SD-Card. Plug it into your freshly unboxed UDOO NEO and hopefully have fun. This image is completly untested and you have to use it on your own risk&hellip;</p>
+
+<h1>Creating your personal Toolchain</h1>
+
+<p>If you want to develop your own software for the UDOO Neo you&rsquo;ll need some cross toolchain. This can be achieved very easy with the OpenEmbedded universe.</p>
+
+<pre><code>$ bitbake core-image-base -cpopulate_sdk
+</code></pre>
+
+<p>The resulting self extracting shell script you&rsquo;ll find right here:</p>
+
+<pre><code>tmp/deploy/sdk/poky-glibc-x86_64-core-image-base-cortexa9hf-vfp-neon-toolchain-1.8.sh
+</code></pre>
+
+<p>In case of any questions just leave a comment on my Blog.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Installing STM32CubeMX on Linux]]></title>
+    <link href="http://ch.ege.io/blog/2015/08/03/installing-stm32cubemx-on-linux/"/>
+    <updated>2015-08-03T06:11:16+02:00</updated>
+    <id>http://ch.ege.io/blog/2015/08/03/installing-stm32cubemx-on-linux</id>
+    <content type="html"><![CDATA[<p>The STMicroelectronics STM32CubeMX is delivered as a exe file what implies that it is eintended to run on Windows systems only. But due to the fact it is a JAVA application we can run it on Linux as-well.</p>
+
+<h1>Installation</h1>
+
+<p>To install the STM32CubeMX administration rights are needed</p>
+
+<pre><code>sudo java -jar /tmp/SetupSTM32CubeMX-4.9.0.exe
+</code></pre>
+
+<h1>Running STM32CubeMX</h1>
+
+<p>If you&rsquo;ve selected the default install location you can run STM32CubeMX like this:</p>
+
+<pre><code>java -jar /usr/local/STMicroelectronics/STM32Cube/STM32CubeMX/STM32CubeMX.exe
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[[WIP] NIM_DVB-S/S2 V1.0 Pinout]]></title>
+    <link href="http://ch.ege.io/blog/2015/07/18/nim-dvb-s-slash-s2-v1-dot-0-pinout/"/>
+    <updated>2015-07-18T08:26:39+02:00</updated>
+    <id>http://ch.ege.io/blog/2015/07/18/nim-dvb-s-slash-s2-v1-dot-0-pinout</id>
+    <content type="html"><![CDATA[<p>This is a work in progress article and will be updated over time.</p>
+
+<table>
+<thead>
+<tr>
+<th style="text-align:center;"> PIN </th>
+<th style="text-align:center;"> Side B        </th>
+<th style="text-align:center;"> Side A         </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;">  1  </td>
+<td style="text-align:center;">  GND          </td>
+<td style="text-align:center;"> n.c.           </td>
+</tr>
+<tr>
+<td style="text-align:center;">  2  </td>
+<td style="text-align:center;">  n.c.         </td>
+<td style="text-align:center;"> GND            </td>
+</tr>
+<tr>
+<td style="text-align:center;">  3  </td>
+<td style="text-align:center;">  n.c.         </td>
+<td style="text-align:center;"> n.c.           </td>
+</tr>
+<tr>
+<td style="text-align:center;">  4  </td>
+<td style="text-align:center;">  n.c.         </td>
+<td style="text-align:center;"> n.c.           </td>
+</tr>
+<tr>
+<td style="text-align:center;">  5  </td>
+<td style="text-align:center;">  n.c.         </td>
+<td style="text-align:center;"> n.c.           </td>
+</tr>
+<tr>
+<td style="text-align:center;">  6  </td>
+<td style="text-align:center;">  n.c.         </td>
+<td style="text-align:center;"> GND            </td>
+</tr>
+<tr>
+<td style="text-align:center;">  7  </td>
+<td style="text-align:center;">  n.c.         </td>
+<td style="text-align:center;"> n.c.           </td>
+</tr>
+<tr>
+<td style="text-align:center;">  8  </td>
+<td style="text-align:center;">  n.c.         </td>
+<td style="text-align:center;"> GND            </td>
+</tr>
+<tr>
+<td style="text-align:center;">  9  </td>
+<td style="text-align:center;">  n.c.         </td>
+<td style="text-align:center;"> n.c.           </td>
+</tr>
+<tr>
+<td style="text-align:center;"> 10  </td>
+<td style="text-align:center;">  n.c.         </td>
+<td style="text-align:center;"> n.c.           </td>
+</tr>
+<tr>
+<td style="text-align:center;"> 11  </td>
+<td style="text-align:center;">  n.c.         </td>
+<td style="text-align:center;"> GND            </td>
+</tr>
+<tr>
+<td style="text-align:center;"> &ndash;  </td>
+<td style="text-align:center;">  Key notch    </td>
+<td style="text-align:center;"> Key notch      </td>
+</tr>
+<tr>
+<td style="text-align:center;"> 12  </td>
+<td style="text-align:center;">  GND          </td>
+<td style="text-align:center;"> GND            </td>
+</tr>
+<tr>
+<td style="text-align:center;"> 13  </td>
+<td style="text-align:center;">  n.c.         </td>
+<td style="text-align:center;"> n.c.           </td>
+</tr>
+<tr>
+<td style="text-align:center;"> 14  </td>
+<td style="text-align:center;">  n.c.         </td>
+<td style="text-align:center;"> n.c.           </td>
+</tr>
+<tr>
+<td style="text-align:center;"> 15  </td>
+<td style="text-align:center;">  n.c.         </td>
+<td style="text-align:center;"> GND            </td>
+</tr>
+<tr>
+<td style="text-align:center;"> 16  </td>
+<td style="text-align:center;">  n.c.         </td>
+<td style="text-align:center;"> n.c.           </td>
+</tr>
+<tr>
+<td style="text-align:center;"> 17  </td>
+<td style="text-align:center;">  n.c.         </td>
+<td style="text-align:center;"> n.c.           </td>
+</tr>
+<tr>
+<td style="text-align:center;"> 18  </td>
+<td style="text-align:center;">  GND          </td>
+<td style="text-align:center;"> GND            </td>
+</tr>
+</tbody>
+</table>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[PCI-Express Connectors From China]]></title>
+    <link href="http://ch.ege.io/blog/2015/07/18/pci-express-connectors-from-china/"/>
+    <updated>2015-07-18T07:40:11+02:00</updated>
+    <id>http://ch.ege.io/blog/2015/07/18/pci-express-connectors-from-china</id>
+    <content type="html"><![CDATA[<p>After my decision to build a full <a href="http://ch.ege.io/blog/2015/07/04/full-open-source-dvb-s2-board/">Open Source Software based DVB-S2 USB module</a> I ordered some PCI-Express connectors from <a href="http://s.click.aliexpress.com/e/A6qjiaIUr?af=704840420">China on Aliexpress</a>. The delivery time was quite low I received my package about 11 days after placing my order. This is really quick for standard delivery from China to Germany. Next step will be adding this connector to <a href="http://www.cadsoft.de/">Eagle PCB Design Software</a>. And designing a small breadboard to PCI-Express board and host it on <a href="https://oshpark.com/">OSHPark</a>.</p>
+
+<p><img src="http://ch.ege.io/images/posts/IMG_5144.jpg"></p>
+
+<p>I have not found any data sheet for this connector yet. On one side it has an engraving with <a href="http://www.te.com">,,tyco/Electronics&#8221;</a> and on the other side some code ,,08306ED&#8217;&lsquo;.</p>
+
+<h2>Update</h2>
+
+<p>After some research I found a ,,data sheet&#8217;&lsquo; <a href="http://www.te.com/usa-en/product-4-1775800-2.html">ENG_DS_4-1773442-7_0308-2.pdf</a> but it lacks detailed drawings about the PIN pitch. After some research I discovered that those connectors are described in the <a href="https://www.google.com/search?q=PCI+Express+Card+Electromechanical+Specification">PCI Express Card Electromechanical Specification</a>.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Full Open Source DVB-S2 Board]]></title>
+    <link href="http://ch.ege.io/blog/2015/07/04/full-open-source-dvb-s2-board/"/>
+    <updated>2015-07-04T19:43:00+02:00</updated>
+    <id>http://ch.ege.io/blog/2015/07/04/full-open-source-dvb-s2-board</id>
+    <content type="html"><![CDATA[<p>Some time ago I thought it would be fun to build a USB DVB-S2 device which runs on 100% OpenSource Software. Due to the fact I do not have any tooling for soldering complex chips I decided to build this project on hardware which is already available. For interconnection of the DVB part with the PC or a Single board computer like the ODROID-C1 or Raspberry PI my decision was to use a <a href="http://www.cypress.com/?id=193">Cypress FX2 CY7C68013A</a> evaluation board. You can buy them for under 10€ in far east on ebay. I bought one of the <a href="http://sigrok.org/wiki/Lcsoft_Mini_Board">Lcsoft Mini Boards</a>. The coreboot project provides a <a href="http://www.coreboot.org/File:Fx2lp_lcsoft_schematic_A.pdf">schematic for the Lcsoft board</a>.</p>
+
+<p><img src="http://sigrok.org/wimg/e/ec/Lcsoft-miniboard-front.png" title="'Lcsoft Mini Board CC-BY 3.0'" ></p>
+
+<p>The <a href="http://www.cypress.com/?id=193">Cypress FX2 CY7C68013A</a> is based on a 8051 core. Not one of my favorite hacking platform but I&rsquo;ll give it a try. There is a Open Source Framework for firmware development it is called <a href="https://github.com/djmuhlestein/fx2lib">fxlib</a>. After some research on Google I found the project <a href="http://qanu.de/termini.php">Termini</a>. The firmware for the Termini hardware is available via the linuxtv.org <a href="http://linuxtv.org/cgi-bin/viewvc.cgi/dvb-hw/dvbusb-fx2/termini/">CVS repository</a>. They provide a specification for the <a href="http://qanu.de/docs/dvbt-usb-spec.pdf">USB communication</a> between the host controller and the FX2. There are already some USB 2.0 USB DVB-S2 devices based on the <a href="http://www.cypress.com/?id=193">Cypress FX2 CY7C68013A</a> like the <a href="http://www.linuxtv.org/wiki/index.php/DVBSKY_S960">DVBSKY S960</a>.</p>
+
+<p>The last part in the jigsaw puzzle is the DVB-S2 tuner and demodulator part. Some of the linux based Set-Top-Boxes provide swappable tuner modules one of them is the manufacturer GigaBlue. They sell a <a href="http://www.gigablue.de/portfolio-item/gigablue-dvb-s2-tuner/">DVB-S2 Tuner</a> based on the Serit <a href="http://serit.hk/Products_Details.aspx?IDX=144">SP2246 NIM for DVB-S2</a>. The SP2246 is based on the <a href="http://www.st.com/web/catalog/mmc/FM131/SC1003/PF251478">STV6111</a> tuner and the <a href="http://www.st.com/web/catalog/mmc/FM131/SC628/SS1334/PF252767?s_searchtype=partnumber">STV0913</a> demodulator. It looks like the tuner module is connected via a <a href="https://en.wikipedia.org/wiki/PCI_Express#Form_factors">PCI-Express x1 36Pin</a> connector. Serit provides a very detailed <a href="http://serit.hk/Manager/Public/pdf/201212070342307ead.pdf">data sheet</a> so at least a few of the PINs should be easily mappable with a multi meter.</p>
+
+<p><img src="http://ch.ege.io/images/posts/sp2246.jpg"></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Watterott HDMI/DVI - RGB Adapter EDID Hacks]]></title>
+    <link href="http://ch.ege.io/blog/2015/06/15/watterott-hdmi-slash-dvi-rgb-adapter-edid-hacks/"/>
+    <updated>2015-06-15T08:09:57+02:00</updated>
+    <id>http://ch.ege.io/blog/2015/06/15/watterott-hdmi-slash-dvi-rgb-adapter-edid-hacks</id>
+    <content type="html"><![CDATA[<p>The German Maker supplier <a href="http://www.watterott.com">Watterott</a> sells a <a href="http://www.watterott.com/en/HDMI-RGB-adapter-with-ATmega32U4-touch-controller">HDMI/DVI to RGB Display adapter</a>. The Adapter itself contains a ATmega32U4 controller attached to USB, which works as touchcontroller.  The designs and firmware for the adapter are available on <a href="https://github.com/watterott/HDMI-Display">GitHub</a>. I am not sure if we can call this OpenSource because of a missing License file.</p>
+
+<p><img class="center" src="https://raw.githubusercontent.com/watterott/HDMI-Display/master/hardware/HDMI-Display_v10dev.jpg"></p>
+
+<p>Beside the HDMI/DVI Bridge controller the board contains a EEPREOM to store the <a href="https://en.wikipedia.org/wiki/Extended_Display_Identification_Data">EDID</a> data. EDID is needed to provide the attached Host device like your PC or Mac to identify what resolution and capabilities your Display has.</p>
+
+<p>Due to the fact that the adapter supports a <a href="https://github.com/watterott/HDMI-Display/blob/master/docu/Displays.md">wide range</a> of displays the EEPROM is not programmed on a freshly ordered board.</p>
+
+<h1>Flashing the EDID EEPROM</h1>
+
+<p>Watterott suggests to flash the EEPROM through the ATmega32U4 controller and provides <a href="https://github.com/watterott/HDMI-Display/blob/master/docu/FAQ.md#how-to-flashupdate-the-edid-eeprom">a short description</a> how to do this. But this requires to close two solder jumpers. I decided to flash the EDID EEPROM with my <a href="http://dangerousprototypes.com/docs/Bus_Pirate">Bus Pirate</a> and the <a href="http://www.delock.de/produkte/G_65168/merkmale.html?setLanguage=en">Delock 65168</a></p>
+
+<p><img class="center" src="http://www.bilder.delock.de/produkte/orig/50f030782950b0.34465021.jpg"></p>
+
+<p>For me the <a href="http://www.delock.de/produkte/G_65168/merkmale.html?setLanguage=en">Delock 65168</a> is the perfect toy to play around with EDID or <a href="https://en.wikipedia.org/wiki/HDMI#CEC">HDMI CEC</a>.</p>
+
+<p>The host controller communicates through <a href="https://en.wikipedia.org/wiki/I%C2%B2C">I2C</a> with the EDID EEPROM. There are at least 3 line needed to establish the <a href="https://en.wikipedia.org/wiki/I%C2%B2C">I2C</a> communication. You need a good ground connection <strong>(GND)</strong> and a clock line <strong>(SCL)</strong> and of course the data line <strong>(SDA)</strong></p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[ODROID-C1 Enabling Bootlogo on Yocto Builds]]></title>
-    <link href="http://sturmschneid.github.io/blog/2015/05/04/odroid-c1-enabling-bootlogo-on-yocto-builds/"/>
+    <link href="http://ch.ege.io/blog/2015/05/04/odroid-c1-enabling-bootlogo-on-yocto-builds/"/>
     <updated>2015-05-04T11:40:53+02:00</updated>
-    <id>http://sturmschneid.github.io/blog/2015/05/04/odroid-c1-enabling-bootlogo-on-yocto-builds</id>
+    <id>http://ch.ege.io/blog/2015/05/04/odroid-c1-enabling-bootlogo-on-yocto-builds</id>
     <content type="html"><![CDATA[<p>The U-Boot for the Amlogic S805 from <a href="https://github.com/hardkernel/u-boot/tree/odroidc-v2011.03">Hardkernel</a> has the capabilities to display a bootlogo. It is not that easy to find any bootlogo that complies to a licence which can be used in comercial and in open source environments. Using the yocto logo is most probably prohibited, so I decided to design my own logo. And saved it to <strong> 24-bit Windows BMP image</strong> with the dimension of <strong>1280×720</strong> as statet in the <a href="http://odroid.com/dokuwiki/doku.php?id=en:c1_tips#logo_file_format">ODROID-C1 Wiki</a></p>
 
 <p><img src="https://raw.githubusercontent.com/linux-meson/meta-amlogic/fido/recipes-bsp/u-boot/u-boot-odroidc1/odroidc1/bootlogo.png"></p>
@@ -51,9 +317,9 @@ bmp scale
   
   <entry>
     <title type="html"><![CDATA[Using H/W Randaom Generator on ODROD-C1 With Yocto]]></title>
-    <link href="http://sturmschneid.github.io/blog/2015/05/04/using-h-slash-w-randaom-generator-on-odrod-c1-with-yocto/"/>
+    <link href="http://ch.ege.io/blog/2015/05/04/using-h-slash-w-randaom-generator-on-odrod-c1-with-yocto/"/>
     <updated>2015-05-04T05:30:18+02:00</updated>
-    <id>http://sturmschneid.github.io/blog/2015/05/04/using-h-slash-w-randaom-generator-on-odrod-c1-with-yocto</id>
+    <id>http://ch.ege.io/blog/2015/05/04/using-h-slash-w-randaom-generator-on-odrod-c1-with-yocto</id>
     <content type="html"><![CDATA[<p>The Amlogic S805 CPU used in the ODROID-C1 contains a hardware random number generator which can be used to increase entropy in the linux kernel. The guys at Hardkernel wrote a <a href="http://odroid.com/dokuwiki/doku.php?id=en:c1_hardware_number_generator">tutorial how to enable this in Ubuntu</a>.</p>
 
 <p>Due to the fact that there is a <a href="http://cgit.openembedded.org/meta-openembedded/tree/meta-oe/recipes-support/rng-tools/rng-tools_4.bb?h=fido">rng-tools recipe</a> in the <a href="http://cgit.openembedded.org/meta-openembedded/">meta-openembedded</a> repo I thought it would be a no-brainer to get this working in Yocto fido.</p>
@@ -207,9 +473,9 @@ sys     0m 0.36s
   
   <entry>
     <title type="html"><![CDATA[Using the SEGGER J-Link to Access the TI CC2650 Chip]]></title>
-    <link href="http://sturmschneid.github.io/blog/2015/04/12/using-the-segger-j-link-to-access-the-ti-cc2650-chip/"/>
+    <link href="http://ch.ege.io/blog/2015/04/12/using-the-segger-j-link-to-access-the-ti-cc2650-chip/"/>
     <updated>2015-04-12T17:07:32+02:00</updated>
-    <id>http://sturmschneid.github.io/blog/2015/04/12/using-the-segger-j-link-to-access-the-ti-cc2650-chip</id>
+    <id>http://ch.ege.io/blog/2015/04/12/using-the-segger-j-link-to-access-the-ti-cc2650-chip</id>
     <content type="html"><![CDATA[<p>Before you get started install the <a href="https://www.segger.com/jlink-software.html">newest host tools</a> for your SEGGER in my case I installed the Debian package of version <strong>V4.98b</strong>. On first start the <strong>JLinExe</strong> installs the apropriate Firmware.</p>
 
 <pre><code>$ JLinkExe -if jtag -device CC2650F128
@@ -259,16 +525,16 @@ J-Link&gt;
   
   <entry>
     <title type="html"><![CDATA[ORICO BTA-402 USB Bluetooth 4.0 Low Energy Micro Adapter on ODROID-C1]]></title>
-    <link href="http://sturmschneid.github.io/blog/2015/04/12/orico-bta-402-usb-bluetooth-4-dot-0-low-energy-micro-adapter-on-odroid-c1/"/>
+    <link href="http://ch.ege.io/blog/2015/04/12/orico-bta-402-usb-bluetooth-4-dot-0-low-energy-micro-adapter-on-odroid-c1/"/>
     <updated>2015-04-12T09:11:53+02:00</updated>
-    <id>http://sturmschneid.github.io/blog/2015/04/12/orico-bta-402-usb-bluetooth-4-dot-0-low-energy-micro-adapter-on-odroid-c1</id>
-    <content type="html"><![CDATA[<p>Today I had some fun with <a href="http://en.wikipedia.org/wiki/Bluetooth_low_energy">Bluetooth Low Energy</a> and my <a href="http://www.hardkernel.com/main/products/prdt_info.php">ODROID C1</a> In an earlier <a href="http://sturmschneid.github.io/blog/2015/04/12/running-bluez5-on-yocto-slash-openembedded/">Blog Post</a> I described how to enable Bluetooth Low Energy Support in Yocto.</p>
+    <id>http://ch.ege.io/blog/2015/04/12/orico-bta-402-usb-bluetooth-4-dot-0-low-energy-micro-adapter-on-odroid-c1</id>
+    <content type="html"><![CDATA[<p>Today I had some fun with <a href="http://en.wikipedia.org/wiki/Bluetooth_low_energy">Bluetooth Low Energy</a> and my <a href="http://www.hardkernel.com/main/products/prdt_info.php">ODROID C1</a> In an earlier <a href="http://ch.ege.io/blog/2015/04/12/running-bluez5-on-yocto-slash-openembedded/">Blog Post</a> I described how to enable Bluetooth Low Energy Support in Yocto.</p>
 
 <p>Recently I bought this <a href="http://www.amazon.de/gp/product/B00K5TJP02?psc=1&amp;redirect=true&amp;ref_=oh_aui_detailpage_o04_s00">ORICO BTA-402 USB Bluetooth 4.0 Low Energy Micro Adapter</a> on Amazon to play with Bluetooth Low Energy. The USB Dongle was automatically detected by my <a href="https://github.com/project-magpie/meta-amlogic">meta-amlogic&rsquo;s</a> kernel configuration for the <a href="http://www.hardkernel.com/main/products/prdt_info.php">ODROID C1</a></p>
 
 <p>I used the New <a href="http://www.ti.com/tool/cc2650stk">SimpleLink™ Bluetooth Smart®/Multi-Standard SensorTag</a> as the device to connect to.</p>
 
-<p><img src="http://sturmschneid.github.io/images/SensorTag2.png"></p>
+<p><img src="http://ch.ege.io/images/SensorTag2.png"></p>
 
 <p>On the ODROID-C1 device run the following commands:</p>
 
@@ -387,9 +653,9 @@ Notification handle = 0x0049 value: 00
   
   <entry>
     <title type="html"><![CDATA[Running BlueZ5 on Yocto/OpenEmbedded]]></title>
-    <link href="http://sturmschneid.github.io/blog/2015/04/12/running-bluez5-on-yocto-slash-openembedded/"/>
+    <link href="http://ch.ege.io/blog/2015/04/12/running-bluez5-on-yocto-slash-openembedded/"/>
     <updated>2015-04-12T07:09:49+02:00</updated>
-    <id>http://sturmschneid.github.io/blog/2015/04/12/running-bluez5-on-yocto-slash-openembedded</id>
+    <id>http://ch.ege.io/blog/2015/04/12/running-bluez5-on-yocto-slash-openembedded</id>
     <content type="html"><![CDATA[<p>At the moment yocto/openembedded ships with <a href="http://www.bluez.org">BlueZ4</a> as the Linux Bluetooth protocol stack. Due to the fact that <a href="http://en.wikipedia.org/wiki/Bluetooth_low_energy">Bluetooth low energy</a> is only supported in BlueZ5 this is a bit of a disappointment. There is a long-standing bug report on this <a href="https://bugzilla.yoctoproject.org/show_bug.cgi?id=5031">#5031 </a>. But since the commit <a href="http://git.yoctoproject.org/cgit/cgit.cgi/poky/commit/?id=1139cc4eef305fc14bc5db19a5f8729e7b3bf27a">1139cc4e&hellip;</a> the used BlueZ version can be selected. According to the reference manual BlueZ5 can be enabled by adding bluez5 to the <a href="http://www.yoctoproject.org/docs/1.8/ref-manual/ref-manual.html#var-DISTRO_FEATURES">DISTRO_FEATURES</a> for me the easiest way to to this was adding the following line to my conf/local.conf in the <a href="http://www.yoctoproject.org/docs/1.8/dev-manual/dev-manual.html#build-directory">Build Directory</a>.</p>
 
 <pre><code>DISTRO_FEATURES = "ext2 alsa wifi usbhost bluetooth bluez5 ${DISTRO_FEATURES_LIBC}"
@@ -430,18 +696,18 @@ packagegroup-base-bluetooth - 1.0-r83 - Bluetooth support  Merge machine and dis
   
   <entry>
     <title type="html"><![CDATA[New Blog Based on Octopress]]></title>
-    <link href="http://sturmschneid.github.io/blog/2014/10/25/new-blog-based-on-octopress/"/>
+    <link href="http://ch.ege.io/blog/2014/10/25/new-blog-based-on-octopress/"/>
     <updated>2014-10-25T13:40:01+02:00</updated>
-    <id>http://sturmschneid.github.io/blog/2014/10/25/new-blog-based-on-octopress</id>
+    <id>http://ch.ege.io/blog/2014/10/25/new-blog-based-on-octopress</id>
     <content type="html"><![CDATA[<p>This is my new Blog based on <a href="http://octopress.org/">Octopress</a> and <a href="http://kaworu.github.io/octostrap3">Octostrap3</a></p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[Building a Yocto Image for the A20 OLinuXino LIME]]></title>
-    <link href="http://sturmschneid.github.io/blog/2014/09/26/building-a-yocto-image-for-the-a20-olinuxino-lime/"/>
+    <link href="http://ch.ege.io/blog/2014/09/26/building-a-yocto-image-for-the-a20-olinuxino-lime/"/>
     <updated>2014-09-26T00:00:00+02:00</updated>
-    <id>http://sturmschneid.github.io/blog/2014/09/26/building-a-yocto-image-for-the-a20-olinuxino-lime</id>
+    <id>http://ch.ege.io/blog/2014/09/26/building-a-yocto-image-for-the-a20-olinuxino-lime</id>
     <content type="html"><![CDATA[<p>Some time ago I ordered a <a href="https://www.olimex.com/Products/OLinuXino/A20/A20-OLinuXino-LIME-4GB/open-source-hardware">A20-OLinuXino-LIME-4GB</a> board. This was planed as a replacement for my not so beloved Raspberry PI. I am not that big fan of the PI because of the wacky SD-Card holder and the USB stability. I hope the 4GB NAND of the <a href="https://www.olimex.com/Products/OLinuXino/A20/A20-OLinuXino-LIME-4GB/open-source-hardware">A20-OLinuXino-LIME-4GB</a> Will improve the stability of my target application.</p>
 
 <h3>[Update - 2014-10-01]</h3>
@@ -603,22 +869,22 @@ arm-poky-linux-gnueabi-gcc -march=armv7-a -mthumb-interwork -mfloat-abi=hard -mf
   
   <entry>
     <title type="html"><![CDATA[Sti7111 (ST40) JTAG Preparations]]></title>
-    <link href="http://sturmschneid.github.io/blog/2014/06/15/sti7111-st40-jtag-preparations/"/>
+    <link href="http://ch.ege.io/blog/2014/06/15/sti7111-st40-jtag-preparations/"/>
     <updated>2014-06-15T00:00:00+02:00</updated>
-    <id>http://sturmschneid.github.io/blog/2014/06/15/sti7111-st40-jtag-preparations</id>
+    <id>http://ch.ege.io/blog/2014/06/15/sti7111-st40-jtag-preparations</id>
     <content type="html"><![CDATA[<p>While I almost smashed my Spark 7111 Box during <a href="http://project-magpie.github.io/2013/10/02/that-was-a-close-shave/">UBI experiments</a> I decided to build a JTAG adapter for the ST40 CPU. After getting a little more familiar with eagle my second design ended in the <a href="https://github.com/project-magpie/jtag-adapter">ST40 JTAG adapter</a>.</p>
 
 <p>I ordered the PCB at <a href="http://www.seeedstudio.com/service/">Seeedstudio Fusion PCB</a> and was impressed how cheap and fast they are.</p>
 
-<p><img src="http://sturmschneid.github.io/images/jtag/jtag_pcb.png"></p>
+<p><img src="http://ch.ege.io/images/jtag/jtag_pcb.png"></p>
 
 <p>After assembly of the PCB the JTAG adapter have to be connected to the STB. If you are unsure about the pinning you can easily check if Pin-2 is connected to GND with a multimeter.</p>
 
-<p><img src="http://sturmschneid.github.io/images/jtag/spark_jtag_pinout.png"></p>
+<p><img src="http://ch.ege.io/images/jtag/spark_jtag_pinout.png"></p>
 
 <p>A more detailed version reconstructed in eagle.</p>
 
-<p><img src="http://sturmschneid.github.io/images/jtag/spark_jtag_pinout_eagle.png"></p>
+<p><img src="http://ch.ege.io/images/jtag/spark_jtag_pinout_eagle.png"></p>
 
 <p>Anyway, most hardware is useless without software. To use the JTAG Adapter the <a href="http://www.st.com/st-web-ui/static/active/en/resource/technical/document/user_manual/CD17379953.pdf">ST40 Micro Toolset</a> is needed. You can grab your version of the ST40 Micro Toolset at the <a href="ftp://ftp.stlinux.com/pub/tools/products/st40tools/ST40_GNU_R5.1.0/">STM ftp server</a>. As usual I decided to take the linux version (R5.1.0). I have tested with Ubuntu 12.04. Maybe the 32bit compatibility libs have to be installed if you are running a 64bit distro. You also need the <a href="ftp://ftp.stlinux.com/pub/tools/products/stmc2/R1.6.0/doc/release_notes.htm">ST Micro Connection Package R1.6.0.</a>. After Installation the folder structure should look like this:</p>
 
@@ -725,26 +991,26 @@ Err:   serial
   
   <entry>
     <title type="html"><![CDATA[EDID Mission Accomplished]]></title>
-    <link href="http://sturmschneid.github.io/blog/2014/04/29/edid-mission-accomplished/"/>
+    <link href="http://ch.ege.io/blog/2014/04/29/edid-mission-accomplished/"/>
     <updated>2014-04-29T00:00:00+02:00</updated>
-    <id>http://sturmschneid.github.io/blog/2014/04/29/edid-mission-accomplished</id>
+    <id>http://ch.ege.io/blog/2014/04/29/edid-mission-accomplished</id>
     <content type="html"><![CDATA[<p>After my <a href="http://project-magpie.github.io/2014/04/26/pursue-hdmi-edid-bugs/">HDMI EDID analisys</a> I decided getting more in touch with the hardware. I tried to trace the loose ends and checked where the onboard EEPROM is located. The next step was disabling the EEPROM and connecting the STB I2C Bus to the HDMI side.As in my previous <a href="2014/04/26/pursue-hdmi-edid-bugs">post</a> expected the missing SOT-23 parts near the HDMI output form a level shifter which convert the 3.3V I2C STB level to the 5V level of the HDMI side an vice versa.</p>
 
 <p>A detailed description of such an level shifter is described in an application note from <a href="http://www.adafruit.com/datasheets/an97055.pdf">Phillips</a>/<a href="http://www.nxp.com/documents/application_note/AN10441.pdf">NXP</a>.</p>
 
 <p>I started with the trace of the EEPROM. I finally found the EEPROM.</p>
 
-<p><img src="http://sturmschneid.github.io/assets/edid/edid_eeprom.jpg" alt="EDID EEPROM" /></p>
+<p><img src="http://ch.ege.io/assets/edid/edid_eeprom.jpg" alt="EDID EEPROM" /></p>
 
 <p>There are two serial resistors between I2C SCL and I2C SDA. Which can be more or less easily removed.</p>
 
-<p><img src="http://sturmschneid.github.io/assets/edid/edid_eeprom_disabled.jpg" alt="EDID EEPROM disabled" /></p>
+<p><img src="http://ch.ege.io/assets/edid/edid_eeprom_disabled.jpg" alt="EDID EEPROM disabled" /></p>
 
 <p>After soldering my very first sot-23 transistor which made me feeling like my soldering iron is too huge for decent jobs. I cursed myself for not taking the box to work where we do have a more professional equipement at least when it comes to soldering irons.</p>
 
 <p>The result looks ugly but seems to work.</p>
 
-<p><img src="http://sturmschneid.github.io/assets/edid/edid_transistor.jpg" alt="EDID Transistor" /></p>
+<p><img src="http://ch.ege.io/assets/edid/edid_transistor.jpg" alt="EDID Transistor" /></p>
 
 <p>As Transistor I&rsquo;ve chosen some  N-Channel Field Effect Transistor. Anything like a <a href="http://www.fairchildsemi.com/ds/2N/2N7000.pdf">2N7002</a> or a <a href="http://www.fairchildsemi.com/ds/BS/BSS138.pdf">BSS138</a> should do the job.</p>
 
@@ -754,9 +1020,9 @@ Err:   serial
   
   <entry>
     <title type="html"><![CDATA[Pursue HDMI EDID Bugs]]></title>
-    <link href="http://sturmschneid.github.io/blog/2014/04/26/pursue-hdmi-edid-bugs/"/>
+    <link href="http://ch.ege.io/blog/2014/04/26/pursue-hdmi-edid-bugs/"/>
     <updated>2014-04-26T00:00:00+02:00</updated>
-    <id>http://sturmschneid.github.io/blog/2014/04/26/pursue-hdmi-edid-bugs</id>
+    <id>http://ch.ege.io/blog/2014/04/26/pursue-hdmi-edid-bugs</id>
     <content type="html"><![CDATA[<p>Today I tried to track down the <a href="http://en.wikipedia.org/wiki/Extended_display_identification_data">EDID (&ldquo;Extended display identification data&rdquo;)</a> bug on my STi7111 (Golden Media 990CR ) spark box. <a href="http://en.wikipedia.org/wiki/Extended_display_identification_data">EDID</a> is needed to detect the display attached to the set-top box. On the newer STi7105 based boxes this works quite good. But on the STi7111 based spark boxes there is a hardware issue.</p>
 
 <p>During EDID query the frame-buffer driver prints out the following warning message:</p>
@@ -777,19 +1043,19 @@ stmfb: Setting Safe EDID
 
 <p>The result looks a little bit chaotic isn&rsquo;t it?</p>
 
-<p><img src="http://sturmschneid.github.io/assets/edid/overview.jpg" alt="This is what it all ended." /></p>
+<p><img src="http://ch.ege.io/assets/edid/overview.jpg" alt="This is what it all ended." /></p>
 
 <p>The image shows the set-top box, a <a href="https://www.saleae.com/logic16">salea logic16</a> logic analyser and a <a href="http://dangerousprototypes.com/docs/Bus_Pirate">DP Bus Pirate</a>. The salea logic analyser is to listen to I2C communication between the various loose ends. Before we can access the HDMI connector and the I2C EDID data lines we have to remove the Ethernet board. This is achieved by removing just one screw and lifting the complete Ethernet board.</p>
 
-<p><img src="http://sturmschneid.github.io/assets/edid/ethernet_board.jpg" alt="Remove the Ethernet board" /></p>
+<p><img src="http://ch.ege.io/assets/edid/ethernet_board.jpg" alt="Remove the Ethernet board" /></p>
 
 <p>After removing the Ethernet board it looks like this:</p>
 
-<p><img src="http://sturmschneid.github.io/assets/edid/edid_stuff.jpg" alt="EDID stuff" /></p>
+<p><img src="http://ch.ege.io/assets/edid/edid_stuff.jpg" alt="EDID stuff" /></p>
 
 <p>For debugging purposes I soldered some wires to the related components. There are two types of I2C bus involved. The one from HDMI which is a 5V type and the one from the STB which is at a 3.3V level. So the not applied components seems to form a level shifter. If I attach an HDMI monitor to the STB I can see transfers from STB to an EEPROM on the board which response with 0xFF in all bytes. But no communication over HDMI. Because the loose ends are not connected.</p>
 
-<p><img src="http://sturmschneid.github.io/assets/edid/cable_zoom.jpg" alt="EDID details" /></p>
+<p><img src="http://ch.ege.io/assets/edid/cable_zoom.jpg" alt="EDID details" /></p>
 
 <p>With an attached <a href="http://dangerousprototypes.com/docs/Bus_Pirate">bus pirate</a> to the HDMI I2C bus I can readout the EDID information from the attached monitor.</p>
 
@@ -944,9 +1210,9 @@ Checksum: 0x56
   
   <entry>
     <title type="html"><![CDATA[Assign Static Device Name for USB Infrared Toy]]></title>
-    <link href="http://sturmschneid.github.io/blog/2014/04/21/assign-static-device-name-for-usb-infrared-toy/"/>
+    <link href="http://ch.ege.io/blog/2014/04/21/assign-static-device-name-for-usb-infrared-toy/"/>
     <updated>2014-04-21T00:00:00+02:00</updated>
-    <id>http://sturmschneid.github.io/blog/2014/04/21/assign-static-device-name-for-usb-infrared-toy</id>
+    <id>http://ch.ege.io/blog/2014/04/21/assign-static-device-name-for-usb-infrared-toy</id>
     <content type="html"><![CDATA[<p>The last few days I was playing arround with my <a href="http://dangerousprototypes.com/docs/USB_Infrared_Toy">USB Infrared Toy v2</a> from Dangerous Prototypes. Due to the fact that I have attached some more devices which are detected as <strong>/dev/ACM[0-9]</strong> I decided to write an udev rule to assign a static device name.</p>
 
 <p>I stored the rule in the following file: <strong>/etc/udev/rules.d/98-ir-toy-v2.rules</strong></p>
@@ -960,9 +1226,9 @@ Checksum: 0x56
   
   <entry>
     <title type="html"><![CDATA[Rewriting History]]></title>
-    <link href="http://sturmschneid.github.io/blog/2013/11/04/rewriting-history/"/>
+    <link href="http://ch.ege.io/blog/2013/11/04/rewriting-history/"/>
     <updated>2013-11-04T00:00:00+01:00</updated>
-    <id>http://sturmschneid.github.io/blog/2013/11/04/rewriting-history</id>
+    <id>http://ch.ege.io/blog/2013/11/04/rewriting-history</id>
     <content type="html"><![CDATA[<p>Sometimes history has to be rewritten. In real life this is hopefully not possible yet. But in case of git this is possible. Some projecs start with a small repository which evolves over the time to a big bloated repository. Other ones start already bloated. In some cases the wish to split-up the repository in smaller chunks emerges. With some advice from <a href="http://seife.kernalert.de/blog/">Stefan Seyfried</a> I learned how to rewrite history</p>
 
 <p>The goal was to extract the driver directory from the <a href="https://gitorious.org/open-duckbox-project-sh4/tdt">tdt</a> repository like <a href="https://gitorious.org/neutrino-mp/tdt-driver">Stefan</a> already did.</p>
@@ -1133,9 +1399,9 @@ tdt-driver/
   
   <entry>
     <title type="html"><![CDATA[UBIFS as Rootfs]]></title>
-    <link href="http://sturmschneid.github.io/blog/2013/10/22/ubifs-as-rootfs/"/>
+    <link href="http://ch.ege.io/blog/2013/10/22/ubifs-as-rootfs/"/>
     <updated>2013-10-22T00:00:00+02:00</updated>
-    <id>http://sturmschneid.github.io/blog/2013/10/22/ubifs-as-rootfs</id>
+    <id>http://ch.ege.io/blog/2013/10/22/ubifs-as-rootfs</id>
     <content type="html"><![CDATA[<p>This Post describes how to get startet with an UBIFS root filesystem. I suppose you are using a image generated for the &ldquo;spark&rdquo; device. I have not done any tests with &ldquo;spark7162&rdquo;. For the spark boxes there is automatically a ubifs image generated.</p>
 
 <p>Generate a core-image-minimal for example. This assumes You already have set-up the yocto build environment.</p>
@@ -1219,9 +1485,9 @@ root@spark:~# ubiformat /dev/mtd6 -q -y -f /tmp/image.ubi
   
   <entry>
     <title type="html"><![CDATA[Analyzing Kernel Oops]]></title>
-    <link href="http://sturmschneid.github.io/blog/2013/10/08/analyzing-kernel-oops/"/>
+    <link href="http://ch.ege.io/blog/2013/10/08/analyzing-kernel-oops/"/>
     <updated>2013-10-08T00:00:00+02:00</updated>
-    <id>http://sturmschneid.github.io/blog/2013/10/08/analyzing-kernel-oops</id>
+    <id>http://ch.ege.io/blog/2013/10/08/analyzing-kernel-oops</id>
     <content type="html"><![CDATA[<p>There was a little hickup in the kernel while shutting down or rebooting the system. The result of the hickup was a Kernel Oops. Because it had no big influence on the behaviour of the system I did not spend a lot of time on investigation. Yesterday I did some tests with the yocto workflow for kernel development and tried to fix the hickup.</p>
 
 <h2>The hickup</h2>
@@ -1348,139 +1614,6 @@ Reading symbols from vmlinux...done.
 
 <p>With this information gdb can help to narrow the source of the problem. In my case I just googled the keywords stm and _clk_disable and found the following patch:
 <a href="http://code.google.com/p/tdt-amiko/source/browse/tdt/cvs/cdk/Patches/linux-sh4-fix-crash-usb-reboot_stm24_0211.diff?spec=svnbf027b5e899cd26fbc20ac0745385c69ab385923&amp;r=bf027b5e899cd26fbc20ac0745385c69ab385923">linux-sh4-fix-crash-usb-reboot_stm24_0211.diff</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[JFFS2 vs. UBIFS]]></title>
-    <link href="http://sturmschneid.github.io/blog/2013/10/04/jffs2-vs-ubifs/"/>
-    <updated>2013-10-04T00:00:00+02:00</updated>
-    <id>http://sturmschneid.github.io/blog/2013/10/04/jffs2-vs-ubifs</id>
-    <content type="html"><![CDATA[<p>After a successfull merge of the <a href="https://github.com/project-magpie/linux-sh4-2.6.32.y/tree/ubifs-merge">UBIFS patches</a>  I have made some benchmarks. In both cases I have flashed the same image. It was a fresh build of core-image-minimal from the <a href="https://github.com/project-magpie/meta-stlinux/tree/dylan">dylan branch</a>. Maybe these benachmarks have to be repeated with a more representative scenario. More Information regarding <a href="http://en.wikipedia.org/wiki/UBIFS">UBIFS</a> can be found on <a href="http://elinux.org/UBIFS">eLinux</a>. If you are interested in more flash file system Benchmarks you can also have a look a <a href="http://elinux.org/Flash_Filesystem_Benchmarks">eLinux</a>.</p>
-
-<h2>Mounting a JFFS2 Volume</h2>
-
-<pre><code>root@spark:~# time mount /dev/mtdblock6  -tjffs2 /mnt/
-real    0m 2.06s
-user    0m 0.00s
-sys     0m 2.06s
-</code></pre>
-
-<h2>Mounting a UBIFS volume</h2>
-
-<pre><code>root@spark:~# time ubiattach -m6 &amp;&amp; time mount -tubifs ubi0:rootfs /mnt/
-[  663.748000] UBI: attaching mtd6 to ubi0
-[  663.752000] UBI: physical eraseblock size:   131072 bytes (128 KiB)
-[  663.760000] UBI: logical eraseblock size:    129024 bytes
-[  663.764000] UBI: smallest flash I/O unit:    2048
-[  663.768000] UBI: sub-page size:              512
-[  663.776000] UBI: VID header offset:          512 (aligned 512)
-[  663.780000] UBI: data offset:                2048
-[  663.940000] UBI: max. sequence number:       28
-[  663.960000] UBI: attached mtd6 to ubi0
-[  663.972000] UBI: MTD device name:            "E2 RootFs"
-[  663.976000] UBI: MTD device size:            80 MiB
-[  663.980000] UBI: number of good PEBs:        638
-[  663.988000] UBI: number of bad PEBs:         2
-[  663.992000] UBI: number of corrupted PEBs:   0
-[  663.996000] UBI: max. allowed volumes:       128
-[  664.000000] UBI: wear-leveling threshold:    4096
-[  664.008000] UBI: number of internal volumes: 1
-[  664.012000] UBI: number of user volumes:     1
-[  664.016000] UBI: available PEBs:             0
-[  664.020000] UBI: total number of reserved PEBs: 638
-[  664.024000] UBI: number of PEBs reserved for bad PEB handling: 6
-[  664.028000] UBI: max/mean erase counter: 1/0
-[  664.032000] UBI: image sequence number:  1037100788
-[  664.040000] UBI: background thread "ubi_bgt0d" started, PID 553
-UBI device number 0, total 638 LEBs (82317312 bytes, 78.5 MiB), available 0 LEBs (0 bytes), LEB size 129024 bytes (126.0 KiB)
-real    0m 0.31s
-user    0m 0.00s
-sys     0m 0.28s
-[  664.092000] UBIFS: background thread "ubifs_bgt0_0" started, PID 556
-[  664.160000] UBIFS: mounted UBI device 0, volume 0, name "rootfs"&lt;NULL&gt;
-[  664.164000] UBIFS: LEB size: 129024 bytes (126 KiB), min./max. I/O unit sizes: 2048 bytes/2048 bytes
-[  664.168000] UBIFS: FS size: 79607808 bytes (75 MiB, 617 LEBs), journal size 9033728 bytes (8 MiB, 71 LEBs)
-[  664.172000] UBIFS: reserved for root: 0 bytes (0 KiB)
-[  664.176000] UBIFS: media format: w4/r0 (latest is w4/r0), , small LPT model
-real    0m 0.14s
-user    0m 0.00s
-sys     0m 0.11s
-</code></pre>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[That Was a Close Shave!]]></title>
-    <link href="http://sturmschneid.github.io/blog/2013/10/02/that-was-a-close-shave/"/>
-    <updated>2013-10-02T00:00:00+02:00</updated>
-    <id>http://sturmschneid.github.io/blog/2013/10/02/that-was-a-close-shave</id>
-    <content type="html"><![CDATA[<p>While fiddling arround with the ubifs port I recently did. I misstyped the MTD Partion and completly erased mtd0. This sounds not that tragically, but on mtd0 u-boot is located. Without a bootloader there is only a small chance that the box will boot again. To reboot the box in such a situation is a absolut no go. Now you have to start brain work &hellip;</p>
-
-<p>For the ubifs tests I have choosen the fresh dylan port of my <a href="https://github.com/project-magpie/meta-stlinux/tree/dylan">meta-stlinux</a> layer. This was a first draft and so I just build the ,,core-image-minimal&#8217;&lsquo;. I included the mtd-utils but I&rsquo;ve forgotten to include a ssh server aswell. This was not a big issue due to the fact that I used the serial line for connection. For testing I booted the box from USB. The USB was connect through a USB extension cable. Which cut me off from installing a fresh u-boot by inserting a USB Stick.</p>
-
-<h2>What are the options?</h2>
-
-<ul>
-<li>Transfer the u-boot by zmodem</li>
-<li>Transfer the u-boot by ethernet.</li>
-</ul>
-
-
-<p>The name minimal definitly means minimal. There was no serial command I did know to transer data. On the ethernet no SSH no telnet and of course no FTP. Okay lets start thinking&hellip;</p>
-
-<p>BANG!!! my good old friend ,,netcat&#8217;&lsquo; one little test and yes there is a ,,nc&rsquo;&lsquo; command. The rest was easy going.</p>
-
-<h2>How I solved the issue</h2>
-
-<p>On the host PC start the server</p>
-
-<pre><code>cat ~/uboot-alien.bin | nc -v -l 3333
-</code></pre>
-
-<p>Yes I do know alien is not the correct name for a golden media GM990 Box. But this was the only image I have found.</p>
-
-<p>On the box I used this commands</p>
-
-<pre><code># nc 192.168.24.157 3333 &gt; u-boot.bin
-# du u-boot.bin
-520     u-boot.bin
-# flash_eraseall -j /dev/mtd0
-flash_eraseall has been replaced by `flash_erase &lt;mtddev&gt; 0 0`; please use it
-Erasing 64 Kibyte @ 0 --  0 % complete flash_erase:  Cleanmarker written at 0
-Erasing 64 Kibyte @ 10000 -- 12 % complete flash_erase:  Cleanmarker written at 10000
-Erasing 64 Kibyte @ 20000 -- 25 % complete flash_erase:  Cleanmarker written at 20000
-Erasing 64 Kibyte @ 30000 -- 37 % complete flash_erase:  Cleanmarker written at 30000
-Erasing 64 Kibyte @ 40000 -- 50 % complete flash_erase:  Cleanmarker written at 40000
-Erasing 64 Kibyte @ 50000 -- 62 % complete flash_erase:  Cleanmarker written at 50000
-Erasing 64 Kibyte @ 60000 -- 75 % complete flash_erase:  Cleanmarker written at 60000
-Erasing 64 Kibyte @ 70000 -- 87 % complete flash_erase:  Cleanmarker written at 70000
-Erasing 64 Kibyte @ 70000 -- 100 % complete
-# flashcp u-boot.bin /dev/mtd0
-# reboot
-</code></pre>
-
-<p>Now it was time to to keep one&rsquo;s fingers crossed. One deep breath later the box bootet like every time before.</p>
-
-<pre><code>Board: STx7111-Mboard (MB618)  [32-bit mode]
-info: Disregarding any EPLD
-
-
-U-Boot 1.3.1 (Oct 19 2010 - 18:08:50) - stm23_0043 - YW 1.0.017 Rel
-
-DRAM:  128 MiB
-NOR:     8 MiB
-NAND:  512 MiB
-*** Warning - bad CRC, using default environment
-
-In:    serial
-Out:   serial
-Err:   serial
-IdentID : 09 00 07 00 00 46 d1
-0  ESC to stop autoboot:  3
-</code></pre>
-
-<p>Except of the little message ,,*** Warning - bad CRC, using default environment&#8217;&lsquo; this was caused because by writing 512kb I have destroyed u-boot environment. I am not sure If this is the right u-boot. I would be happy If someone with a Golden Media Spark reloaded Box can send me a copy of the u-boot.</p>
 ]]></content>
   </entry>
   

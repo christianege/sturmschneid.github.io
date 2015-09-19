@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Prng | Sturmschneid]]></title>
-  <link href="http://sturmschneid.github.io/blog/categories/prng/atom.xml" rel="self"/>
-  <link href="http://sturmschneid.github.io/"/>
-  <updated>2015-05-04T13:36:51+02:00</updated>
-  <id>http://sturmschneid.github.io/</id>
+  <link href="http://ch.ege.io/blog/categories/prng/atom.xml" rel="self"/>
+  <link href="http://ch.ege.io/"/>
+  <updated>2015-09-19T20:11:07+02:00</updated>
+  <id>http://ch.ege.io/</id>
   <author>
     <name><![CDATA[Christian Ege]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Using H/W Randaom Generator on ODROD-C1 With Yocto]]></title>
-    <link href="http://sturmschneid.github.io/blog/2015/05/04/using-h-slash-w-randaom-generator-on-odrod-c1-with-yocto/"/>
+    <link href="http://ch.ege.io/blog/2015/05/04/using-h-slash-w-randaom-generator-on-odrod-c1-with-yocto/"/>
     <updated>2015-05-04T05:30:18+02:00</updated>
-    <id>http://sturmschneid.github.io/blog/2015/05/04/using-h-slash-w-randaom-generator-on-odrod-c1-with-yocto</id>
+    <id>http://ch.ege.io/blog/2015/05/04/using-h-slash-w-randaom-generator-on-odrod-c1-with-yocto</id>
     <content type="html"><![CDATA[<p>The Amlogic S805 CPU used in the ODROID-C1 contains a hardware random number generator which can be used to increase entropy in the linux kernel. The guys at Hardkernel wrote a <a href="http://odroid.com/dokuwiki/doku.php?id=en:c1_hardware_number_generator">tutorial how to enable this in Ubuntu</a>.</p>
 
 <p>Due to the fact that there is a <a href="http://cgit.openembedded.org/meta-openembedded/tree/meta-oe/recipes-support/rng-tools/rng-tools_4.bb?h=fido">rng-tools recipe</a> in the <a href="http://cgit.openembedded.org/meta-openembedded/">meta-openembedded</a> repo I thought it would be a no-brainer to get this working in Yocto fido.</p>

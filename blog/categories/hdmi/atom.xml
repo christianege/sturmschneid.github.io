@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Hdmi | Sturmschneid]]></title>
+  <link href="http://ch.ege.io/blog/categories/hdmi/atom.xml" rel="self"/>
+  <link href="http://ch.ege.io/"/>
+  <updated>2015-09-19T20:11:07+02:00</updated>
+  <id>http://ch.ege.io/</id>
+  <author>
+    <name><![CDATA[Christian Ege]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Watterott HDMI/DVI - RGB Adapter EDID Hacks]]></title>
+    <link href="http://ch.ege.io/blog/2015/06/15/watterott-hdmi-slash-dvi-rgb-adapter-edid-hacks/"/>
+    <updated>2015-06-15T08:09:57+02:00</updated>
+    <id>http://ch.ege.io/blog/2015/06/15/watterott-hdmi-slash-dvi-rgb-adapter-edid-hacks</id>
+    <content type="html"><![CDATA[<p>The German Maker supplier <a href="http://www.watterott.com">Watterott</a> sells a <a href="http://www.watterott.com/en/HDMI-RGB-adapter-with-ATmega32U4-touch-controller">HDMI/DVI to RGB Display adapter</a>. The Adapter itself contains a ATmega32U4 controller attached to USB, which works as touchcontroller.  The designs and firmware for the adapter are available on <a href="https://github.com/watterott/HDMI-Display">GitHub</a>. I am not sure if we can call this OpenSource because of a missing License file.</p>
+
+<p><img class="center <a" src="href="https://raw.githubusercontent.com/watterott/HDMI-Display/master/hardware/HDMI-Display_v10dev.jpg">https://raw.githubusercontent.com/watterott/HDMI-Display/master/hardware/HDMI-Display_v10dev.jpg</a>&#8221;></p>
+
+<p>Beside the HDMI/DVI Bridge controller the board contains a EEPREOM to store the <a href="https://en.wikipedia.org/wiki/Extended_Display_Identification_Data">EDID</a> data. EDID is needed to provide the attached Host device like your PC or Mac to identify what resolution and capabilities your Display has.</p>
+
+<p>Due to the fact that the adapter supports a <a href="https://github.com/watterott/HDMI-Display/blob/master/docu/Displays.md">wide range</a> of displays the EEPROM is not programmed on a freshly ordered board.</p>
+
+<h1>Flashing the EDID EEPROM</h1>
+
+<p>Watterott suggests to flash the EEPROM through the ATmega32U4 controller and provides <a href="https://github.com/watterott/HDMI-Display/blob/master/docu/FAQ.md#how-to-flashupdate-the-edid-eeprom">a short description</a> how to do this. But this requires to close two solder jumpers. I decided to flash the EDID EEPROM with my <a href="http://dangerousprototypes.com/docs/Bus_Pirate">Bus Pirate</a> and the <a href="http://www.delock.de/produkte/G_65168/merkmale.html?setLanguage=en">Delock 65168</a></p>
+
+<p><img class="center <a" src="href="http://www.bilder.delock.de/produkte/orig/50f030782950b0.34465021.jpg">http://www.bilder.delock.de/produkte/orig/50f030782950b0.34465021.jpg</a>&#8221;></p>
+
+<p>For me the <a href="http://www.delock.de/produkte/G_65168/merkmale.html?setLanguage=en">Delock 65168</a> is the perfect toy to play around with EDID or <a href="https://en.wikipedia.org/wiki/HDMI#CEC">HDMI CEC</a>.</p>
+
+<p>The host controller communicates through <a href="https://en.wikipedia.org/wiki/I%C2%B2C">I2C</a> with the EDID EEPROM. There are at least 3 line needed to establish the <a href="https://en.wikipedia.org/wiki/I%C2%B2C">I2C</a> communication. You need a good ground connection <strong>(GND)</strong> and a clock line <strong>(SCL)</strong> and of course the data line <strong>(SDA)</strong></p>
+]]></content>
+  </entry>
+  
+</feed>

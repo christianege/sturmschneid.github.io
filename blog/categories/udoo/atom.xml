@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Udoo | Sturmschneid]]></title>
+  <link href="http://ch.ege.io/blog/categories/udoo/atom.xml" rel="self"/>
+  <link href="http://ch.ege.io/"/>
+  <updated>2015-09-19T20:11:07+02:00</updated>
+  <id>http://ch.ege.io/</id>
+  <author>
+    <name><![CDATA[Christian Ege]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[OpenEmbedded Support for the Upcomming UDOO Neo]]></title>
+    <link href="http://ch.ege.io/blog/2015/09/19/openembedded-support-for-the-upcomming-udoo-neo/"/>
+    <updated>2015-09-19T19:18:03+02:00</updated>
+    <id>http://ch.ege.io/blog/2015/09/19/openembedded-support-for-the-upcomming-udoo-neo</id>
+    <content type="html"><![CDATA[<p>After beeing part of the <a href="https://www.kickstarter.com/projects/udoo/udoo-neo-raspberry-pi-arduino-wi-fi-bt-40-sensors/?src=i1">Kickstarter campaign</a> for the <a href="http://www.udoo.org/udoo-neo/">UDOO NEO board</a>. I am looking forward to play with this little beast.</p>
+
+<p><img class="center <a" src="href="http://cdn.udoo.org/wp-content/uploads/2015/03/UDOO_neo_up2_ks_funded.png">http://cdn.udoo.org/wp-content/uploads/2015/03/UDOO_neo_up2_ks_funded.png</a>&#8221;></p>
+
+<p>During the meantime I decided to add the <a href="http://www.udoo.org/udoo-neo/">UDOO NEO board</a> to the <a href="https://github.com/Freescale/meta-fsl-arm-extra">Freescale OpenEmbedded community layer</a>. Due to the fact my board did not yet arrived I&rsquo;ve not yet created a patch to ask for integration into the official <a href="https://github.com/Freescale/meta-fsl-arm-extra">Freescale OpenEmbedded community layer</a>. This will be done when I&rsquo;ve tested the layer.</p>
+
+<p>If you are interested in my work you can find my personal fork right <a href="https://github.com/graugans/meta-fsl-arm-extra/">here at github</a>.
+You have to use the <a href="https://github.com/graugans/meta-fsl-arm-extra/tree/fido">fido</a> branch. To keep things simple I&rsquo;ve created my own
+branch of the <a href="https://github.com/graugans/fsl-community-bsp-platform">fsl-community-bsp-platform</a> repo repository.</p>
+
+<h1>Installing the BSP</h1>
+
+<p>To get the BSP you need to have repo installed and use it as:</p>
+
+<p>Install the repo utility:</p>
+
+<pre><code>$: mkdir ~/bin
+$: curl http://commondatastorage.googleapis.com/git-repo-downloads/repo &gt; ~/bin/repo
+$: chmod a+x ~/bin/repo
+</code></pre>
+
+<p>Download the BSP source:</p>
+
+<pre><code>$: PATH=${PATH}:~/bin
+$: mkdir fsl-community-bsp
+$: cd fsl-community-bsp
+$: repo init -u https://github.com/graugans/fsl-community-bsp-platform -b fido
+$: repo sync
+</code></pre>
+
+<p>At the end of the commands you have every metadata you need to start work with.</p>
+
+<h1>Building the Image</h1>
+
+<p>To start a base image build execute the following command on a decent machine and grab some coffee&hellip;</p>
+
+<p>$: source ./setup-environment udooneo-build
+$: bitbake core-image-base</p>
+
+<p>If everything was build fine you&rsquo;ll find a SD-Card image right here:</p>
+
+<pre><code>tmp/deploy/images/udooneo/core-image-base-udooneo.sdcard
+</code></pre>
+
+<p>You can write this image directly to any supported SD-Card. Plug it into your freshly unboxed UDOO NEO and hopefully have fun. This image is completly untested and you have to use it on your own risk&hellip;</p>
+
+<h1>Creating your personal Toolchain</h1>
+
+<p>If you want to develop your own software for the UDOO Neo you&rsquo;ll need some cross toolchain. This can be achieved very easy with the OpenEmbedded universe.</p>
+
+<pre><code>$ bitbake core-image-base -cpopulate_sdk
+</code></pre>
+
+<p>The resulting self extracting shell script you&rsquo;ll find right here:</p>
+
+<pre><code>tmp/deploy/sdk/poky-glibc-x86_64-core-image-base-cortexa9hf-vfp-neon-toolchain-1.8.sh
+</code></pre>
+
+<p>In case of any questions just leave a comment on my Blog.</p>
+]]></content>
+  </entry>
+  
+</feed>

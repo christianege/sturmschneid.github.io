@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Linux | Sturmschneid]]></title>
-  <link href="http://sturmschneid.github.io/blog/categories/linux/atom.xml" rel="self"/>
-  <link href="http://sturmschneid.github.io/"/>
-  <updated>2015-05-04T13:36:51+02:00</updated>
-  <id>http://sturmschneid.github.io/</id>
+  <link href="http://ch.ege.io/blog/categories/linux/atom.xml" rel="self"/>
+  <link href="http://ch.ege.io/"/>
+  <updated>2015-09-19T20:11:07+02:00</updated>
+  <id>http://ch.ege.io/</id>
   <author>
     <name><![CDATA[Christian Ege]]></name>
     
@@ -14,10 +14,117 @@
 
   
   <entry>
+    <title type="html"><![CDATA[OpenEmbedded Support for the Upcomming UDOO Neo]]></title>
+    <link href="http://ch.ege.io/blog/2015/09/19/openembedded-support-for-the-upcomming-udoo-neo/"/>
+    <updated>2015-09-19T19:18:03+02:00</updated>
+    <id>http://ch.ege.io/blog/2015/09/19/openembedded-support-for-the-upcomming-udoo-neo</id>
+    <content type="html"><![CDATA[<p>After beeing part of the <a href="https://www.kickstarter.com/projects/udoo/udoo-neo-raspberry-pi-arduino-wi-fi-bt-40-sensors/?src=i1">Kickstarter campaign</a> for the <a href="http://www.udoo.org/udoo-neo/">UDOO NEO board</a>. I am looking forward to play with this little beast.</p>
+
+<p><img class="center <a" src="href="http://cdn.udoo.org/wp-content/uploads/2015/03/UDOO_neo_up2_ks_funded.png">http://cdn.udoo.org/wp-content/uploads/2015/03/UDOO_neo_up2_ks_funded.png</a>&#8221;></p>
+
+<p>During the meantime I decided to add the <a href="http://www.udoo.org/udoo-neo/">UDOO NEO board</a> to the <a href="https://github.com/Freescale/meta-fsl-arm-extra">Freescale OpenEmbedded community layer</a>. Due to the fact my board did not yet arrived I&rsquo;ve not yet created a patch to ask for integration into the official <a href="https://github.com/Freescale/meta-fsl-arm-extra">Freescale OpenEmbedded community layer</a>. This will be done when I&rsquo;ve tested the layer.</p>
+
+<p>If you are interested in my work you can find my personal fork right <a href="https://github.com/graugans/meta-fsl-arm-extra/">here at github</a>.
+You have to use the <a href="https://github.com/graugans/meta-fsl-arm-extra/tree/fido">fido</a> branch. To keep things simple I&rsquo;ve created my own
+branch of the <a href="https://github.com/graugans/fsl-community-bsp-platform">fsl-community-bsp-platform</a> repo repository.</p>
+
+<h1>Installing the BSP</h1>
+
+<p>To get the BSP you need to have repo installed and use it as:</p>
+
+<p>Install the repo utility:</p>
+
+<pre><code>$: mkdir ~/bin
+$: curl http://commondatastorage.googleapis.com/git-repo-downloads/repo &gt; ~/bin/repo
+$: chmod a+x ~/bin/repo
+</code></pre>
+
+<p>Download the BSP source:</p>
+
+<pre><code>$: PATH=${PATH}:~/bin
+$: mkdir fsl-community-bsp
+$: cd fsl-community-bsp
+$: repo init -u https://github.com/graugans/fsl-community-bsp-platform -b fido
+$: repo sync
+</code></pre>
+
+<p>At the end of the commands you have every metadata you need to start work with.</p>
+
+<h1>Building the Image</h1>
+
+<p>To start a base image build execute the following command on a decent machine and grab some coffee&hellip;</p>
+
+<p>$: source ./setup-environment udooneo-build
+$: bitbake core-image-base</p>
+
+<p>If everything was build fine you&rsquo;ll find a SD-Card image right here:</p>
+
+<pre><code>tmp/deploy/images/udooneo/core-image-base-udooneo.sdcard
+</code></pre>
+
+<p>You can write this image directly to any supported SD-Card. Plug it into your freshly unboxed UDOO NEO and hopefully have fun. This image is completly untested and you have to use it on your own risk&hellip;</p>
+
+<h1>Creating your personal Toolchain</h1>
+
+<p>If you want to develop your own software for the UDOO Neo you&rsquo;ll need some cross toolchain. This can be achieved very easy with the OpenEmbedded universe.</p>
+
+<pre><code>$ bitbake core-image-base -cpopulate_sdk
+</code></pre>
+
+<p>The resulting self extracting shell script you&rsquo;ll find right here:</p>
+
+<pre><code>tmp/deploy/sdk/poky-glibc-x86_64-core-image-base-cortexa9hf-vfp-neon-toolchain-1.8.sh
+</code></pre>
+
+<p>In case of any questions just leave a comment on my Blog.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Installing STM32CubeMX on Linux]]></title>
+    <link href="http://ch.ege.io/blog/2015/08/03/installing-stm32cubemx-on-linux/"/>
+    <updated>2015-08-03T06:11:16+02:00</updated>
+    <id>http://ch.ege.io/blog/2015/08/03/installing-stm32cubemx-on-linux</id>
+    <content type="html"><![CDATA[<p>The STMicroelectronics STM32CubeMX is delivered as a exe file what implies that it is eintended to run on Windows systems only. But due to the fact it is a JAVA application we can run it on Linux as-well.</p>
+
+<h1>Installation</h1>
+
+<p>To install the STM32CubeMX administration rights are needed</p>
+
+<pre><code>sudo java -jar /tmp/SetupSTM32CubeMX-4.9.0.exe
+</code></pre>
+
+<h1>Running STM32CubeMX</h1>
+
+<p>If you&rsquo;ve selected the default install location you can run STM32CubeMX like this:</p>
+
+<pre><code>java -jar /usr/local/STMicroelectronics/STM32Cube/STM32CubeMX/STM32CubeMX.exe
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Full Open Source DVB-S2 Board]]></title>
+    <link href="http://ch.ege.io/blog/2015/07/04/full-open-source-dvb-s2-board/"/>
+    <updated>2015-07-04T19:43:00+02:00</updated>
+    <id>http://ch.ege.io/blog/2015/07/04/full-open-source-dvb-s2-board</id>
+    <content type="html"><![CDATA[<p>Some time ago I thought it would be fun to build a USB DVB-S2 device which runs on 100% OpenSource Software. Due to the fact I do not have any tooling for soldering complex chips I decided to build this project on hardware which is already available. For interconnection of the DVB part with the PC or a Single board computer like the ODROID-C1 or Raspberry PI my decision was to use a <a href="http://www.cypress.com/?id=193">Cypress FX2 CY7C68013A</a> evaluation board. You can buy them for under 10€ in far east on ebay. I bought one of the <a href="http://sigrok.org/wiki/Lcsoft_Mini_Board">Lcsoft Mini Boards</a>. The coreboot project provides a <a href="http://www.coreboot.org/File:Fx2lp_lcsoft_schematic_A.pdf">schematic for the Lcsoft board</a>.</p>
+
+<p><img class="<a" src="href="http://sigrok.org/wimg/e/ec/Lcsoft-miniboard-front.png">http://sigrok.org/wimg/e/ec/Lcsoft-miniboard-front.png</a>&#8221; title=&#8221;&lsquo;Lcsoft Mini Board CC-BY 3.0&rsquo;&#8221; ></p>
+
+<p>The <a href="http://www.cypress.com/?id=193">Cypress FX2 CY7C68013A</a> is based on a 8051 core. Not one of my favorite hacking platform but I&rsquo;ll give it a try. There is a Open Source Framework for firmware development it is called <a href="https://github.com/djmuhlestein/fx2lib">fxlib</a>. After some research on Google I found the project <a href="http://qanu.de/termini.php">Termini</a>. The firmware for the Termini hardware is available via the linuxtv.org <a href="http://linuxtv.org/cgi-bin/viewvc.cgi/dvb-hw/dvbusb-fx2/termini/">CVS repository</a>. They provide a specification for the <a href="http://qanu.de/docs/dvbt-usb-spec.pdf">USB communication</a> between the host controller and the FX2. There are already some USB 2.0 USB DVB-S2 devices based on the <a href="http://www.cypress.com/?id=193">Cypress FX2 CY7C68013A</a> like the <a href="http://www.linuxtv.org/wiki/index.php/DVBSKY_S960">DVBSKY S960</a>.</p>
+
+<p>The last part in the jigsaw puzzle is the DVB-S2 tuner and demodulator part. Some of the linux based Set-Top-Boxes provide swappable tuner modules one of them is the manufacturer GigaBlue. They sell a <a href="http://www.gigablue.de/portfolio-item/gigablue-dvb-s2-tuner/">DVB-S2 Tuner</a> based on the Serit <a href="http://serit.hk/Products_Details.aspx?IDX=144">SP2246 NIM for DVB-S2</a>. The SP2246 is based on the <a href="http://www.st.com/web/catalog/mmc/FM131/SC1003/PF251478">STV6111</a> tuner and the <a href="http://www.st.com/web/catalog/mmc/FM131/SC628/SS1334/PF252767?s_searchtype=partnumber">STV0913</a> demodulator. It looks like the tuner module is connected via a <a href="https://en.wikipedia.org/wiki/PCI_Express#Form_factors">PCI-Express x1 36Pin</a> connector. Serit provides a very detailed <a href="http://serit.hk/Manager/Public/pdf/201212070342307ead.pdf">data sheet</a> so at least a few of the PINs should be easily mappable with a multi meter.</p>
+
+<p><img src="/images/posts/sp2246.jpg"></p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[ODROID-C1 Enabling Bootlogo on Yocto Builds]]></title>
-    <link href="http://sturmschneid.github.io/blog/2015/05/04/odroid-c1-enabling-bootlogo-on-yocto-builds/"/>
+    <link href="http://ch.ege.io/blog/2015/05/04/odroid-c1-enabling-bootlogo-on-yocto-builds/"/>
     <updated>2015-05-04T11:40:53+02:00</updated>
-    <id>http://sturmschneid.github.io/blog/2015/05/04/odroid-c1-enabling-bootlogo-on-yocto-builds</id>
+    <id>http://ch.ege.io/blog/2015/05/04/odroid-c1-enabling-bootlogo-on-yocto-builds</id>
     <content type="html"><![CDATA[<p>The U-Boot for the Amlogic S805 from <a href="https://github.com/hardkernel/u-boot/tree/odroidc-v2011.03">Hardkernel</a> has the capabilities to display a bootlogo. It is not that easy to find any bootlogo that complies to a licence which can be used in comercial and in open source environments. Using the yocto logo is most probably prohibited, so I decided to design my own logo. And saved it to <strong> 24-bit Windows BMP image</strong> with the dimension of <strong>1280×720</strong> as statet in the <a href="http://odroid.com/dokuwiki/doku.php?id=en:c1_tips#logo_file_format">ODROID-C1 Wiki</a></p>
 
 <p><img class="<a" src="href="https://raw.githubusercontent.com/linux-meson/meta-amlogic/fido/recipes-bsp/u-boot/u-boot-odroidc1/odroidc1/bootlogo.png">https://raw.githubusercontent.com/linux-meson/meta-amlogic/fido/recipes-bsp/u-boot/u-boot-odroidc1/odroidc1/bootlogo.png</a>&#8221;></p>
@@ -51,9 +158,9 @@ bmp scale
   
   <entry>
     <title type="html"><![CDATA[Using H/W Randaom Generator on ODROD-C1 With Yocto]]></title>
-    <link href="http://sturmschneid.github.io/blog/2015/05/04/using-h-slash-w-randaom-generator-on-odrod-c1-with-yocto/"/>
+    <link href="http://ch.ege.io/blog/2015/05/04/using-h-slash-w-randaom-generator-on-odrod-c1-with-yocto/"/>
     <updated>2015-05-04T05:30:18+02:00</updated>
-    <id>http://sturmschneid.github.io/blog/2015/05/04/using-h-slash-w-randaom-generator-on-odrod-c1-with-yocto</id>
+    <id>http://ch.ege.io/blog/2015/05/04/using-h-slash-w-randaom-generator-on-odrod-c1-with-yocto</id>
     <content type="html"><![CDATA[<p>The Amlogic S805 CPU used in the ODROID-C1 contains a hardware random number generator which can be used to increase entropy in the linux kernel. The guys at Hardkernel wrote a <a href="http://odroid.com/dokuwiki/doku.php?id=en:c1_hardware_number_generator">tutorial how to enable this in Ubuntu</a>.</p>
 
 <p>Due to the fact that there is a <a href="http://cgit.openembedded.org/meta-openembedded/tree/meta-oe/recipes-support/rng-tools/rng-tools_4.bb?h=fido">rng-tools recipe</a> in the <a href="http://cgit.openembedded.org/meta-openembedded/">meta-openembedded</a> repo I thought it would be a no-brainer to get this working in Yocto fido.</p>
@@ -199,58 +306,6 @@ sys     0m 0.36s
 <h2>Considerations</h2>
 
 <p>You might keep in mind that using a hardware random generator may cause security issues. To have a more detailed view on this read this posting and comments on <a href="https://plus.google.com/+TheodoreTso/posts/SDcoemc9V3J">Theodore Ts&#8217;o posting on G+</a>. From this posting <em>If I were the NSA, and I wanted to gimmick an RNG, whether it be the one inside the Intel chip or the Android build, it would be a counter encrypted by an AES key known by the NSA.  (Why AES?   Because RDRAND is documented as using AES in its final whitening stage; so someone taking a quick look at the RDRAND implementation would be expecting AES).</em></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Using the SEGGER J-Link to Access the TI CC2650 Chip]]></title>
-    <link href="http://sturmschneid.github.io/blog/2015/04/12/using-the-segger-j-link-to-access-the-ti-cc2650-chip/"/>
-    <updated>2015-04-12T17:07:32+02:00</updated>
-    <id>http://sturmschneid.github.io/blog/2015/04/12/using-the-segger-j-link-to-access-the-ti-cc2650-chip</id>
-    <content type="html"><![CDATA[<p>Before you get started install the <a href="https://www.segger.com/jlink-software.html">newest host tools</a> for your SEGGER in my case I installed the Debian package of version <strong>V4.98b</strong>. On first start the <strong>JLinExe</strong> installs the apropriate Firmware.</p>
-
-<pre><code>$ JLinkExe -if jtag -device CC2650F128
-SEGGER J-Link Commander V4.98b ('?' for help)
-Compiled Apr 10 2015 20:27:38
-Updating firmware:  J-Link V9 compiled Apr 10 2015 10:51:08
-Replacing firmware: J-Link V9 compiled Feb 13 2015 20:37:28
-Waiting for new firmware to boot
-New firmware booted successfully
-</code></pre>
-
-<p>On the <a href="http://www.ti.com/tool/cc2650stk">SimpleLink™ Bluetooth Smart®/Multi-Standard SensorTag</a> they use the <a href="http://www.ti.com/product/cc2650">CC2650</a> with 128kB of Flash ROM. So you have to select <em>-device CC2650F128</em> when running <strong>JLinkExe</strong> At the moment it seems the <a href="http://www.ti.com/product/cc2650">CC2650</a> only supports JTAG debugging and not the more common SWI debug like STM32 do use. Anyway The Segger can run both modes.</p>
-
-<p>After a succesful firmawre update the communication looks like this</p>
-
-<pre><code>SEGGER J-Link Commander V4.98b ('?' for help)
-Compiled Apr 10 2015 20:27:38
-Info: Device "CC2650F128" selected.
-DLL version V4.98b, compiled Apr 10 2015 20:27:35
-Firmware: J-Link V9 compiled Apr 10 2015 10:51:08
-Hardware: V9.30
-S/N: XXXXXXXX
-OEM: SEGGER-EDU
-Feature(s): FlashBP, GDB
-VTarget = 2.800V
-Info: TotalIRLen = 10, IRPrint = 0x0011
-Info: Found Cortex-M3 r2p1, Little endian.
-Info: FPUnit: 6 code (BP) slots and 2 literal slots
-Info: CoreSight components:
-Info: ROMTbl 0 @ E00FF000
-Info: ROMTbl 0 [0]: FFF0F000, CID: B105E00D, PID: 000BB000 SCS
-Info: ROMTbl 0 [1]: FFF02000, CID: B105E00D, PID: 003BB002 DWT
-Info: ROMTbl 0 [2]: FFF03000, CID: B105E00D, PID: 002BB003 FPB
-Info: ROMTbl 0 [3]: FFF01000, CID: B105E00D, PID: 003BB001 ITM
-Info: ROMTbl 0 [4]: FFF41000, CID: B105900D, PID: 003BB923 TPIU-Lite
-Found 2 JTAG devices, Total IRLen = 10:
- #0 Id: 0x4BA00477, IRLen: 04, IRPrint: 0x1, CoreSight JTAG-DP (ARM)
- #1 Id: 0x8B99A02F, IRLen: 06, IRPrint: 0x1, TI ICEPick
-Cortex-M3 identified.
-Target interface speed: 100 kHz
-J-Link&gt;
-</code></pre>
-
-<p>The next step is to create a firmware backup of the original firmware. This is needed because this little beast at the momemnt denies to build its firmware under Linux. The CodeComposerStudio Projekt is using some Windows Tools to build and expects a specific directory layout.</p>
 ]]></content>
   </entry>
   

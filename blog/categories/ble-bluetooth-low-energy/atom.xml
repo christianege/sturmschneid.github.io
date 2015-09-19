@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Ble Bluetooth Low Energy | Sturmschneid]]></title>
-  <link href="http://sturmschneid.github.io/blog/categories/ble-bluetooth-low-energy/atom.xml" rel="self"/>
-  <link href="http://sturmschneid.github.io/"/>
-  <updated>2015-05-04T13:36:51+02:00</updated>
-  <id>http://sturmschneid.github.io/</id>
+  <link href="http://ch.ege.io/blog/categories/ble-bluetooth-low-energy/atom.xml" rel="self"/>
+  <link href="http://ch.ege.io/"/>
+  <updated>2015-09-19T20:11:07+02:00</updated>
+  <id>http://ch.ege.io/</id>
   <author>
     <name><![CDATA[Christian Ege]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[ORICO BTA-402 USB Bluetooth 4.0 Low Energy Micro Adapter on ODROID-C1]]></title>
-    <link href="http://sturmschneid.github.io/blog/2015/04/12/orico-bta-402-usb-bluetooth-4-dot-0-low-energy-micro-adapter-on-odroid-c1/"/>
+    <link href="http://ch.ege.io/blog/2015/04/12/orico-bta-402-usb-bluetooth-4-dot-0-low-energy-micro-adapter-on-odroid-c1/"/>
     <updated>2015-04-12T09:11:53+02:00</updated>
-    <id>http://sturmschneid.github.io/blog/2015/04/12/orico-bta-402-usb-bluetooth-4-dot-0-low-energy-micro-adapter-on-odroid-c1</id>
+    <id>http://ch.ege.io/blog/2015/04/12/orico-bta-402-usb-bluetooth-4-dot-0-low-energy-micro-adapter-on-odroid-c1</id>
     <content type="html"><![CDATA[<p>Today I had some fun with <a href="http://en.wikipedia.org/wiki/Bluetooth_low_energy">Bluetooth Low Energy</a> and my <a href="http://www.hardkernel.com/main/products/prdt_info.php">ODROID C1</a> In an earlier <a href="/blog/2015/04/12/running-bluez5-on-yocto-slash-openembedded/">Blog Post</a> I described how to enable Bluetooth Low Energy Support in Yocto.</p>
 
 <p>Recently I bought this <a href="http://www.amazon.de/gp/product/B00K5TJP02?psc=1&amp;redirect=true&amp;ref_=oh_aui_detailpage_o04_s00">ORICO BTA-402 USB Bluetooth 4.0 Low Energy Micro Adapter</a> on Amazon to play with Bluetooth Low Energy. The USB Dongle was automatically detected by my <a href="https://github.com/project-magpie/meta-amlogic">meta-amlogic&rsquo;s</a> kernel configuration for the <a href="http://www.hardkernel.com/main/products/prdt_info.php">ODROID C1</a></p>

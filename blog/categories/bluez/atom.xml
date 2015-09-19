@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Bluez | Sturmschneid]]></title>
-  <link href="http://sturmschneid.github.io/blog/categories/bluez/atom.xml" rel="self"/>
-  <link href="http://sturmschneid.github.io/"/>
-  <updated>2015-05-04T13:36:51+02:00</updated>
-  <id>http://sturmschneid.github.io/</id>
+  <link href="http://ch.ege.io/blog/categories/bluez/atom.xml" rel="self"/>
+  <link href="http://ch.ege.io/"/>
+  <updated>2015-09-19T20:11:07+02:00</updated>
+  <id>http://ch.ege.io/</id>
   <author>
     <name><![CDATA[Christian Ege]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Running BlueZ5 on Yocto/OpenEmbedded]]></title>
-    <link href="http://sturmschneid.github.io/blog/2015/04/12/running-bluez5-on-yocto-slash-openembedded/"/>
+    <link href="http://ch.ege.io/blog/2015/04/12/running-bluez5-on-yocto-slash-openembedded/"/>
     <updated>2015-04-12T07:09:49+02:00</updated>
-    <id>http://sturmschneid.github.io/blog/2015/04/12/running-bluez5-on-yocto-slash-openembedded</id>
+    <id>http://ch.ege.io/blog/2015/04/12/running-bluez5-on-yocto-slash-openembedded</id>
     <content type="html"><![CDATA[<p>At the moment yocto/openembedded ships with <a href="http://www.bluez.org">BlueZ4</a> as the Linux Bluetooth protocol stack. Due to the fact that <a href="http://en.wikipedia.org/wiki/Bluetooth_low_energy">Bluetooth low energy</a> is only supported in BlueZ5 this is a bit of a disappointment. There is a long-standing bug report on this <a href="https://bugzilla.yoctoproject.org/show_bug.cgi?id=5031">#5031 </a>. But since the commit <a href="http://git.yoctoproject.org/cgit/cgit.cgi/poky/commit/?id=1139cc4eef305fc14bc5db19a5f8729e7b3bf27a">1139cc4e&hellip;</a> the used BlueZ version can be selected. According to the reference manual BlueZ5 can be enabled by adding bluez5 to the <a href="http://www.yoctoproject.org/docs/1.8/ref-manual/ref-manual.html#var-DISTRO_FEATURES">DISTRO_FEATURES</a> for me the easiest way to to this was adding the following line to my conf/local.conf in the <a href="http://www.yoctoproject.org/docs/1.8/dev-manual/dev-manual.html#build-directory">Build Directory</a>.</p>
 
 <pre><code>DISTRO_FEATURES = "ext2 alsa wifi usbhost bluetooth bluez5 ${DISTRO_FEATURES_LIBC}"

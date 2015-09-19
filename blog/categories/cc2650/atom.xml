@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Cc2650 | Sturmschneid]]></title>
-  <link href="http://sturmschneid.github.io/blog/categories/cc2650/atom.xml" rel="self"/>
-  <link href="http://sturmschneid.github.io/"/>
-  <updated>2015-05-04T13:36:51+02:00</updated>
-  <id>http://sturmschneid.github.io/</id>
+  <link href="http://ch.ege.io/blog/categories/cc2650/atom.xml" rel="self"/>
+  <link href="http://ch.ege.io/"/>
+  <updated>2015-09-19T20:11:07+02:00</updated>
+  <id>http://ch.ege.io/</id>
   <author>
     <name><![CDATA[Christian Ege]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Using the SEGGER J-Link to Access the TI CC2650 Chip]]></title>
-    <link href="http://sturmschneid.github.io/blog/2015/04/12/using-the-segger-j-link-to-access-the-ti-cc2650-chip/"/>
+    <link href="http://ch.ege.io/blog/2015/04/12/using-the-segger-j-link-to-access-the-ti-cc2650-chip/"/>
     <updated>2015-04-12T17:07:32+02:00</updated>
-    <id>http://sturmschneid.github.io/blog/2015/04/12/using-the-segger-j-link-to-access-the-ti-cc2650-chip</id>
+    <id>http://ch.ege.io/blog/2015/04/12/using-the-segger-j-link-to-access-the-ti-cc2650-chip</id>
     <content type="html"><![CDATA[<p>Before you get started install the <a href="https://www.segger.com/jlink-software.html">newest host tools</a> for your SEGGER in my case I installed the Debian package of version <strong>V4.98b</strong>. On first start the <strong>JLinExe</strong> installs the apropriate Firmware.</p>
 
 <pre><code>$ JLinkExe -if jtag -device CC2650F128

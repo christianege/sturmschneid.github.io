@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Stm32cubemx | Sturmschneid]]></title>
+  <link href="http://ch.ege.io/blog/categories/stm32cubemx/atom.xml" rel="self"/>
+  <link href="http://ch.ege.io/"/>
+  <updated>2015-09-19T20:11:07+02:00</updated>
+  <id>http://ch.ege.io/</id>
+  <author>
+    <name><![CDATA[Christian Ege]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Installing STM32CubeMX on Linux]]></title>
+    <link href="http://ch.ege.io/blog/2015/08/03/installing-stm32cubemx-on-linux/"/>
+    <updated>2015-08-03T06:11:16+02:00</updated>
+    <id>http://ch.ege.io/blog/2015/08/03/installing-stm32cubemx-on-linux</id>
+    <content type="html"><![CDATA[<p>The STMicroelectronics STM32CubeMX is delivered as a exe file what implies that it is eintended to run on Windows systems only. But due to the fact it is a JAVA application we can run it on Linux as-well.</p>
+
+<h1>Installation</h1>
+
+<p>To install the STM32CubeMX administration rights are needed</p>
+
+<pre><code>sudo java -jar /tmp/SetupSTM32CubeMX-4.9.0.exe
+</code></pre>
+
+<h1>Running STM32CubeMX</h1>
+
+<p>If you&rsquo;ve selected the default install location you can run STM32CubeMX like this:</p>
+
+<pre><code>java -jar /usr/local/STMicroelectronics/STM32Cube/STM32CubeMX/STM32CubeMX.exe
+</code></pre>
+]]></content>
+  </entry>
+  
+</feed>
