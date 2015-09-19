@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://ch.ege.io/blog/2015/09/19/openembedded-support-for-the-upcomming-udoo-neo/</loc>
+    <lastmod>2015-09-19T19:18:03+02:00</lastmod>
+  </url>
+  <url>
+    <loc>http://ch.ege.io/blog/2015/08/03/installing-stm32cubemx-on-linux/</loc>
+    <lastmod>2015-08-03T06:11:16+02:00</lastmod>
+  </url>
+  <url>
     <loc>http://ch.ege.io/blog/2015/07/18/nim-dvb-s-slash-s2-v1-dot-0-pinout/</loc>
     <lastmod>2015-07-18T08:26:39+02:00</lastmod>
   </url>
@@ -11,6 +19,14 @@
   <url>
     <loc>http://ch.ege.io/blog/2015/07/04/full-open-source-dvb-s2-board/</loc>
     <lastmod>2015-07-04T19:43:00+02:00</lastmod>
+  </url>
+  <url>
+    <loc>http://ch.ege.io/blog/2015/06/15/watterott-hdmi-slash-dvi-rgb-adapter-edid-hacks/</loc>
+    <lastmod>2015-06-15T08:09:57+02:00</lastmod>
+  </url>
+  <url>
+    <loc>http://ch.ege.io/blog/2015/05/04/odroid-c1-enabling-bootlogo-on-yocto-builds/</loc>
+    <lastmod>2015-05-04T11:40:53+02:00</lastmod>
   </url>
   <url>
     <loc>http://ch.ege.io/blog/2015/05/04/using-h-slash-w-randaom-generator-on-odrod-c1-with-yocto/</loc>
@@ -73,10 +89,10 @@
     <lastmod>2013-10-02T00:00:00+02:00</lastmod>
   </url>
   <url>
-    <loc>http://ch.ege.io/blog/archives/</loc>
+    <loc>http://ch.ege.io/</loc>
   </url>
   <url>
-    <loc>http://ch.ege.io/</loc>
+    <loc>http://ch.ege.io/blog/archives/</loc>
   </url>
   <url>
     <loc>http://ch.ege.io/blog/categories/</loc>
@@ -127,6 +143,27 @@
     <loc>http://ch.ege.io/blog/categories/cryptography/</loc>
   </url>
   <url>
+    <loc>http://ch.ege.io/blog/categories/bootlogo/</loc>
+  </url>
+  <url>
+    <loc>http://ch.ege.io/blog/categories/watterott/</loc>
+  </url>
+  <url>
+    <loc>http://ch.ege.io/blog/categories/hdmi/</loc>
+  </url>
+  <url>
+    <loc>http://ch.ege.io/blog/categories/cec/</loc>
+  </url>
+  <url>
+    <loc>http://ch.ege.io/blog/categories/display/</loc>
+  </url>
+  <url>
+    <loc>http://ch.ege.io/blog/categories/bus-pirate/</loc>
+  </url>
+  <url>
+    <loc>http://ch.ege.io/blog/categories/edid/</loc>
+  </url>
+  <url>
     <loc>http://ch.ege.io/blog/categories/nim/</loc>
   </url>
   <url>
@@ -152,5 +189,20 @@
   </url>
   <url>
     <loc>http://ch.ege.io/blog/categories/tyco/</loc>
+  </url>
+  <url>
+    <loc>http://ch.ege.io/blog/categories/ubuntu-stm/</loc>
+  </url>
+  <url>
+    <loc>http://ch.ege.io/blog/categories/stm32cubemx/</loc>
+  </url>
+  <url>
+    <loc>http://ch.ege.io/blog/categories/open-embedded/</loc>
+  </url>
+  <url>
+    <loc>http://ch.ege.io/blog/categories/udoo/</loc>
+  </url>
+  <url>
+    <loc>http://ch.ege.io/blog/categories/udoo-neo/</loc>
   </url>
 </urlset>

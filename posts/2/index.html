@@ -116,6 +116,468 @@
 
 
 
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2015-04-12T07:09:49+02:00"  data-updated="true" itemprop="datePublished dateCreated">Sun 12 Apr 2015,  7:09 AM</time>
+        
+           | <a href="/blog/2015/04/12/running-bluez5-on-yocto-slash-openembedded/#disqus_thread" itemprop="discussionUrl"
+             data-disqus-identifier="http://ch.ege.io/blog/2015/04/12/running-bluez5-on-yocto-slash-openembedded/">Comments</a>
+        
+      </p>
+    
+    
+      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2015/04/12/running-bluez5-on-yocto-slash-openembedded/" itemprop="url">Running BlueZ5 on Yocto/OpenEmbedded</a></h2>
+    
+  </header>
+
+
+  <div class="entry-content clearfix" itemprop="articleBody description"><p>At the moment yocto/openembedded ships with <a href="http://www.bluez.org">BlueZ4</a> as the Linux Bluetooth protocol stack. Due to the fact that <a href="http://en.wikipedia.org/wiki/Bluetooth_low_energy">Bluetooth low energy</a> is only supported in BlueZ5 this is a bit of a disappointment. There is a long-standing bug report on this <a href="https://bugzilla.yoctoproject.org/show_bug.cgi?id=5031">#5031 </a>. But since the commit <a href="http://git.yoctoproject.org/cgit/cgit.cgi/poky/commit/?id=1139cc4eef305fc14bc5db19a5f8729e7b3bf27a">1139cc4e&hellip;</a> the used BlueZ version can be selected. According to the reference manual BlueZ5 can be enabled by adding bluez5 to the <a href="http://www.yoctoproject.org/docs/1.8/ref-manual/ref-manual.html#var-DISTRO_FEATURES">DISTRO_FEATURES</a> for me the easiest way to to this was adding the following line to my conf/local.conf in the <a href="http://www.yoctoproject.org/docs/1.8/dev-manual/dev-manual.html#build-directory">Build Directory</a>.</p>
+
+<pre><code>DISTRO_FEATURES = "ext2 alsa wifi usbhost bluetooth bluez5 ${DISTRO_FEATURES_LIBC}"
+</code></pre>
+
+<p>This disables x11 for example. But you may also could add something like this:</p>
+
+<pre><code>DISTRO_FEATURES_append = "bluez5"
+</code></pre>
+
+<p>After this run an build of your preferred image. In my case this was &ldquo;core-image-base&rdquo;</p>
+
+<pre><code>bitbake core-image-base
+</code></pre>
+
+<p>To have full bluetooth support on the target I needed to install some extra packages. To get a list of all bluetooth related packages run the following command. For this you need a <a href="http://www.yoctoproject.org/docs/1.8/ref-manual/ref-manual.html#package-feeds-dev-environment">opkg/ipkg feed</a> server.</p>
+
+<pre><code>root@odroidc1:~# opkg list | grep blue
+bluez5 - 5.29-r0 - Linux Bluetooth Stack Userland V5  Linux Bluetooth stack V5 userland
+bluez5-dbg - 5.29-r0 - Linux Bluetooth Stack Userland V5 - Debugging files  Linux Bluetooth
+bluez5-dev - 5.29-r0 - Linux Bluetooth Stack Userland V5 - Development files  Linux Bluetooth
+bluez5-doc - 5.29-r0 - Linux Bluetooth Stack Userland V5 - Documentation files  Linux Bluetooth
+bluez5-noinst-tools - 5.29-r0 - Linux Bluetooth Stack Userland V5  Linux Bluetooth stack V5 userland
+bluez5-obex - 5.29-r0 - Linux Bluetooth Stack Userland V5  Linux Bluetooth stack V5 userland
+bluez5-testtools - 5.29-r0 - Linux Bluetooth Stack Userland V5  Linux Bluetooth stack V5 userland
+libasound-module-bluez - 5.29-r0 - Linux Bluetooth Stack Userland V5  Linux Bluetooth stack V5 userland
+packagegroup-base-bluetooth - 1.0-r83 - Bluetooth support  Merge machine and distro options to create a basic
+</code></pre>
+
+<p>I installed the following packages:</p>
+
+<pre><code>bluez5-testtools, bluez5-noinst-tools
+</code></pre>
+
+<p>The later <strong>bluez5-noinst-tools</strong> was required for the gatttool.</p>
+</div>
+  
+  
+
+
+        </article>
+      
+      
+        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+          
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2014-10-25T13:40:01+02:00"  data-updated="true" itemprop="datePublished dateCreated">Sat 25 Oct 2014,  1:40 PM</time>
+        
+           | <a href="/blog/2014/10/25/new-blog-based-on-octopress/#disqus_thread" itemprop="discussionUrl"
+             data-disqus-identifier="http://ch.ege.io/blog/2014/10/25/new-blog-based-on-octopress/">Comments</a>
+        
+      </p>
+    
+    
+      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2014/10/25/new-blog-based-on-octopress/" itemprop="url">New Blog Based on Octopress</a></h2>
+    
+  </header>
+
+
+  <div class="entry-content clearfix" itemprop="articleBody description"><p>This is my new Blog based on <a href="http://octopress.org/">Octopress</a> and <a href="http://kaworu.github.io/octostrap3">Octostrap3</a></p>
+</div>
+  
+  
+
+
+        </article>
+      
+      
+        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+          
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2014-09-26T00:00:00+02:00"  data-updated="true" itemprop="datePublished dateCreated">Fri 26 Sep 2014, 12:00 AM</time>
+        
+           | <a href="/blog/2014/09/26/building-a-yocto-image-for-the-a20-olinuxino-lime/#disqus_thread" itemprop="discussionUrl"
+             data-disqus-identifier="http://ch.ege.io/blog/2014/09/26/building-a-yocto-image-for-the-a20-olinuxino-lime/">Comments</a>
+        
+      </p>
+    
+    
+      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2014/09/26/building-a-yocto-image-for-the-a20-olinuxino-lime/" itemprop="url">Building a Yocto Image for the A20 OLinuXino LIME</a></h2>
+    
+  </header>
+
+
+  <div class="entry-content clearfix" itemprop="articleBody description"><p>Some time ago I ordered a <a href="https://www.olimex.com/Products/OLinuXino/A20/A20-OLinuXino-LIME-4GB/open-source-hardware">A20-OLinuXino-LIME-4GB</a> board. This was planed as a replacement for my not so beloved Raspberry PI. I am not that big fan of the PI because of the wacky SD-Card holder and the USB stability. I hope the 4GB NAND of the <a href="https://www.olimex.com/Products/OLinuXino/A20/A20-OLinuXino-LIME-4GB/open-source-hardware">A20-OLinuXino-LIME-4GB</a> Will improve the stability of my target application.</p>
+
+<h3>[Update - 2014-10-01]</h3>
+
+<p>I&rsquo;ve created a successful <a href="https://github.com/linux-sunxi/meta-sunxi/commit/998cbf354423375ceacf735571dab150b9670502">pull-request</a> to merge my changes into the <a href="https://github.com/linux-sunxi/meta-sunxi">meta-sunxi</a> repository and succeeded with the current master branch. Maybe I also start a pull request for the daisy branch. Due  to the fact that the new yocto release is knocking on the door This is may not needed.</p>
+
+<p>As a big fan of the <a href="https://www.yoctoproject.org/">Yocto Project</a> I decided to run poky on my OLinuXino. Due to the fact that the <a href="https://www.olimex.com/Products/OLinuXino/A20/A20-OLinuXino-LIME-4GB/open-source-hardware">A20-OLinuXino-LIME-4GB</a> is not yet officially supported by the <a href="https://github.com/linux-sunxi/meta-sunxi">meta-sunxi layer</a> there are some patches needed. Those patches are located in <a href="https://github.com/cybertux/meta-sunxi/tree/olimex-a20-lime">my fork</a>. The patch set is against the daisy branch</p>
+
+<h1>Preparation</h1>
+
+<p>Clone the git repositories and switch to the daisy branch.</p>
+
+<pre><code>mkdir /data/src/yocto
+cd /data/src/yocto
+git clone git://git.yoctoproject.org/poky
+git clone https://github.com/cybertux/meta-sunxi.git
+cd poky
+git checkout -b daisy origin/daisy
+cd ../meta-sunxi
+git checkout -b daisy origin/olimex-a20-lime
+</code></pre>
+
+<p>Prepare a warm and cozy environment for the build</p>
+
+<pre><code>cd /data/src/yocto/poky
+mkdir -p ../build/a20-lime
+source oe-init-build-env ../build/a20-lime
+</code></pre>
+
+<p>Add the <a href="https://github.com/linux-sunxi/meta-sunxi">sunxi meta-layer</a> to the build environment</p>
+
+<pre><code>--- a/conf/bblayers.conf
++++ b/conf/bblayers.conf
+@@ -9,6 +9,7 @@ BBLAYERS ?= " \
+   /data/src/yocto/poky/meta \
+   /data/src/yocto/poky/meta-yocto \
+   /data/src/yocto/poky/meta-yocto-bsp \
++  /data/src/yocto/meta-sunxi \
+   "
+ BBLAYERS_NON_REMOVABLE ?= " \
+   /data/src/yocto/poky/meta \
+</code></pre>
+
+<p>Set the correct target machine and tuning parameters</p>
+
+<pre><code>diff --git a/conf/local.conf b/conf/local.conf
+index bcb0864..6a793e6 100644
+--- a/conf/local.conf
++++ b/conf/local.conf
+@@ -55,7 +55,7 @@ PARALLEL_MAKE ?= "-j ${@oe.utils.cpu_count()}"
+ #MACHINE ?= "edgerouter"
+ #
+ # This sets the default machine to be qemux86 if no other machine is selected:
+-MACHINE ??= "qemux86"
++MACHINE ??= "olinuxino-a20-lime"
+
+ #
+ # Where to place downloads
+@@ -125,7 +125,7 @@ DISTRO ?= "poky"
+ #  - 'package_rpm' for rpm style packages
+ # E.g.: PACKAGE_CLASSES ?= "package_rpm package_deb package_ipk"
+ # We default to rpm:
+-PACKAGE_CLASSES ?= "package_rpm"
++PACKAGE_CLASSES ?= "package_ipk"
+
+ #
+ # SDK/ADT target architecture
+@@ -134,7 +134,19 @@ PACKAGE_CLASSES ?= "package_rpm"
+ # you can build the SDK packages for architectures other than the machine you are
+ # running the build on (i.e. building i686 packages on an x86_64 host).
+ # Supported values are i686 and x86_64
+-#SDKMACHINE ?= "i686"
++SDKMACHINE ?= "i686"
++
++#
++# The default machine settings are meant to be the lowest common denominator,
++# maximizing generality. Significantly better performance (2x-3x) can be achieved
++# with the following settings:
++#
++# Allwinner A20
++#
++# For Allwinner A20 (Cubieboard2/CubieTruck), the following tuning options are recommended:
++#
++# Enable hardfloat, thumb2 and neon capabilities
++DEFAULTTUNE = "cortexa7hf-neon-vfpv4"
+
+ #
+ # Extra image configuration defaults
+</code></pre>
+
+<h1>Building the image</h1>
+
+<p>Now the image can be build, lean back and grap some coffee, beer, &hellip;</p>
+
+<pre><code>bitbake core-image-base
+
+[...]
+Build Configuration:
+BB_VERSION        = "1.22.0"
+BUILD_SYS         = "x86_64-linux"
+NATIVELSBSTRING   = "Ubuntu-12.04"
+TARGET_SYS        = "arm-poky-linux-gnueabi"
+MACHINE           = "olinuxino-a20-lime"
+DISTRO            = "poky"
+DISTRO_VERSION    = "1.6.1"
+TUNE_FEATURES     = "armv7a vfp neon callconvention-hard vfpv4 cortexa7"
+TARGET_FPU        = "vfp-vfpv4-neon"
+meta
+meta-yocto
+meta-yocto-bsp    = "daisy:a4d8015687cf9ddd6ef563e29cf840698f81c099"
+meta-sunxi        = "olimex-a20-lime:5bb9da72c24a442eecd827a9b85f903281357815"
+[...]
+</code></pre>
+
+<p>After a successful build all images are located in the folder</p>
+
+<pre><code>/data/src/yocto/build/a20-lime/tmp/deploy/images/olinuxino-a20-lime/
+</code></pre>
+
+<h1>Building the SDK</h1>
+
+<p>Sometimes it is handy to have a toolchain apart from the whole yocto/poky environment. So lets build some</p>
+
+<pre><code>bitbake -cpopulate_sdk core-image-base
+</code></pre>
+
+<p>This will take mostly as long as the image build so again grab some coffee, beer or &hellip;..
+The result is located here:</p>
+
+<pre><code>/data/src/yocto/build/a20-lime/tmp/deploy/sdk/olinuxino-a20-lime/poky-eglibc-i686-core-image-base-cortexa7hf-vfp-vfpv4-neon-toolchain-1.6.1.sh
+</code></pre>
+
+<h1>Installation of the Toolchain</h1>
+
+<p>You may need root access to install in /opt</p>
+
+<pre><code>sudo  tmp/deploy/sdk/poky-eglibc-i686-core-image-base-cortexa7hf-vfp-vfpv4-neon-toolchain-1.6.1.sh
+Enter target directory for SDK (default: /opt/poky/1.6.1):
+You are about to install the SDK to "/opt/poky/1.6.1". Proceed[Y/n]?y
+Extracting SDK...
+Setting it up...done
+SDK has been successfully set up and is ready to be used.
+</code></pre>
+
+<h1>Using the SDK</h1>
+
+<p>To use the SDK we have to source the set-up script</p>
+
+<pre><code>source  /opt/poky/1.6.1/environment-setup-cortexa7hf-vfp-vfpv4-neon-poky-linux-gnueabi
+</code></pre>
+
+<p>After this some variables should be set like this</p>
+
+<pre><code>echo $CC
+arm-poky-linux-gnueabi-gcc -march=armv7-a -mthumb-interwork -mfloat-abi=hard -mfpu=neon-vfpv4 -mtune=cortex-a7 --sysroot=/opt/poky/1.6.1/sysroots/cortexa7hf-vfp-vfpv4-neon-poky-linux-gnueabi
+</code></pre>
+</div>
+  
+  
+
+
+        </article>
+      
+      
+        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+          
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2014-06-15T00:00:00+02:00"  data-updated="true" itemprop="datePublished dateCreated">Sun 15 Jun 2014, 12:00 AM</time>
+        
+           | <a href="/blog/2014/06/15/sti7111-st40-jtag-preparations/#disqus_thread" itemprop="discussionUrl"
+             data-disqus-identifier="http://ch.ege.io/blog/2014/06/15/sti7111-st40-jtag-preparations/">Comments</a>
+        
+      </p>
+    
+    
+      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2014/06/15/sti7111-st40-jtag-preparations/" itemprop="url">Sti7111 (ST40) JTAG Preparations</a></h2>
+    
+  </header>
+
+
+  <div class="entry-content clearfix" itemprop="articleBody description"><p>While I almost smashed my Spark 7111 Box during <a href="http://project-magpie.github.io/2013/10/02/that-was-a-close-shave/">UBI experiments</a> I decided to build a JTAG adapter for the ST40 CPU. After getting a little more familiar with eagle my second design ended in the <a href="https://github.com/project-magpie/jtag-adapter">ST40 JTAG adapter</a>.</p>
+
+<p>I ordered the PCB at <a href="http://www.seeedstudio.com/service/">Seeedstudio Fusion PCB</a> and was impressed how cheap and fast they are.</p>
+
+<p><img src="/images/jtag/jtag_pcb.png"></p>
+
+<p>After assembly of the PCB the JTAG adapter have to be connected to the STB. If you are unsure about the pinning you can easily check if Pin-2 is connected to GND with a multimeter.</p>
+
+<p><img src="/images/jtag/spark_jtag_pinout.png"></p>
+
+<p>A more detailed version reconstructed in eagle.</p>
+
+<p><img src="/images/jtag/spark_jtag_pinout_eagle.png"></p>
+
+<p>Anyway, most hardware is useless without software. To use the JTAG Adapter the <a href="http://www.st.com/st-web-ui/static/active/en/resource/technical/document/user_manual/CD17379953.pdf">ST40 Micro Toolset</a> is needed. You can grab your version of the ST40 Micro Toolset at the <a href="ftp://ftp.stlinux.com/pub/tools/products/st40tools/ST40_GNU_R5.1.0/">STM ftp server</a>. As usual I decided to take the linux version (R5.1.0). I have tested with Ubuntu 12.04. Maybe the 32bit compatibility libs have to be installed if you are running a 64bit distro. You also need the <a href="ftp://ftp.stlinux.com/pub/tools/products/stmc2/R1.6.0/doc/release_notes.htm">ST Micro Connection Package R1.6.0.</a>. After Installation the folder structure should look like this:</p>
+
+<pre><code>$ tree -L 1 /opt/STM/
+/opt/STM/
+├── ST40R5.1.0
+└── STMCR1.6.0
+</code></pre>
+
+<p>To be able to execute the binaries some modifications to the PATH and LD_LIBRARY_PATH variable have to be made.</p>
+
+<pre><code>export LD_LIBRARY_PATH=/opt/STM/STMCR1.6.0/lib:/opt/STM/ST40R5.1.0/lib
+export PATH=/opt/STM/ST40R5.1.0/bin:/opt/STM/STMCR1.6.0/bin:$PATH
+</code></pre>
+
+<p>Now you sould be able to execute the following command</p>
+
+<pre><code>$ sh4xrun
+usage: /opt/STM/ST40R5.1.0/bin/sh4xrun [-c command] [-d directory] [-e filename] [-f] [-g gdbpath] [-h] [-i filename] [-t     target] [-u gdbname] [-v] [-x filename] [-A command] [-B command] [-C option] [-D] [-T timeout] [-V] [-a|--] [arguments]
+  -a arguments  target program arguments
+  -c command    connection command (default is sh4tp)
+  -d directory  directory in which to search for command files
+  -e filename   executable file to load
+  -f            (ignored)
+  -g gdbpath    specify path to GDB
+  -h            display help
+  -i filename   command script file to source
+  -t target     target specification
+  -u gdbname    specify name of GDB
+  -v            verbose
+  -x filename   use filename instead of .shgdbinit
+  -A command    execute command after running program
+  -B command    execute command before running program
+  -C option     connection command option
+  -D            debug (very verbose)
+  -T timeout    maximum time for executing on target
+  -V            version string
+</code></pre>
+
+<p>With this command a executable can be uploaded and executed right on the box. But what kind of executable is worthwhile to be uploaded? On Avi+ Forum they use a tool called flasher which is upload to the box. I prefer to use a self compiled version of u-boot. And honestly I did not managed to compile a flasher for the sti7111.</p>
+
+<h2>Compilation of U-Boot</h2>
+
+<p>Before we can compile the u-boot boot loader we have to get the source</p>
+
+<pre><code>$ git clone git://git.stlinux.com/stm/u-boot.git
+$ cd u-boot/
+$ git checkout -b stmicro-1.3.1 origin/stmicro-1.3.1
+</code></pre>
+
+<p>I decided to use stmicro-1.3.1 branch It sounds familiar and I was unable to build the stmicro branch. To compile the source I used a toolchain I&rsquo;ve created with to meta-stlinux layer and yocto.</p>
+
+<pre><code>$ source /opt/poky/1.5.1/environment-setup-sh4-poky-linux
+$ export CROSS_COMPILE=sh4-poky-linux-
+$ unset LDFLAGS
+$ make hdk7111_config
+$ vim ./cpu/sh/config.mk
+# remove option  -m4-nofpu
+</code></pre>
+
+<p>After a successful compilation you have a file called u-boot. This can be uploaded by executing:</p>
+
+<pre><code>sh4xrun -c sh4tp -t STMCLT1000_A:sat7111:st40,debug=2 -e /data/src/u-boot/u-boot
+</code></pre>
+
+<p>On a working serial console connected to the STB you should see something like this:</p>
+
+<pre><code>Board: STx7111-HDK  [29-bit mode]
+
+
+U-Boot 1.3.1-dirty (Jun 15 2014 - 18:23:57) - stm23-2011-12-08
+
+DRAM:  256 MiB
+NOR:     8 MiB
+NAND:  Bad block table found at page 262080, version 0x01
+Bad block table found at page 262016, version 0x01
+nand_read_bbt: Bad block at 0x04400000
+nand_read_bbt: Bad block at 0x06580000
+nand_read_bbt: Bad block at 0x065a0000
+nand_read_bbt: Bad block at 0x0e580000
+nand_read_bbt: Bad block at 0x0e5a0000
+nand_read_bbt: Bad block at 0x10c00000
+nand_read_bbt: Bad block at 0x10c20000
+nand_read_bbt: Bad block at 0x16580000
+nand_read_bbt: Bad block at 0x165a0000
+nand_read_bbt: Bad block at 0x18c00000
+nand_read_bbt: Bad block at 0x18c20000
+nand_read_bbt: Bad block at 0x1dc40000
+nand_read_bbt: Bad block at 0x1dc60000
+nand_read_bbt: Bad block at 0x1e580000
+nand_read_bbt: Bad block at 0x1e5a0000
+512 MiB
+SPI:  ERROR: Unknown SPI Device detected, status = 0xff
+*** Warning - bad CRC, using default environment
+
+In:    serial
+Out:   serial
+Err:   serial
+</code></pre>
+
+<p>It looks like the SPI NOR Flash is not supported by this version of u-boot. So work is to do&hellip;.</p>
+</div>
+  
+  
+
+
+        </article>
+      
+      
+        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+          
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
 <span class="glyphicon glyphicon-calendar"></span> <time datetime="2014-04-29T00:00:00+02:00"  data-updated="true" itemprop="datePublished dateCreated">Tue 29 Apr 2014, 12:00 AM</time>
         
            | <a href="/blog/2014/04/29/edid-mission-accomplished/#disqus_thread" itemprop="discussionUrl"
@@ -911,206 +1373,11 @@ Reading symbols from vmlinux...done.
 
         </article>
       
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-
-
-
-
-
-
-
-
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2013-10-04T00:00:00+02:00"  data-updated="true" itemprop="datePublished dateCreated">Fri  4 Oct 2013, 12:00 AM</time>
-        
-           | <a href="/blog/2013/10/04/jffs2-vs-ubifs/#disqus_thread" itemprop="discussionUrl"
-             data-disqus-identifier="http://ch.ege.io/blog/2013/10/04/jffs2-vs-ubifs/">Comments</a>
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2013/10/04/jffs2-vs-ubifs/" itemprop="url">JFFS2 vs. UBIFS</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>After a successfull merge of the <a href="https://github.com/project-magpie/linux-sh4-2.6.32.y/tree/ubifs-merge">UBIFS patches</a>  I have made some benchmarks. In both cases I have flashed the same image. It was a fresh build of core-image-minimal from the <a href="https://github.com/project-magpie/meta-stlinux/tree/dylan">dylan branch</a>. Maybe these benachmarks have to be repeated with a more representative scenario. More Information regarding <a href="http://en.wikipedia.org/wiki/UBIFS">UBIFS</a> can be found on <a href="http://elinux.org/UBIFS">eLinux</a>. If you are interested in more flash file system Benchmarks you can also have a look a <a href="http://elinux.org/Flash_Filesystem_Benchmarks">eLinux</a>.</p>
-
-<h2>Mounting a JFFS2 Volume</h2>
-
-<pre><code>root@spark:~# time mount /dev/mtdblock6  -tjffs2 /mnt/
-real    0m 2.06s
-user    0m 0.00s
-sys     0m 2.06s
-</code></pre>
-
-<h2>Mounting a UBIFS volume</h2>
-
-<pre><code>root@spark:~# time ubiattach -m6 &amp;&amp; time mount -tubifs ubi0:rootfs /mnt/
-[  663.748000] UBI: attaching mtd6 to ubi0
-[  663.752000] UBI: physical eraseblock size:   131072 bytes (128 KiB)
-[  663.760000] UBI: logical eraseblock size:    129024 bytes
-[  663.764000] UBI: smallest flash I/O unit:    2048
-[  663.768000] UBI: sub-page size:              512
-[  663.776000] UBI: VID header offset:          512 (aligned 512)
-[  663.780000] UBI: data offset:                2048
-[  663.940000] UBI: max. sequence number:       28
-[  663.960000] UBI: attached mtd6 to ubi0
-[  663.972000] UBI: MTD device name:            "E2 RootFs"
-[  663.976000] UBI: MTD device size:            80 MiB
-[  663.980000] UBI: number of good PEBs:        638
-[  663.988000] UBI: number of bad PEBs:         2
-[  663.992000] UBI: number of corrupted PEBs:   0
-[  663.996000] UBI: max. allowed volumes:       128
-[  664.000000] UBI: wear-leveling threshold:    4096
-[  664.008000] UBI: number of internal volumes: 1
-[  664.012000] UBI: number of user volumes:     1
-[  664.016000] UBI: available PEBs:             0
-[  664.020000] UBI: total number of reserved PEBs: 638
-[  664.024000] UBI: number of PEBs reserved for bad PEB handling: 6
-[  664.028000] UBI: max/mean erase counter: 1/0
-[  664.032000] UBI: image sequence number:  1037100788
-[  664.040000] UBI: background thread "ubi_bgt0d" started, PID 553
-UBI device number 0, total 638 LEBs (82317312 bytes, 78.5 MiB), available 0 LEBs (0 bytes), LEB size 129024 bytes (126.0 KiB)
-real    0m 0.31s
-user    0m 0.00s
-sys     0m 0.28s
-[  664.092000] UBIFS: background thread "ubifs_bgt0_0" started, PID 556
-[  664.160000] UBIFS: mounted UBI device 0, volume 0, name "rootfs"&lt;NULL&gt;
-[  664.164000] UBIFS: LEB size: 129024 bytes (126 KiB), min./max. I/O unit sizes: 2048 bytes/2048 bytes
-[  664.168000] UBIFS: FS size: 79607808 bytes (75 MiB, 617 LEBs), journal size 9033728 bytes (8 MiB, 71 LEBs)
-[  664.172000] UBIFS: reserved for root: 0 bytes (0 KiB)
-[  664.176000] UBIFS: media format: w4/r0 (latest is w4/r0), , small LPT model
-real    0m 0.14s
-user    0m 0.00s
-sys     0m 0.11s
-</code></pre>
-</div>
-  
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-
-
-
-
-
-
-
-
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2013-10-02T00:00:00+02:00"  data-updated="true" itemprop="datePublished dateCreated">Wed  2 Oct 2013, 12:00 AM</time>
-        
-           | <a href="/blog/2013/10/02/that-was-a-close-shave/#disqus_thread" itemprop="discussionUrl"
-             data-disqus-identifier="http://ch.ege.io/blog/2013/10/02/that-was-a-close-shave/">Comments</a>
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2013/10/02/that-was-a-close-shave/" itemprop="url">That Was a Close Shave!</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>While fiddling arround with the ubifs port I recently did. I misstyped the MTD Partion and completly erased mtd0. This sounds not that tragically, but on mtd0 u-boot is located. Without a bootloader there is only a small chance that the box will boot again. To reboot the box in such a situation is a absolut no go. Now you have to start brain work &hellip;</p>
-
-<p>For the ubifs tests I have choosen the fresh dylan port of my <a href="https://github.com/project-magpie/meta-stlinux/tree/dylan">meta-stlinux</a> layer. This was a first draft and so I just build the ,,core-image-minimal&#8217;&lsquo;. I included the mtd-utils but I&rsquo;ve forgotten to include a ssh server aswell. This was not a big issue due to the fact that I used the serial line for connection. For testing I booted the box from USB. The USB was connect through a USB extension cable. Which cut me off from installing a fresh u-boot by inserting a USB Stick.</p>
-
-<h2>What are the options?</h2>
-
-<ul>
-<li>Transfer the u-boot by zmodem</li>
-<li>Transfer the u-boot by ethernet.</li>
-</ul>
-
-
-<p>The name minimal definitly means minimal. There was no serial command I did know to transer data. On the ethernet no SSH no telnet and of course no FTP. Okay lets start thinking&hellip;</p>
-
-<p>BANG!!! my good old friend ,,netcat&#8217;&lsquo; one little test and yes there is a ,,nc&rsquo;&lsquo; command. The rest was easy going.</p>
-
-<h2>How I solved the issue</h2>
-
-<p>On the host PC start the server</p>
-
-<pre><code>cat ~/uboot-alien.bin | nc -v -l 3333
-</code></pre>
-
-<p>Yes I do know alien is not the correct name for a golden media GM990 Box. But this was the only image I have found.</p>
-
-<p>On the box I used this commands</p>
-
-<pre><code># nc 192.168.24.157 3333 &gt; u-boot.bin
-# du u-boot.bin
-520     u-boot.bin
-# flash_eraseall -j /dev/mtd0
-flash_eraseall has been replaced by `flash_erase &lt;mtddev&gt; 0 0`; please use it
-Erasing 64 Kibyte @ 0 --  0 % complete flash_erase:  Cleanmarker written at 0
-Erasing 64 Kibyte @ 10000 -- 12 % complete flash_erase:  Cleanmarker written at 10000
-Erasing 64 Kibyte @ 20000 -- 25 % complete flash_erase:  Cleanmarker written at 20000
-Erasing 64 Kibyte @ 30000 -- 37 % complete flash_erase:  Cleanmarker written at 30000
-Erasing 64 Kibyte @ 40000 -- 50 % complete flash_erase:  Cleanmarker written at 40000
-Erasing 64 Kibyte @ 50000 -- 62 % complete flash_erase:  Cleanmarker written at 50000
-Erasing 64 Kibyte @ 60000 -- 75 % complete flash_erase:  Cleanmarker written at 60000
-Erasing 64 Kibyte @ 70000 -- 87 % complete flash_erase:  Cleanmarker written at 70000
-Erasing 64 Kibyte @ 70000 -- 100 % complete
-# flashcp u-boot.bin /dev/mtd0
-# reboot
-</code></pre>
-
-<p>Now it was time to to keep one&rsquo;s fingers crossed. One deep breath later the box bootet like every time before.</p>
-
-<pre><code>Board: STx7111-Mboard (MB618)  [32-bit mode]
-info: Disregarding any EPLD
-
-
-U-Boot 1.3.1 (Oct 19 2010 - 18:08:50) - stm23_0043 - YW 1.0.017 Rel
-
-DRAM:  128 MiB
-NOR:     8 MiB
-NAND:  512 MiB
-*** Warning - bad CRC, using default environment
-
-In:    serial
-Out:   serial
-Err:   serial
-IdentID : 09 00 07 00 00 46 d1
-0  ESC to stop autoboot:  3
-</code></pre>
-
-<p>Except of the little message ,,*** Warning - bad CRC, using default environment&#8217;&lsquo; this was caused because by writing 512kb I have destroyed u-boot environment. I am not sure If this is the right u-boot. I would be happy If someone with a Golden Media Spark reloaded Box can send me a copy of the u-boot.</p>
-</div>
-  
-  
-
-
-        </article>
-      
     </div>
 
     <ul class="pager">
       
-        <li class="previous disabled"><a href="#">&larr;&nbsp;Older</a></li>
+        <li class="previous"><a href="/posts/3">&larr;&nbsp;Older</a></li>
       
       <li><a href="/blog/archives">Blog Archives</a></li>
       
@@ -1129,15 +1396,15 @@ IdentID : 09 00 07 00 00 46 d1
   
   <div id="recent_posts" class="list-group">
     
+    <a class="list-group-item " href="/blog/2015/09/19/openembedded-support-for-the-upcomming-udoo-neo/">OpenEmbedded Support for the Upcomming UDOO Neo</a>
+    
+    <a class="list-group-item " href="/blog/2015/08/03/installing-stm32cubemx-on-linux/">Installing STM32CubeMX on Linux</a>
+    
     <a class="list-group-item " href="/blog/2015/07/18/nim-dvb-s-slash-s2-v1-dot-0-pinout/">[WIP] NIM_DVB-S/S2 V1.0 Pinout</a>
     
     <a class="list-group-item " href="/blog/2015/07/18/pci-express-connectors-from-china/">PCI-Express Connectors From China</a>
     
     <a class="list-group-item " href="/blog/2015/07/04/full-open-source-dvb-s2-board/">Full Open Source DVB-S2 Board</a>
-    
-    <a class="list-group-item " href="/blog/2015/05/04/using-h-slash-w-randaom-generator-on-odrod-c1-with-yocto/">Using H/W Randaom Generator on ODROD-C1 With Yocto</a>
-    
-    <a class="list-group-item " href="/blog/2015/04/12/using-the-segger-j-link-to-access-the-ti-cc2650-chip/">Using the SEGGER J-Link to Access the TI CC2650 Chip</a>
     
   </div>
 </section>
