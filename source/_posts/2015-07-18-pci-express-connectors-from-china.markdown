@@ -11,3 +11,7 @@ After my decision to build a full [Open Source Software based DVB-S2 USB module]
 {%img /images/posts/IMG_5144.jpg %}
 
 I have not found any data sheet for this connector yet. On one side it has an engraving with [,,tyco/Electronics''](http://www.te.com) and on the other side some code ,,08306ED''. 
+
+## Update 
+
+After some research I found a ,,data sheet'' [ENG_DS_4-1773442-7_0308-2.pdf](http://www.te.com/usa-en/product-4-1775800-2.html) but it lacks detailed drawings about the PIN pitch. After some research I discovered that those connectors are described in the [PCI Express Card Electromechanical Specification](https://www.google.com/search?q=PCI+Express+Card+Electromechanical+Specification).
