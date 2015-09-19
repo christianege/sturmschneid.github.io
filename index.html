@@ -116,158 +116,6 @@
 
 
 
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2015-09-19T19:18:03+02:00"  data-updated="true" itemprop="datePublished dateCreated">Sat 19 Sep 2015,  7:18 PM</time>
-        
-           | <a href="/blog/2015/09/19/openembedded-support-for-the-upcomming-udoo-neo/#disqus_thread" itemprop="discussionUrl"
-             data-disqus-identifier="http://ch.ege.io/blog/2015/09/19/openembedded-support-for-the-upcomming-udoo-neo/">Comments</a>
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2015/09/19/openembedded-support-for-the-upcomming-udoo-neo/" itemprop="url">OpenEmbedded Support for the Upcomming UDOO Neo</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>After beeing part of the <a href="https://www.kickstarter.com/projects/udoo/udoo-neo-raspberry-pi-arduino-wi-fi-bt-40-sensors/?src=i1">Kickstarter campaign</a> for the <a href="http://www.udoo.org/udoo-neo/">UDOO NEO board</a>. I am looking forward to play with this little beast.</p>
-
-<p><img class="center" src="http://cdn.udoo.org/wp-content/uploads/2015/03/UDOO_neo_up2_ks_funded.png"></p>
-
-<p>During the meantime I decided to add the <a href="http://www.udoo.org/udoo-neo/">UDOO NEO board</a> to the <a href="https://github.com/Freescale/meta-fsl-arm-extra">Freescale OpenEmbedded community layer</a>. Due to the fact my board did not yet arrived I&rsquo;ve not yet created a patch to ask for integration into the official <a href="https://github.com/Freescale/meta-fsl-arm-extra">Freescale OpenEmbedded community layer</a>. This will be done when I&rsquo;ve tested the layer.</p>
-
-<p>If you are interested in my work you can find my personal fork right <a href="https://github.com/graugans/meta-fsl-arm-extra/">here at github</a>.
-You have to use the <a href="https://github.com/graugans/meta-fsl-arm-extra/tree/fido">fido</a> branch. To keep things simple I&rsquo;ve created my own
-branch of the <a href="https://github.com/graugans/fsl-community-bsp-platform">fsl-community-bsp-platform</a> repo repository.</p>
-
-<h1>Installing the BSP</h1>
-
-<p>To get the BSP you need to have repo installed and use it as:</p>
-
-<p>Install the repo utility:</p>
-
-<pre><code>$: mkdir ~/bin
-$: curl http://commondatastorage.googleapis.com/git-repo-downloads/repo &gt; ~/bin/repo
-$: chmod a+x ~/bin/repo
-</code></pre>
-
-<p>Download the BSP source:</p>
-
-<pre><code>$: PATH=${PATH}:~/bin
-$: mkdir fsl-community-bsp
-$: cd fsl-community-bsp
-$: repo init -u https://github.com/graugans/fsl-community-bsp-platform -b fido
-$: repo sync
-</code></pre>
-
-<p>At the end of the commands you have every metadata you need to start work with.</p>
-
-<h1>Building the Image</h1>
-
-<p>To start a base image build execute the following command on a decent machine and grab some coffee&hellip;</p>
-
-<p>$: source ./setup-environment udooneo-build
-$: bitbake core-image-base</p>
-
-<p>If everything was build fine you&rsquo;ll find a SD-Card image right here:</p>
-
-<pre><code>tmp/deploy/images/udooneo/core-image-base-udooneo.sdcard
-</code></pre>
-
-<p>You can write this image directly to any supported SD-Card. Plug it into your freshly unboxed UDOO NEO and hopefully have fun. This image is completly untested and you have to use it on your own risk&hellip;</p>
-
-<h1>Creating your personal Toolchain</h1>
-
-<p>If you want to develop your own software for the UDOO Neo you&rsquo;ll need some cross toolchain. This can be achieved very easy with the OpenEmbedded universe.</p>
-
-<pre><code>$ bitbake core-image-base -cpopulate_sdk
-</code></pre>
-
-<p>The resulting self extracting shell script you&rsquo;ll find right here:</p>
-
-<pre><code>tmp/deploy/sdk/poky-glibc-x86_64-core-image-base-cortexa9hf-vfp-neon-toolchain-1.8.sh
-</code></pre>
-
-<p>In case of any questions just leave a comment on my Blog.</p>
-</div>
-  
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-
-
-
-
-
-
-
-
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2015-08-03T06:11:16+02:00"  data-updated="true" itemprop="datePublished dateCreated">Mon  3 Aug 2015,  6:11 AM</time>
-        
-           | <a href="/blog/2015/08/03/installing-stm32cubemx-on-linux/#disqus_thread" itemprop="discussionUrl"
-             data-disqus-identifier="http://ch.ege.io/blog/2015/08/03/installing-stm32cubemx-on-linux/">Comments</a>
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2015/08/03/installing-stm32cubemx-on-linux/" itemprop="url">Installing STM32CubeMX on Linux</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>The STMicroelectronics STM32CubeMX is delivered as a exe file what implies that it is eintended to run on Windows systems only. But due to the fact it is a JAVA application we can run it on Linux as-well.</p>
-
-<h1>Installation</h1>
-
-<p>To install the STM32CubeMX administration rights are needed</p>
-
-<pre><code>sudo java -jar /tmp/SetupSTM32CubeMX-4.9.0.exe
-</code></pre>
-
-<h1>Running STM32CubeMX</h1>
-
-<p>If you&rsquo;ve selected the default install location you can run STM32CubeMX like this:</p>
-
-<pre><code>java -jar /usr/local/STMicroelectronics/STM32Cube/STM32CubeMX/STM32CubeMX.exe
-</code></pre>
-</div>
-  
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-
-
-
-
-
-
-
-
 <span class="glyphicon glyphicon-calendar"></span> <time datetime="2015-07-18T08:26:39+02:00"  data-updated="true" itemprop="datePublished dateCreated">Sat 18 Jul 2015,  8:26 AM</time>
         
            | <a href="/blog/2015/07/18/nim-dvb-s-slash-s2-v1-dot-0-pinout/#disqus_thread" itemprop="discussionUrl"
@@ -486,129 +334,6 @@ $: bitbake core-image-base</p>
 <p>The last part in the jigsaw puzzle is the DVB-S2 tuner and demodulator part. Some of the linux based Set-Top-Boxes provide swappable tuner modules one of them is the manufacturer GigaBlue. They sell a <a href="http://www.gigablue.de/portfolio-item/gigablue-dvb-s2-tuner/">DVB-S2 Tuner</a> based on the Serit <a href="http://serit.hk/Products_Details.aspx?IDX=144">SP2246 NIM for DVB-S2</a>. The SP2246 is based on the <a href="http://www.st.com/web/catalog/mmc/FM131/SC1003/PF251478">STV6111</a> tuner and the <a href="http://www.st.com/web/catalog/mmc/FM131/SC628/SS1334/PF252767?s_searchtype=partnumber">STV0913</a> demodulator. It looks like the tuner module is connected via a <a href="https://en.wikipedia.org/wiki/PCI_Express#Form_factors">PCI-Express x1 36Pin</a> connector. Serit provides a very detailed <a href="http://serit.hk/Manager/Public/pdf/201212070342307ead.pdf">data sheet</a> so at least a few of the PINs should be easily mappable with a multi meter.</p>
 
 <p><img src="/images/posts/sp2246.jpg"></p>
-</div>
-  
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-
-
-
-
-
-
-
-
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2015-06-15T08:09:57+02:00"  data-updated="true" itemprop="datePublished dateCreated">Mon 15 Jun 2015,  8:09 AM</time>
-        
-           | <a href="/blog/2015/06/15/watterott-hdmi-slash-dvi-rgb-adapter-edid-hacks/#disqus_thread" itemprop="discussionUrl"
-             data-disqus-identifier="http://ch.ege.io/blog/2015/06/15/watterott-hdmi-slash-dvi-rgb-adapter-edid-hacks/">Comments</a>
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2015/06/15/watterott-hdmi-slash-dvi-rgb-adapter-edid-hacks/" itemprop="url">Watterott HDMI/DVI - RGB Adapter EDID Hacks</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>The German Maker supplier <a href="http://www.watterott.com">Watterott</a> sells a <a href="http://www.watterott.com/en/HDMI-RGB-adapter-with-ATmega32U4-touch-controller">HDMI/DVI to RGB Display adapter</a>. The Adapter itself contains a ATmega32U4 controller attached to USB, which works as touchcontroller.  The designs and firmware for the adapter are available on <a href="https://github.com/watterott/HDMI-Display">GitHub</a>. I am not sure if we can call this OpenSource because of a missing License file.</p>
-
-<p><img class="center" src="https://raw.githubusercontent.com/watterott/HDMI-Display/master/hardware/HDMI-Display_v10dev.jpg"></p>
-
-<p>Beside the HDMI/DVI Bridge controller the board contains a EEPREOM to store the <a href="https://en.wikipedia.org/wiki/Extended_Display_Identification_Data">EDID</a> data. EDID is needed to provide the attached Host device like your PC or Mac to identify what resolution and capabilities your Display has.</p>
-
-<p>Due to the fact that the adapter supports a <a href="https://github.com/watterott/HDMI-Display/blob/master/docu/Displays.md">wide range</a> of displays the EEPROM is not programmed on a freshly ordered board.</p>
-
-<h1>Flashing the EDID EEPROM</h1>
-
-<p>Watterott suggests to flash the EEPROM through the ATmega32U4 controller and provides <a href="https://github.com/watterott/HDMI-Display/blob/master/docu/FAQ.md#how-to-flashupdate-the-edid-eeprom">a short description</a> how to do this. But this requires to close two solder jumpers. I decided to flash the EDID EEPROM with my <a href="http://dangerousprototypes.com/docs/Bus_Pirate">Bus Pirate</a> and the <a href="http://www.delock.de/produkte/G_65168/merkmale.html?setLanguage=en">Delock 65168</a></p>
-
-<p><img class="center" src="http://www.bilder.delock.de/produkte/orig/50f030782950b0.34465021.jpg"></p>
-
-<p>For me the <a href="http://www.delock.de/produkte/G_65168/merkmale.html?setLanguage=en">Delock 65168</a> is the perfect toy to play around with EDID or <a href="https://en.wikipedia.org/wiki/HDMI#CEC">HDMI CEC</a>.</p>
-
-<p>The host controller communicates through <a href="https://en.wikipedia.org/wiki/I%C2%B2C">I2C</a> with the EDID EEPROM. There are at least 3 line needed to establish the <a href="https://en.wikipedia.org/wiki/I%C2%B2C">I2C</a> communication. You need a good ground connection <strong>(GND)</strong> and a clock line <strong>(SCL)</strong> and of course the data line <strong>(SDA)</strong></p>
-</div>
-  
-  
-
-
-        </article>
-      
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-
-
-
-
-
-
-
-
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2015-05-04T11:40:53+02:00"  data-updated="true" itemprop="datePublished dateCreated">Mon  4 May 2015, 11:40 AM</time>
-        
-           | <a href="/blog/2015/05/04/odroid-c1-enabling-bootlogo-on-yocto-builds/#disqus_thread" itemprop="discussionUrl"
-             data-disqus-identifier="http://ch.ege.io/blog/2015/05/04/odroid-c1-enabling-bootlogo-on-yocto-builds/">Comments</a>
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2015/05/04/odroid-c1-enabling-bootlogo-on-yocto-builds/" itemprop="url">ODROID-C1 Enabling Bootlogo on Yocto Builds</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>The U-Boot for the Amlogic S805 from <a href="https://github.com/hardkernel/u-boot/tree/odroidc-v2011.03">Hardkernel</a> has the capabilities to display a bootlogo. It is not that easy to find any bootlogo that complies to a licence which can be used in comercial and in open source environments. Using the yocto logo is most probably prohibited, so I decided to design my own logo. And saved it to <strong> 24-bit Windows BMP image</strong> with the dimension of <strong>1280×720</strong> as statet in the <a href="http://odroid.com/dokuwiki/doku.php?id=en:c1_tips#logo_file_format">ODROID-C1 Wiki</a></p>
-
-<p><img src="https://raw.githubusercontent.com/linux-meson/meta-amlogic/fido/recipes-bsp/u-boot/u-boot-odroidc1/odroidc1/bootlogo.png"></p>
-
-<h2>Modifying boot.ini</h2>
-
-<p>In my Amlogic meta layer for the yocto build system I do not use a Fat32 boot partition so the <a href="">original bootlogo loading command</a> needed some minor modifications. The bootlogo is name bootlogo.bmp and should be copied to /boot.</p>
-
-<pre><code># loading and displaying bootlogo
-logo size ${outputmode}
-video open
-video clear
-video dev open ${outputmode}
-ext4load mmc 0:1 ${loadaddr_logo} /boot/bootlogo.bmp
-bmp display ${loadaddr_logo}
-bmp scale
-</code></pre>
-
-<p>You can either add this to your boot.ini or wait until I pushed a patch for <a href="https://github.com/linux-meson/meta-amlogic">meta-amlogic</a>.</p>
-
-<h2>Modifying the U-Boot environment</h2>
-
-<p>Another option is to change the U-Boot environment. There is already a variable called <em>preloadlogo</em>. We can update the command to load the bootlogo from ext4 instead of Fat32</p>
-
-<pre><code>setenv preloadlogo 'logo size ${outputmode};video open;video clear;video dev open ${outputmode};ext4load mmc 0:1 ${loadaddr_logo} /boot/bootlogo.bmp;bmp display ${loadaddr_logo};bmp scale'
-</code></pre>
-
-<p>Pleas ensure, that you paste this as a single line.</p>
 </div>
   
   
@@ -1045,6 +770,468 @@ Notification handle = 0x0049 value: 00
 
         </article>
       
+      
+        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+          
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2015-04-12T07:09:49+02:00"  data-updated="true" itemprop="datePublished dateCreated">Sun 12 Apr 2015,  7:09 AM</time>
+        
+           | <a href="/blog/2015/04/12/running-bluez5-on-yocto-slash-openembedded/#disqus_thread" itemprop="discussionUrl"
+             data-disqus-identifier="http://ch.ege.io/blog/2015/04/12/running-bluez5-on-yocto-slash-openembedded/">Comments</a>
+        
+      </p>
+    
+    
+      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2015/04/12/running-bluez5-on-yocto-slash-openembedded/" itemprop="url">Running BlueZ5 on Yocto/OpenEmbedded</a></h2>
+    
+  </header>
+
+
+  <div class="entry-content clearfix" itemprop="articleBody description"><p>At the moment yocto/openembedded ships with <a href="http://www.bluez.org">BlueZ4</a> as the Linux Bluetooth protocol stack. Due to the fact that <a href="http://en.wikipedia.org/wiki/Bluetooth_low_energy">Bluetooth low energy</a> is only supported in BlueZ5 this is a bit of a disappointment. There is a long-standing bug report on this <a href="https://bugzilla.yoctoproject.org/show_bug.cgi?id=5031">#5031 </a>. But since the commit <a href="http://git.yoctoproject.org/cgit/cgit.cgi/poky/commit/?id=1139cc4eef305fc14bc5db19a5f8729e7b3bf27a">1139cc4e&hellip;</a> the used BlueZ version can be selected. According to the reference manual BlueZ5 can be enabled by adding bluez5 to the <a href="http://www.yoctoproject.org/docs/1.8/ref-manual/ref-manual.html#var-DISTRO_FEATURES">DISTRO_FEATURES</a> for me the easiest way to to this was adding the following line to my conf/local.conf in the <a href="http://www.yoctoproject.org/docs/1.8/dev-manual/dev-manual.html#build-directory">Build Directory</a>.</p>
+
+<pre><code>DISTRO_FEATURES = "ext2 alsa wifi usbhost bluetooth bluez5 ${DISTRO_FEATURES_LIBC}"
+</code></pre>
+
+<p>This disables x11 for example. But you may also could add something like this:</p>
+
+<pre><code>DISTRO_FEATURES_append = "bluez5"
+</code></pre>
+
+<p>After this run an build of your preferred image. In my case this was &ldquo;core-image-base&rdquo;</p>
+
+<pre><code>bitbake core-image-base
+</code></pre>
+
+<p>To have full bluetooth support on the target I needed to install some extra packages. To get a list of all bluetooth related packages run the following command. For this you need a <a href="http://www.yoctoproject.org/docs/1.8/ref-manual/ref-manual.html#package-feeds-dev-environment">opkg/ipkg feed</a> server.</p>
+
+<pre><code>root@odroidc1:~# opkg list | grep blue
+bluez5 - 5.29-r0 - Linux Bluetooth Stack Userland V5  Linux Bluetooth stack V5 userland
+bluez5-dbg - 5.29-r0 - Linux Bluetooth Stack Userland V5 - Debugging files  Linux Bluetooth
+bluez5-dev - 5.29-r0 - Linux Bluetooth Stack Userland V5 - Development files  Linux Bluetooth
+bluez5-doc - 5.29-r0 - Linux Bluetooth Stack Userland V5 - Documentation files  Linux Bluetooth
+bluez5-noinst-tools - 5.29-r0 - Linux Bluetooth Stack Userland V5  Linux Bluetooth stack V5 userland
+bluez5-obex - 5.29-r0 - Linux Bluetooth Stack Userland V5  Linux Bluetooth stack V5 userland
+bluez5-testtools - 5.29-r0 - Linux Bluetooth Stack Userland V5  Linux Bluetooth stack V5 userland
+libasound-module-bluez - 5.29-r0 - Linux Bluetooth Stack Userland V5  Linux Bluetooth stack V5 userland
+packagegroup-base-bluetooth - 1.0-r83 - Bluetooth support  Merge machine and distro options to create a basic
+</code></pre>
+
+<p>I installed the following packages:</p>
+
+<pre><code>bluez5-testtools, bluez5-noinst-tools
+</code></pre>
+
+<p>The later <strong>bluez5-noinst-tools</strong> was required for the gatttool.</p>
+</div>
+  
+  
+
+
+        </article>
+      
+      
+        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+          
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2014-10-25T13:40:01+02:00"  data-updated="true" itemprop="datePublished dateCreated">Sat 25 Oct 2014,  1:40 PM</time>
+        
+           | <a href="/blog/2014/10/25/new-blog-based-on-octopress/#disqus_thread" itemprop="discussionUrl"
+             data-disqus-identifier="http://ch.ege.io/blog/2014/10/25/new-blog-based-on-octopress/">Comments</a>
+        
+      </p>
+    
+    
+      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2014/10/25/new-blog-based-on-octopress/" itemprop="url">New Blog Based on Octopress</a></h2>
+    
+  </header>
+
+
+  <div class="entry-content clearfix" itemprop="articleBody description"><p>This is my new Blog based on <a href="http://octopress.org/">Octopress</a> and <a href="http://kaworu.github.io/octostrap3">Octostrap3</a></p>
+</div>
+  
+  
+
+
+        </article>
+      
+      
+        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+          
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2014-09-26T00:00:00+02:00"  data-updated="true" itemprop="datePublished dateCreated">Fri 26 Sep 2014, 12:00 AM</time>
+        
+           | <a href="/blog/2014/09/26/building-a-yocto-image-for-the-a20-olinuxino-lime/#disqus_thread" itemprop="discussionUrl"
+             data-disqus-identifier="http://ch.ege.io/blog/2014/09/26/building-a-yocto-image-for-the-a20-olinuxino-lime/">Comments</a>
+        
+      </p>
+    
+    
+      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2014/09/26/building-a-yocto-image-for-the-a20-olinuxino-lime/" itemprop="url">Building a Yocto Image for the A20 OLinuXino LIME</a></h2>
+    
+  </header>
+
+
+  <div class="entry-content clearfix" itemprop="articleBody description"><p>Some time ago I ordered a <a href="https://www.olimex.com/Products/OLinuXino/A20/A20-OLinuXino-LIME-4GB/open-source-hardware">A20-OLinuXino-LIME-4GB</a> board. This was planed as a replacement for my not so beloved Raspberry PI. I am not that big fan of the PI because of the wacky SD-Card holder and the USB stability. I hope the 4GB NAND of the <a href="https://www.olimex.com/Products/OLinuXino/A20/A20-OLinuXino-LIME-4GB/open-source-hardware">A20-OLinuXino-LIME-4GB</a> Will improve the stability of my target application.</p>
+
+<h3>[Update - 2014-10-01]</h3>
+
+<p>I&rsquo;ve created a successful <a href="https://github.com/linux-sunxi/meta-sunxi/commit/998cbf354423375ceacf735571dab150b9670502">pull-request</a> to merge my changes into the <a href="https://github.com/linux-sunxi/meta-sunxi">meta-sunxi</a> repository and succeeded with the current master branch. Maybe I also start a pull request for the daisy branch. Due  to the fact that the new yocto release is knocking on the door This is may not needed.</p>
+
+<p>As a big fan of the <a href="https://www.yoctoproject.org/">Yocto Project</a> I decided to run poky on my OLinuXino. Due to the fact that the <a href="https://www.olimex.com/Products/OLinuXino/A20/A20-OLinuXino-LIME-4GB/open-source-hardware">A20-OLinuXino-LIME-4GB</a> is not yet officially supported by the <a href="https://github.com/linux-sunxi/meta-sunxi">meta-sunxi layer</a> there are some patches needed. Those patches are located in <a href="https://github.com/cybertux/meta-sunxi/tree/olimex-a20-lime">my fork</a>. The patch set is against the daisy branch</p>
+
+<h1>Preparation</h1>
+
+<p>Clone the git repositories and switch to the daisy branch.</p>
+
+<pre><code>mkdir /data/src/yocto
+cd /data/src/yocto
+git clone git://git.yoctoproject.org/poky
+git clone https://github.com/cybertux/meta-sunxi.git
+cd poky
+git checkout -b daisy origin/daisy
+cd ../meta-sunxi
+git checkout -b daisy origin/olimex-a20-lime
+</code></pre>
+
+<p>Prepare a warm and cozy environment for the build</p>
+
+<pre><code>cd /data/src/yocto/poky
+mkdir -p ../build/a20-lime
+source oe-init-build-env ../build/a20-lime
+</code></pre>
+
+<p>Add the <a href="https://github.com/linux-sunxi/meta-sunxi">sunxi meta-layer</a> to the build environment</p>
+
+<pre><code>--- a/conf/bblayers.conf
++++ b/conf/bblayers.conf
+@@ -9,6 +9,7 @@ BBLAYERS ?= " \
+   /data/src/yocto/poky/meta \
+   /data/src/yocto/poky/meta-yocto \
+   /data/src/yocto/poky/meta-yocto-bsp \
++  /data/src/yocto/meta-sunxi \
+   "
+ BBLAYERS_NON_REMOVABLE ?= " \
+   /data/src/yocto/poky/meta \
+</code></pre>
+
+<p>Set the correct target machine and tuning parameters</p>
+
+<pre><code>diff --git a/conf/local.conf b/conf/local.conf
+index bcb0864..6a793e6 100644
+--- a/conf/local.conf
++++ b/conf/local.conf
+@@ -55,7 +55,7 @@ PARALLEL_MAKE ?= "-j ${@oe.utils.cpu_count()}"
+ #MACHINE ?= "edgerouter"
+ #
+ # This sets the default machine to be qemux86 if no other machine is selected:
+-MACHINE ??= "qemux86"
++MACHINE ??= "olinuxino-a20-lime"
+
+ #
+ # Where to place downloads
+@@ -125,7 +125,7 @@ DISTRO ?= "poky"
+ #  - 'package_rpm' for rpm style packages
+ # E.g.: PACKAGE_CLASSES ?= "package_rpm package_deb package_ipk"
+ # We default to rpm:
+-PACKAGE_CLASSES ?= "package_rpm"
++PACKAGE_CLASSES ?= "package_ipk"
+
+ #
+ # SDK/ADT target architecture
+@@ -134,7 +134,19 @@ PACKAGE_CLASSES ?= "package_rpm"
+ # you can build the SDK packages for architectures other than the machine you are
+ # running the build on (i.e. building i686 packages on an x86_64 host).
+ # Supported values are i686 and x86_64
+-#SDKMACHINE ?= "i686"
++SDKMACHINE ?= "i686"
++
++#
++# The default machine settings are meant to be the lowest common denominator,
++# maximizing generality. Significantly better performance (2x-3x) can be achieved
++# with the following settings:
++#
++# Allwinner A20
++#
++# For Allwinner A20 (Cubieboard2/CubieTruck), the following tuning options are recommended:
++#
++# Enable hardfloat, thumb2 and neon capabilities
++DEFAULTTUNE = "cortexa7hf-neon-vfpv4"
+
+ #
+ # Extra image configuration defaults
+</code></pre>
+
+<h1>Building the image</h1>
+
+<p>Now the image can be build, lean back and grap some coffee, beer, &hellip;</p>
+
+<pre><code>bitbake core-image-base
+
+[...]
+Build Configuration:
+BB_VERSION        = "1.22.0"
+BUILD_SYS         = "x86_64-linux"
+NATIVELSBSTRING   = "Ubuntu-12.04"
+TARGET_SYS        = "arm-poky-linux-gnueabi"
+MACHINE           = "olinuxino-a20-lime"
+DISTRO            = "poky"
+DISTRO_VERSION    = "1.6.1"
+TUNE_FEATURES     = "armv7a vfp neon callconvention-hard vfpv4 cortexa7"
+TARGET_FPU        = "vfp-vfpv4-neon"
+meta
+meta-yocto
+meta-yocto-bsp    = "daisy:a4d8015687cf9ddd6ef563e29cf840698f81c099"
+meta-sunxi        = "olimex-a20-lime:5bb9da72c24a442eecd827a9b85f903281357815"
+[...]
+</code></pre>
+
+<p>After a successful build all images are located in the folder</p>
+
+<pre><code>/data/src/yocto/build/a20-lime/tmp/deploy/images/olinuxino-a20-lime/
+</code></pre>
+
+<h1>Building the SDK</h1>
+
+<p>Sometimes it is handy to have a toolchain apart from the whole yocto/poky environment. So lets build some</p>
+
+<pre><code>bitbake -cpopulate_sdk core-image-base
+</code></pre>
+
+<p>This will take mostly as long as the image build so again grab some coffee, beer or &hellip;..
+The result is located here:</p>
+
+<pre><code>/data/src/yocto/build/a20-lime/tmp/deploy/sdk/olinuxino-a20-lime/poky-eglibc-i686-core-image-base-cortexa7hf-vfp-vfpv4-neon-toolchain-1.6.1.sh
+</code></pre>
+
+<h1>Installation of the Toolchain</h1>
+
+<p>You may need root access to install in /opt</p>
+
+<pre><code>sudo  tmp/deploy/sdk/poky-eglibc-i686-core-image-base-cortexa7hf-vfp-vfpv4-neon-toolchain-1.6.1.sh
+Enter target directory for SDK (default: /opt/poky/1.6.1):
+You are about to install the SDK to "/opt/poky/1.6.1". Proceed[Y/n]?y
+Extracting SDK...
+Setting it up...done
+SDK has been successfully set up and is ready to be used.
+</code></pre>
+
+<h1>Using the SDK</h1>
+
+<p>To use the SDK we have to source the set-up script</p>
+
+<pre><code>source  /opt/poky/1.6.1/environment-setup-cortexa7hf-vfp-vfpv4-neon-poky-linux-gnueabi
+</code></pre>
+
+<p>After this some variables should be set like this</p>
+
+<pre><code>echo $CC
+arm-poky-linux-gnueabi-gcc -march=armv7-a -mthumb-interwork -mfloat-abi=hard -mfpu=neon-vfpv4 -mtune=cortex-a7 --sysroot=/opt/poky/1.6.1/sysroots/cortexa7hf-vfp-vfpv4-neon-poky-linux-gnueabi
+</code></pre>
+</div>
+  
+  
+
+
+        </article>
+      
+      
+        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+          
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2014-06-15T00:00:00+02:00"  data-updated="true" itemprop="datePublished dateCreated">Sun 15 Jun 2014, 12:00 AM</time>
+        
+           | <a href="/blog/2014/06/15/sti7111-st40-jtag-preparations/#disqus_thread" itemprop="discussionUrl"
+             data-disqus-identifier="http://ch.ege.io/blog/2014/06/15/sti7111-st40-jtag-preparations/">Comments</a>
+        
+      </p>
+    
+    
+      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2014/06/15/sti7111-st40-jtag-preparations/" itemprop="url">Sti7111 (ST40) JTAG Preparations</a></h2>
+    
+  </header>
+
+
+  <div class="entry-content clearfix" itemprop="articleBody description"><p>While I almost smashed my Spark 7111 Box during <a href="http://project-magpie.github.io/2013/10/02/that-was-a-close-shave/">UBI experiments</a> I decided to build a JTAG adapter for the ST40 CPU. After getting a little more familiar with eagle my second design ended in the <a href="https://github.com/project-magpie/jtag-adapter">ST40 JTAG adapter</a>.</p>
+
+<p>I ordered the PCB at <a href="http://www.seeedstudio.com/service/">Seeedstudio Fusion PCB</a> and was impressed how cheap and fast they are.</p>
+
+<p><img src="/images/jtag/jtag_pcb.png"></p>
+
+<p>After assembly of the PCB the JTAG adapter have to be connected to the STB. If you are unsure about the pinning you can easily check if Pin-2 is connected to GND with a multimeter.</p>
+
+<p><img src="/images/jtag/spark_jtag_pinout.png"></p>
+
+<p>A more detailed version reconstructed in eagle.</p>
+
+<p><img src="/images/jtag/spark_jtag_pinout_eagle.png"></p>
+
+<p>Anyway, most hardware is useless without software. To use the JTAG Adapter the <a href="http://www.st.com/st-web-ui/static/active/en/resource/technical/document/user_manual/CD17379953.pdf">ST40 Micro Toolset</a> is needed. You can grab your version of the ST40 Micro Toolset at the <a href="ftp://ftp.stlinux.com/pub/tools/products/st40tools/ST40_GNU_R5.1.0/">STM ftp server</a>. As usual I decided to take the linux version (R5.1.0). I have tested with Ubuntu 12.04. Maybe the 32bit compatibility libs have to be installed if you are running a 64bit distro. You also need the <a href="ftp://ftp.stlinux.com/pub/tools/products/stmc2/R1.6.0/doc/release_notes.htm">ST Micro Connection Package R1.6.0.</a>. After Installation the folder structure should look like this:</p>
+
+<pre><code>$ tree -L 1 /opt/STM/
+/opt/STM/
+├── ST40R5.1.0
+└── STMCR1.6.0
+</code></pre>
+
+<p>To be able to execute the binaries some modifications to the PATH and LD_LIBRARY_PATH variable have to be made.</p>
+
+<pre><code>export LD_LIBRARY_PATH=/opt/STM/STMCR1.6.0/lib:/opt/STM/ST40R5.1.0/lib
+export PATH=/opt/STM/ST40R5.1.0/bin:/opt/STM/STMCR1.6.0/bin:$PATH
+</code></pre>
+
+<p>Now you sould be able to execute the following command</p>
+
+<pre><code>$ sh4xrun
+usage: /opt/STM/ST40R5.1.0/bin/sh4xrun [-c command] [-d directory] [-e filename] [-f] [-g gdbpath] [-h] [-i filename] [-t     target] [-u gdbname] [-v] [-x filename] [-A command] [-B command] [-C option] [-D] [-T timeout] [-V] [-a|--] [arguments]
+  -a arguments  target program arguments
+  -c command    connection command (default is sh4tp)
+  -d directory  directory in which to search for command files
+  -e filename   executable file to load
+  -f            (ignored)
+  -g gdbpath    specify path to GDB
+  -h            display help
+  -i filename   command script file to source
+  -t target     target specification
+  -u gdbname    specify name of GDB
+  -v            verbose
+  -x filename   use filename instead of .shgdbinit
+  -A command    execute command after running program
+  -B command    execute command before running program
+  -C option     connection command option
+  -D            debug (very verbose)
+  -T timeout    maximum time for executing on target
+  -V            version string
+</code></pre>
+
+<p>With this command a executable can be uploaded and executed right on the box. But what kind of executable is worthwhile to be uploaded? On Avi+ Forum they use a tool called flasher which is upload to the box. I prefer to use a self compiled version of u-boot. And honestly I did not managed to compile a flasher for the sti7111.</p>
+
+<h2>Compilation of U-Boot</h2>
+
+<p>Before we can compile the u-boot boot loader we have to get the source</p>
+
+<pre><code>$ git clone git://git.stlinux.com/stm/u-boot.git
+$ cd u-boot/
+$ git checkout -b stmicro-1.3.1 origin/stmicro-1.3.1
+</code></pre>
+
+<p>I decided to use stmicro-1.3.1 branch It sounds familiar and I was unable to build the stmicro branch. To compile the source I used a toolchain I&rsquo;ve created with to meta-stlinux layer and yocto.</p>
+
+<pre><code>$ source /opt/poky/1.5.1/environment-setup-sh4-poky-linux
+$ export CROSS_COMPILE=sh4-poky-linux-
+$ unset LDFLAGS
+$ make hdk7111_config
+$ vim ./cpu/sh/config.mk
+# remove option  -m4-nofpu
+</code></pre>
+
+<p>After a successful compilation you have a file called u-boot. This can be uploaded by executing:</p>
+
+<pre><code>sh4xrun -c sh4tp -t STMCLT1000_A:sat7111:st40,debug=2 -e /data/src/u-boot/u-boot
+</code></pre>
+
+<p>On a working serial console connected to the STB you should see something like this:</p>
+
+<pre><code>Board: STx7111-HDK  [29-bit mode]
+
+
+U-Boot 1.3.1-dirty (Jun 15 2014 - 18:23:57) - stm23-2011-12-08
+
+DRAM:  256 MiB
+NOR:     8 MiB
+NAND:  Bad block table found at page 262080, version 0x01
+Bad block table found at page 262016, version 0x01
+nand_read_bbt: Bad block at 0x04400000
+nand_read_bbt: Bad block at 0x06580000
+nand_read_bbt: Bad block at 0x065a0000
+nand_read_bbt: Bad block at 0x0e580000
+nand_read_bbt: Bad block at 0x0e5a0000
+nand_read_bbt: Bad block at 0x10c00000
+nand_read_bbt: Bad block at 0x10c20000
+nand_read_bbt: Bad block at 0x16580000
+nand_read_bbt: Bad block at 0x165a0000
+nand_read_bbt: Bad block at 0x18c00000
+nand_read_bbt: Bad block at 0x18c20000
+nand_read_bbt: Bad block at 0x1dc40000
+nand_read_bbt: Bad block at 0x1dc60000
+nand_read_bbt: Bad block at 0x1e580000
+nand_read_bbt: Bad block at 0x1e5a0000
+512 MiB
+SPI:  ERROR: Unknown SPI Device detected, status = 0xff
+*** Warning - bad CRC, using default environment
+
+In:    serial
+Out:   serial
+Err:   serial
+</code></pre>
+
+<p>It looks like the SPI NOR Flash is not supported by this version of u-boot. So work is to do&hellip;.</p>
+</div>
+  
+  
+
+
+        </article>
+      
     </div>
 
     <ul class="pager">
@@ -1068,15 +1255,15 @@ Notification handle = 0x0049 value: 00
   
   <div id="recent_posts" class="list-group">
     
-    <a class="list-group-item " href="/blog/2015/09/19/openembedded-support-for-the-upcomming-udoo-neo/">OpenEmbedded Support for the Upcomming UDOO Neo</a>
-    
-    <a class="list-group-item " href="/blog/2015/08/03/installing-stm32cubemx-on-linux/">Installing STM32CubeMX on Linux</a>
-    
     <a class="list-group-item " href="/blog/2015/07/18/nim-dvb-s-slash-s2-v1-dot-0-pinout/">[WIP] NIM_DVB-S/S2 V1.0 Pinout</a>
     
     <a class="list-group-item " href="/blog/2015/07/18/pci-express-connectors-from-china/">PCI-Express Connectors From China</a>
     
     <a class="list-group-item " href="/blog/2015/07/04/full-open-source-dvb-s2-board/">Full Open Source DVB-S2 Board</a>
+    
+    <a class="list-group-item " href="/blog/2015/05/04/using-h-slash-w-randaom-generator-on-odrod-c1-with-yocto/">Using H/W Randaom Generator on ODROD-C1 With Yocto</a>
+    
+    <a class="list-group-item " href="/blog/2015/04/12/using-the-segger-j-link-to-access-the-ti-cc2650-chip/">Using the SEGGER J-Link to Access the TI CC2650 Chip</a>
     
   </div>
 </section>
