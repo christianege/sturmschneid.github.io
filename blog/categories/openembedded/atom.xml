@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Openembedded | Sturmschneid]]></title>
   <link href="http://ch.ege.io/blog/categories/openembedded/atom.xml" rel="self"/>
   <link href="http://ch.ege.io/"/>
-  <updated>2015-09-22T20:44:02+02:00</updated>
+  <updated>2015-09-22T20:51:00+02:00</updated>
   <id>http://ch.ege.io/</id>
   <author>
     <name><![CDATA[Christian Ege]]></name>
@@ -27,7 +27,7 @@ DISTRO_FEATURES_remove = "wayland"
 DISTRO_FEATURES_append = " directfb"
 </code></pre>
 
-<p>The first two lines remove support for wayland and X11 which will conflict with <a href="https://en.wikipedia.org/wiki/DirectFB">DirectFB</a> and will prevent a successful build. With this modification you can build a <a href="https://en.wikipedia.org/wiki/DirectFB">DirectFB</a> image</p>
+<p>The first two lines remove support for wayland and X11 which will conflict with <a href="https://en.wikipedia.org/wiki/DirectFB">DirectFB</a> and will prevent a successful build. With this modification you can build a <a href="https://en.wikipedia.org/wiki/DirectFB">DirectFB</a> image. The extra white space in front of directfb is mandatory!</p>
 
 <pre><code>bitbake core-image-directfb
 </code></pre>
