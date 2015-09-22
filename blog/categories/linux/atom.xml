@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Linux | Sturmschneid]]></title>
   <link href="http://ch.ege.io/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://ch.ege.io/"/>
-  <updated>2015-09-22T20:51:00+02:00</updated>
+  <updated>2015-09-22T20:51:59+02:00</updated>
   <id>http://ch.ege.io/</id>
   <author>
     <name><![CDATA[Christian Ege]]></name>
@@ -34,7 +34,7 @@ DISTRO_FEATURES_append = " directfb"
 
 <p>This is the right time to fetch some coffee.</p>
 
-<p>Another tweak I prefer to do in the <code>conf/local.conf</code> is switching from RPM to IPK as package manager. It is more lightweight and a little bit faster than RPM or DEB. You only have to change the variable <code>PACKAGE_CLASSES</code> variable to <code>package_ipk</code></p>
+<p>Another tweak I prefer to do in the <code>conf/local.conf</code> is switching from RPM to IPK as package manager. It is more lightweight and a little bit faster than RPM or DEB. You only have to change the variable <code>PACKAGE_CLASSES</code> to <code>package_ipk</code></p>
 
 <pre><code>PACKAGE_CLASSES ?= "package_ipk"
 </code></pre>
