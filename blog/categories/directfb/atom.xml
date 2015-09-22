@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Directfb | Sturmschneid]]></title>
+  <link href="http://ch.ege.io/blog/categories/directfb/atom.xml" rel="self"/>
+  <link href="http://ch.ege.io/"/>
+  <updated>2015-09-22T20:44:02+02:00</updated>
+  <id>http://ch.ege.io/</id>
+  <author>
+    <name><![CDATA[Christian Ege]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Tweaking Freescales Yocto Community BSP Builds]]></title>
+    <link href="http://ch.ege.io/blog/2015/09/22/tweaking-freescales-yocto-community-bsp-builds/"/>
+    <updated>2015-09-22T19:42:34+02:00</updated>
+    <id>http://ch.ege.io/blog/2015/09/22/tweaking-freescales-yocto-community-bsp-builds</id>
+    <content type="html"><![CDATA[<p><a href="https://twitter.com/scrumnl">Maurice le Rutte</a> asked me on <a href="https://twitter.com/scrumnl/status/645315188187635712">Twitter</a> if it is possible to add support for the first UDOO board and building a <a href="https://en.wikipedia.org/wiki/DirectFB">DirectFB</a> enabled image. After some research it looked like a solution for the <a href="https://en.wikipedia.org/wiki/DirectFB">DirectFB</a> task should be not that big issue.</p>
+
+<p>I guess you have already a running Yocto environment based on the <a href="https://github.com/Freescale/fsl-community-bsp-base">Freescale BSP comunity layers</a>. To build a <a href="https://en.wikipedia.org/wiki/DirectFB">DirectFB</a> image some tweaking is needed. You have to add those lines to your <code>conf/local.conf</code></p>
+
+<pre><code>DISTRO_FEATURES_remove = "x11"
+DISTRO_FEATURES_remove = "wayland"
+DISTRO_FEATURES_append = " directfb"
+</code></pre>
+
+<p>The first two lines remove support for wayland and X11 which will conflict with <a href="https://en.wikipedia.org/wiki/DirectFB">DirectFB</a> and will prevent a successful build. With this modification you can build a <a href="https://en.wikipedia.org/wiki/DirectFB">DirectFB</a> image</p>
+
+<pre><code>bitbake core-image-directfb
+</code></pre>
+
+<p>This is the right time to fetch some coffee.</p>
+
+<p>Another tweak I prefer to do in the <code>conf/local.conf</code> is switching from RPM to IPK as package manager. It is more lightweight and a little bit faster than RPM or DEB. You only have to change the variable <code>PACKAGE_CLASSES</code> variable to <code>package_ipk</code></p>
+
+<pre><code>PACKAGE_CLASSES ?= "package_ipk"
+</code></pre>
+
+<p>At the moment I am working on a Machine configuration for the <a href="http://www.udoo.org/udoo-dual-and-quad/">UDOO Quad board</a></p>
+]]></content>
+  </entry>
+  
+</feed>

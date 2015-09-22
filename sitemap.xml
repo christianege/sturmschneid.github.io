@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://ch.ege.io/blog/2015/09/22/tweaking-freescales-yocto-community-bsp-builds/</loc>
+    <lastmod>2015-09-22T19:42:34+02:00</lastmod>
+  </url>
+  <url>
     <loc>http://ch.ege.io/blog/2015/09/19/openembedded-support-for-the-upcomming-udoo-neo/</loc>
     <lastmod>2015-09-19T19:18:03+02:00</lastmod>
   </url>
@@ -204,5 +208,20 @@
   </url>
   <url>
     <loc>http://ch.ege.io/blog/categories/udoo-neo/</loc>
+  </url>
+  <url>
+    <loc>http://ch.ege.io/blog/categories/openembedded/</loc>
+  </url>
+  <url>
+    <loc>http://ch.ege.io/blog/categories/directfb/</loc>
+  </url>
+  <url>
+    <loc>http://ch.ege.io/blog/categories/ipk/</loc>
+  </url>
+  <url>
+    <loc>http://ch.ege.io/blog/categories/i-dot-mx6/</loc>
+  </url>
+  <url>
+    <loc>http://ch.ege.io/blog/categories/freescale/</loc>
   </url>
 </urlset>

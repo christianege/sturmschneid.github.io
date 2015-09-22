@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Yocto | Sturmschneid]]></title>
   <link href="http://ch.ege.io/blog/categories/yocto/atom.xml" rel="self"/>
   <link href="http://ch.ege.io/"/>
-  <updated>2015-09-19T20:36:23+02:00</updated>
+  <updated>2015-09-22T20:44:02+02:00</updated>
   <id>http://ch.ege.io/</id>
   <author>
     <name><![CDATA[Christian Ege]]></name>
@@ -12,6 +12,36 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Tweaking Freescales Yocto Community BSP Builds]]></title>
+    <link href="http://ch.ege.io/blog/2015/09/22/tweaking-freescales-yocto-community-bsp-builds/"/>
+    <updated>2015-09-22T19:42:34+02:00</updated>
+    <id>http://ch.ege.io/blog/2015/09/22/tweaking-freescales-yocto-community-bsp-builds</id>
+    <content type="html"><![CDATA[<p><a href="https://twitter.com/scrumnl">Maurice le Rutte</a> asked me on <a href="https://twitter.com/scrumnl/status/645315188187635712">Twitter</a> if it is possible to add support for the first UDOO board and building a <a href="https://en.wikipedia.org/wiki/DirectFB">DirectFB</a> enabled image. After some research it looked like a solution for the <a href="https://en.wikipedia.org/wiki/DirectFB">DirectFB</a> task should be not that big issue.</p>
+
+<p>I guess you have already a running Yocto environment based on the <a href="https://github.com/Freescale/fsl-community-bsp-base">Freescale BSP comunity layers</a>. To build a <a href="https://en.wikipedia.org/wiki/DirectFB">DirectFB</a> image some tweaking is needed. You have to add those lines to your <code>conf/local.conf</code></p>
+
+<pre><code>DISTRO_FEATURES_remove = "x11"
+DISTRO_FEATURES_remove = "wayland"
+DISTRO_FEATURES_append = " directfb"
+</code></pre>
+
+<p>The first two lines remove support for wayland and X11 which will conflict with <a href="https://en.wikipedia.org/wiki/DirectFB">DirectFB</a> and will prevent a successful build. With this modification you can build a <a href="https://en.wikipedia.org/wiki/DirectFB">DirectFB</a> image</p>
+
+<pre><code>bitbake core-image-directfb
+</code></pre>
+
+<p>This is the right time to fetch some coffee.</p>
+
+<p>Another tweak I prefer to do in the <code>conf/local.conf</code> is switching from RPM to IPK as package manager. It is more lightweight and a little bit faster than RPM or DEB. You only have to change the variable <code>PACKAGE_CLASSES</code> variable to <code>package_ipk</code></p>
+
+<pre><code>PACKAGE_CLASSES ?= "package_ipk"
+</code></pre>
+
+<p>At the moment I am working on a Machine configuration for the <a href="http://www.udoo.org/udoo-dual-and-quad/">UDOO Quad board</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[OpenEmbedded Support for the Upcomming UDOO Neo]]></title>
@@ -394,49 +424,6 @@ Notification handle = 0x0049 value: 00
 
 <script src="https://platform.vine.co/static/scripts/embed.js"></script>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Running BlueZ5 on Yocto/OpenEmbedded]]></title>
-    <link href="http://ch.ege.io/blog/2015/04/12/running-bluez5-on-yocto-slash-openembedded/"/>
-    <updated>2015-04-12T07:09:49+02:00</updated>
-    <id>http://ch.ege.io/blog/2015/04/12/running-bluez5-on-yocto-slash-openembedded</id>
-    <content type="html"><![CDATA[<p>At the moment yocto/openembedded ships with <a href="http://www.bluez.org">BlueZ4</a> as the Linux Bluetooth protocol stack. Due to the fact that <a href="http://en.wikipedia.org/wiki/Bluetooth_low_energy">Bluetooth low energy</a> is only supported in BlueZ5 this is a bit of a disappointment. There is a long-standing bug report on this <a href="https://bugzilla.yoctoproject.org/show_bug.cgi?id=5031">#5031 </a>. But since the commit <a href="http://git.yoctoproject.org/cgit/cgit.cgi/poky/commit/?id=1139cc4eef305fc14bc5db19a5f8729e7b3bf27a">1139cc4e&hellip;</a> the used BlueZ version can be selected. According to the reference manual BlueZ5 can be enabled by adding bluez5 to the <a href="http://www.yoctoproject.org/docs/1.8/ref-manual/ref-manual.html#var-DISTRO_FEATURES">DISTRO_FEATURES</a> for me the easiest way to to this was adding the following line to my conf/local.conf in the <a href="http://www.yoctoproject.org/docs/1.8/dev-manual/dev-manual.html#build-directory">Build Directory</a>.</p>
-
-<pre><code>DISTRO_FEATURES = "ext2 alsa wifi usbhost bluetooth bluez5 ${DISTRO_FEATURES_LIBC}"
-</code></pre>
-
-<p>This disables x11 for example. But you may also could add something like this:</p>
-
-<pre><code>DISTRO_FEATURES_append = "bluez5"
-</code></pre>
-
-<p>After this run an build of your preferred image. In my case this was &ldquo;core-image-base&rdquo;</p>
-
-<pre><code>bitbake core-image-base
-</code></pre>
-
-<p>To have full bluetooth support on the target I needed to install some extra packages. To get a list of all bluetooth related packages run the following command. For this you need a <a href="http://www.yoctoproject.org/docs/1.8/ref-manual/ref-manual.html#package-feeds-dev-environment">opkg/ipkg feed</a> server.</p>
-
-<pre><code>root@odroidc1:~# opkg list | grep blue
-bluez5 - 5.29-r0 - Linux Bluetooth Stack Userland V5  Linux Bluetooth stack V5 userland
-bluez5-dbg - 5.29-r0 - Linux Bluetooth Stack Userland V5 - Debugging files  Linux Bluetooth
-bluez5-dev - 5.29-r0 - Linux Bluetooth Stack Userland V5 - Development files  Linux Bluetooth
-bluez5-doc - 5.29-r0 - Linux Bluetooth Stack Userland V5 - Documentation files  Linux Bluetooth
-bluez5-noinst-tools - 5.29-r0 - Linux Bluetooth Stack Userland V5  Linux Bluetooth stack V5 userland
-bluez5-obex - 5.29-r0 - Linux Bluetooth Stack Userland V5  Linux Bluetooth stack V5 userland
-bluez5-testtools - 5.29-r0 - Linux Bluetooth Stack Userland V5  Linux Bluetooth stack V5 userland
-libasound-module-bluez - 5.29-r0 - Linux Bluetooth Stack Userland V5  Linux Bluetooth stack V5 userland
-packagegroup-base-bluetooth - 1.0-r83 - Bluetooth support  Merge machine and distro options to create a basic
-</code></pre>
-
-<p>I installed the following packages:</p>
-
-<pre><code>bluez5-testtools, bluez5-noinst-tools
-</code></pre>
-
-<p>The later <strong>bluez5-noinst-tools</strong> was required for the gatttool.</p>
 ]]></content>
   </entry>
   

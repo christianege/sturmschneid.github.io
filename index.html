@@ -116,6 +116,67 @@
 
 
 
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2015-09-22T19:42:34+02:00"  data-updated="true" itemprop="datePublished dateCreated">Tue 22 Sep 2015,  7:42 PM</time>
+        
+           | <a href="/blog/2015/09/22/tweaking-freescales-yocto-community-bsp-builds/#disqus_thread" itemprop="discussionUrl"
+             data-disqus-identifier="http://ch.ege.io/blog/2015/09/22/tweaking-freescales-yocto-community-bsp-builds/">Comments</a>
+        
+      </p>
+    
+    
+      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2015/09/22/tweaking-freescales-yocto-community-bsp-builds/" itemprop="url">Tweaking Freescales Yocto Community BSP Builds</a></h2>
+    
+  </header>
+
+
+  <div class="entry-content clearfix" itemprop="articleBody description"><p><a href="https://twitter.com/scrumnl">Maurice le Rutte</a> asked me on <a href="https://twitter.com/scrumnl/status/645315188187635712">Twitter</a> if it is possible to add support for the first UDOO board and building a <a href="https://en.wikipedia.org/wiki/DirectFB">DirectFB</a> enabled image. After some research it looked like a solution for the <a href="https://en.wikipedia.org/wiki/DirectFB">DirectFB</a> task should be not that big issue.</p>
+
+<p>I guess you have already a running Yocto environment based on the <a href="https://github.com/Freescale/fsl-community-bsp-base">Freescale BSP comunity layers</a>. To build a <a href="https://en.wikipedia.org/wiki/DirectFB">DirectFB</a> image some tweaking is needed. You have to add those lines to your <code>conf/local.conf</code></p>
+
+<pre><code>DISTRO_FEATURES_remove = "x11"
+DISTRO_FEATURES_remove = "wayland"
+DISTRO_FEATURES_append = " directfb"
+</code></pre>
+
+<p>The first two lines remove support for wayland and X11 which will conflict with <a href="https://en.wikipedia.org/wiki/DirectFB">DirectFB</a> and will prevent a successful build. With this modification you can build a <a href="https://en.wikipedia.org/wiki/DirectFB">DirectFB</a> image</p>
+
+<pre><code>bitbake core-image-directfb
+</code></pre>
+
+<p>This is the right time to fetch some coffee.</p>
+
+<p>Another tweak I prefer to do in the <code>conf/local.conf</code> is switching from RPM to IPK as package manager. It is more lightweight and a little bit faster than RPM or DEB. You only have to change the variable <code>PACKAGE_CLASSES</code> variable to <code>package_ipk</code></p>
+
+<pre><code>PACKAGE_CLASSES ?= "package_ipk"
+</code></pre>
+
+<p>At the moment I am working on a Machine configuration for the <a href="http://www.udoo.org/udoo-dual-and-quad/">UDOO Quad board</a></p>
+</div>
+  
+  
+
+
+        </article>
+      
+      
+        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+          
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
 <span class="glyphicon glyphicon-calendar"></span> <time datetime="2015-09-19T19:18:03+02:00"  data-updated="true" itemprop="datePublished dateCreated">Sat 19 Sep 2015,  7:18 PM</time>
         
            | <a href="/blog/2015/09/19/openembedded-support-for-the-upcomming-udoo-neo/#disqus_thread" itemprop="discussionUrl"
@@ -886,165 +947,6 @@ J-Link&gt;
 
         </article>
       
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-
-
-
-
-
-
-
-
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2015-04-12T09:11:53+02:00"  data-updated="true" itemprop="datePublished dateCreated">Sun 12 Apr 2015,  9:11 AM</time>
-        
-           | <a href="/blog/2015/04/12/orico-bta-402-usb-bluetooth-4-dot-0-low-energy-micro-adapter-on-odroid-c1/#disqus_thread" itemprop="discussionUrl"
-             data-disqus-identifier="http://ch.ege.io/blog/2015/04/12/orico-bta-402-usb-bluetooth-4-dot-0-low-energy-micro-adapter-on-odroid-c1/">Comments</a>
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2015/04/12/orico-bta-402-usb-bluetooth-4-dot-0-low-energy-micro-adapter-on-odroid-c1/" itemprop="url">ORICO BTA-402 USB Bluetooth 4.0 Low Energy Micro Adapter on ODROID-C1</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>Today I had some fun with <a href="http://en.wikipedia.org/wiki/Bluetooth_low_energy">Bluetooth Low Energy</a> and my <a href="http://www.hardkernel.com/main/products/prdt_info.php">ODROID C1</a> In an earlier <a href="/blog/2015/04/12/running-bluez5-on-yocto-slash-openembedded/">Blog Post</a> I described how to enable Bluetooth Low Energy Support in Yocto.</p>
-
-<p>Recently I bought this <a href="http://www.amazon.de/gp/product/B00K5TJP02?psc=1&amp;redirect=true&amp;ref_=oh_aui_detailpage_o04_s00">ORICO BTA-402 USB Bluetooth 4.0 Low Energy Micro Adapter</a> on Amazon to play with Bluetooth Low Energy. The USB Dongle was automatically detected by my <a href="https://github.com/project-magpie/meta-amlogic">meta-amlogic&rsquo;s</a> kernel configuration for the <a href="http://www.hardkernel.com/main/products/prdt_info.php">ODROID C1</a></p>
-
-<p>I used the New <a href="http://www.ti.com/tool/cc2650stk">SimpleLink™ Bluetooth Smart®/Multi-Standard SensorTag</a> as the device to connect to.</p>
-
-<p><img src="/images/SensorTag2.png"></p>
-
-<p>On the ODROID-C1 device run the following commands:</p>
-
-<pre><code>root@odroidc1:~# hciconfig
-hci0:   Type: BR/EDR  Bus: USB
-    BD Address: 00:1A:7D:DA:71:09  ACL MTU: 310:10  SCO MTU: 64:8
-    DOWN
-    RX bytes:547 acl:0 sco:0 events:27 errors:0
-    TX bytes:384 acl:0 sco:0 commands:27 errors:0
-</code></pre>
-
-<p>Check if your adapter is DOWN as you can see in the example above. If the adapter is down you have to bring it up befare any other action can take place</p>
-
-<pre><code>hciconfig device up
-</code></pre>
-
-<p>After this you can re-check if your adapter is UP and RUNNING</p>
-
-<pre><code>root@odroidc1:~# hciconfig
-hci0:   Type: BR/EDR  Bus: USB
-        BD Address: 00:1A:7D:DA:71:09  ACL MTU: 310:10  SCO MTU: 64:8
-        UP RUNNING
-        RX bytes:10116 acl:72 sco:0 events:364 errors:0
-        TX bytes:1858 acl:73 sco:0 commands:66 errors:0
-</code></pre>
-
-<p>Now you can scan for Bluetooth Low Energy devices Please ensure that your SensorTag is in Advertise Mode. Whith the default Firmware this can be achieved by pressing the Power Button.</p>
-
-<pre><code>root@odroidc1:~# hcitool lescan
-LE Scan ...
-50:C4:7F:6C:18:2C (unknown)
-50:C4:7F:6C:18:2C (unknown)
-50:C4:7F:6C:18:2C (unknown)
-50:C4:7F:6C:18:2C (unknown)
-50:C4:7F:6C:18:2C (unknown)
-68:C9:0B:06:EF:0B (unknown)
-68:C9:0B:06:EF:0B CC2650 SensorTag
-68:C9:0B:06:EF:0B (unknown)
-68:C9:0B:06:EF:0B CC2650 SensorTag
-68:C9:0B:06:EF:0B (unknown)
-68:C9:0B:06:EF:0B CC2650 SensorTag
-68:C9:0B:06:EF:0B (unknown)
-68:C9:0B:06:EF:0B CC2650 SensorTag
-50:C4:7F:6C:18:2C (unknown)
-</code></pre>
-
-<p>After a successful scan we can query some information from the SensorTag</p>
-
-<pre><code>root@odroidc1:~# hcitool leinfo 68:C9:0B:06:EF:0B
-Requesting information ...
-        Handle: 71 (0x0047)
-        LMP Version: 4.1 (0x7) LMP Subversion: 0x200
-        Manufacturer: Texas Instruments Inc. (13)
-        Features: 0x01 0x00 0x00 0x00 0x00 0x00 0x00 0x00
-</code></pre>
-
-<p>Now lets connect to the SensorTag</p>
-
-<pre><code>root@odroidc1:~# hcitool lecc 68:C9:0B:06:EF:0B
-Connection handle 71
-</code></pre>
-
-<p>After this we can use the gatttool from the BlueZ5 package to connect to the GATT Server on the SensorTag</p>
-
-<pre><code>root@odroidc1:~# gatttool -b 68:C9:0B:06:EF:0B --interactive
-[68:C9:0B:06:EF:0B][LE]&gt;
-</code></pre>
-
-<p>Establish a connection to the GATT Server</p>
-
-<pre><code> [68:C9:0B:06:EF:0B][LE]&gt; connect
- Attempting to connect to 68:C9:0B:06:EF:0B
- Connection successful
-</code></pre>
-
-<p>Scan for Primary UUIDs</p>
-
-<pre><code>[68:C9:0B:06:EF:0B][LE]&gt; primary
-attr handle: 0x0001, end grp handle: 0x0007 uuid: 00001800-0000-1000-8000-00805f9b34fb
-attr handle: 0x0008, end grp handle: 0x000b uuid: 00001801-0000-1000-8000-00805f9b34fb
-attr handle: 0x000c, end grp handle: 0x001e uuid: 0000180a-0000-1000-8000-00805f9b34fb
-attr handle: 0x001f, end grp handle: 0x0026 uuid: f000aa00-0451-4000-b000-000000000000
-attr handle: 0x0027, end grp handle: 0x002e uuid: f000aa20-0451-4000-b000-000000000000
-attr handle: 0x002f, end grp handle: 0x0036 uuid: f000aa40-0451-4000-b000-000000000000
-attr handle: 0x0037, end grp handle: 0x003e uuid: f000aa80-0451-4000-b000-000000000000
-attr handle: 0x003f, end grp handle: 0x0046 uuid: f000aa70-0451-4000-b000-000000000000
-attr handle: 0x0047, end grp handle: 0x004b uuid: 0000ffe0-0000-1000-8000-00805f9b34fb
-attr handle: 0x004c, end grp handle: 0x0050 uuid: f000aa64-0451-4000-b000-000000000000
-attr handle: 0x0051, end grp handle: 0x0058 uuid: f000ac00-0451-4000-b000-000000000000
-attr handle: 0x0059, end grp handle: 0x0060 uuid: f000ccc0-0451-4000-b000-000000000000
-attr handle: 0x0061, end grp handle: 0xffff uuid: f000ffc0-0451-4000-b000-000000000000
-</code></pre>
-
-<p>To receive notifications on Key Press Events send the following to the device</p>
-
-<pre><code>[68:C9:0B:06:EF:0B][LE]&gt; char-write-req 4a 0100
-Notification handle = 0x0049 value: 01
-Notification handle = 0x0049 value: 00
-Notification handle = 0x0049 value: 01
-Notification handle = 0x0049 value: 00
-Notification handle = 0x0049 value: 01
-Notification handle = 0x0049 value: 00
-Notification handle = 0x0049 value: 01
-Notification handle = 0x0049 value: 00
-</code></pre>
-
-<p>Now each key press and release should be displayed in the gatttool. Frankly this key press event notification is just copy past from this <a href="https://vine.co/v/OVbOXVwBeYu">vine</a> posting.</p>
-
-<iframe src="https://vine.co/v/OVbOXVwBeYu/embed/simple" width="600" height="600" frameborder="0"></iframe>
-
-
-<script src="https://platform.vine.co/static/scripts/embed.js"></script>
-
-</div>
-  
-  
-
-
-        </article>
-      
     </div>
 
     <ul class="pager">
@@ -1068,6 +970,8 @@ Notification handle = 0x0049 value: 00
   
   <div id="recent_posts" class="list-group">
     
+    <a class="list-group-item " href="/blog/2015/09/22/tweaking-freescales-yocto-community-bsp-builds/">Tweaking Freescales Yocto Community BSP Builds</a>
+    
     <a class="list-group-item " href="/blog/2015/09/19/openembedded-support-for-the-upcomming-udoo-neo/">OpenEmbedded Support for the Upcomming UDOO Neo</a>
     
     <a class="list-group-item " href="/blog/2015/08/03/installing-stm32cubemx-on-linux/">Installing STM32CubeMX on Linux</a>
@@ -1075,8 +979,6 @@ Notification handle = 0x0049 value: 00
     <a class="list-group-item " href="/blog/2015/07/18/nim-dvb-s-slash-s2-v1-dot-0-pinout/">[WIP] NIM_DVB-S/S2 V1.0 Pinout</a>
     
     <a class="list-group-item " href="/blog/2015/07/18/pci-express-connectors-from-china/">PCI-Express Connectors From China</a>
-    
-    <a class="list-group-item " href="/blog/2015/07/04/full-open-source-dvb-s2-board/">Full Open Source DVB-S2 Board</a>
     
   </div>
 </section>
