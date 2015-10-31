@@ -116,6 +116,89 @@
 
 
 
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2015-04-12T17:07:32+02:00"  data-updated="true" itemprop="datePublished dateCreated">Sun 12 Apr 2015,  5:07 PM</time>
+        
+           | <a href="/blog/2015/04/12/using-the-segger-j-link-to-access-the-ti-cc2650-chip/#disqus_thread" itemprop="discussionUrl"
+             data-disqus-identifier="http://ch.ege.io/blog/2015/04/12/using-the-segger-j-link-to-access-the-ti-cc2650-chip/">Comments</a>
+        
+      </p>
+    
+    
+      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2015/04/12/using-the-segger-j-link-to-access-the-ti-cc2650-chip/" itemprop="url">Using the SEGGER J-Link to Access the TI CC2650 Chip</a></h2>
+    
+  </header>
+
+
+  <div class="entry-content clearfix" itemprop="articleBody description"><p>Before you get started install the <a href="https://www.segger.com/jlink-software.html">newest host tools</a> for your SEGGER in my case I installed the Debian package of version <strong>V4.98b</strong>. On first start the <strong>JLinExe</strong> installs the apropriate Firmware.</p>
+
+<pre><code>$ JLinkExe -if jtag -device CC2650F128
+SEGGER J-Link Commander V4.98b ('?' for help)
+Compiled Apr 10 2015 20:27:38
+Updating firmware:  J-Link V9 compiled Apr 10 2015 10:51:08
+Replacing firmware: J-Link V9 compiled Feb 13 2015 20:37:28
+Waiting for new firmware to boot
+New firmware booted successfully
+</code></pre>
+
+<p>On the <a href="http://www.ti.com/tool/cc2650stk">SimpleLink™ Bluetooth Smart®/Multi-Standard SensorTag</a> they use the <a href="http://www.ti.com/product/cc2650">CC2650</a> with 128kB of Flash ROM. So you have to select <em>-device CC2650F128</em> when running <strong>JLinkExe</strong> At the moment it seems the <a href="http://www.ti.com/product/cc2650">CC2650</a> only supports JTAG debugging and not the more common SWI debug like STM32 do use. Anyway The Segger can run both modes.</p>
+
+<p>After a succesful firmawre update the communication looks like this</p>
+
+<pre><code>SEGGER J-Link Commander V4.98b ('?' for help)
+Compiled Apr 10 2015 20:27:38
+Info: Device "CC2650F128" selected.
+DLL version V4.98b, compiled Apr 10 2015 20:27:35
+Firmware: J-Link V9 compiled Apr 10 2015 10:51:08
+Hardware: V9.30
+S/N: XXXXXXXX
+OEM: SEGGER-EDU
+Feature(s): FlashBP, GDB
+VTarget = 2.800V
+Info: TotalIRLen = 10, IRPrint = 0x0011
+Info: Found Cortex-M3 r2p1, Little endian.
+Info: FPUnit: 6 code (BP) slots and 2 literal slots
+Info: CoreSight components:
+Info: ROMTbl 0 @ E00FF000
+Info: ROMTbl 0 [0]: FFF0F000, CID: B105E00D, PID: 000BB000 SCS
+Info: ROMTbl 0 [1]: FFF02000, CID: B105E00D, PID: 003BB002 DWT
+Info: ROMTbl 0 [2]: FFF03000, CID: B105E00D, PID: 002BB003 FPB
+Info: ROMTbl 0 [3]: FFF01000, CID: B105E00D, PID: 003BB001 ITM
+Info: ROMTbl 0 [4]: FFF41000, CID: B105900D, PID: 003BB923 TPIU-Lite
+Found 2 JTAG devices, Total IRLen = 10:
+ #0 Id: 0x4BA00477, IRLen: 04, IRPrint: 0x1, CoreSight JTAG-DP (ARM)
+ #1 Id: 0x8B99A02F, IRLen: 06, IRPrint: 0x1, TI ICEPick
+Cortex-M3 identified.
+Target interface speed: 100 kHz
+J-Link&gt;
+</code></pre>
+
+<p>The next step is to create a firmware backup of the original firmware. This is needed because this little beast at the momemnt denies to build its firmware under Linux. The CodeComposerStudio Projekt is using some Windows Tools to build and expects a specific directory layout.</p>
+</div>
+  
+  
+
+
+        </article>
+      
+      
+        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+          
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
 <span class="glyphicon glyphicon-calendar"></span> <time datetime="2015-04-12T09:11:53+02:00"  data-updated="true" itemprop="datePublished dateCreated">Sun 12 Apr 2015,  9:11 AM</time>
         
            | <a href="/blog/2015/04/12/orico-bta-402-usb-bluetooth-4-dot-0-low-energy-micro-adapter-on-odroid-c1/#disqus_thread" itemprop="discussionUrl"
@@ -1250,123 +1333,6 @@ tdt-driver/
 
         </article>
       
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-
-
-
-
-
-
-
-
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2013-10-22T00:00:00+02:00"  data-updated="true" itemprop="datePublished dateCreated">Tue 22 Oct 2013, 12:00 AM</time>
-        
-           | <a href="/blog/2013/10/22/ubifs-as-rootfs/#disqus_thread" itemprop="discussionUrl"
-             data-disqus-identifier="http://ch.ege.io/blog/2013/10/22/ubifs-as-rootfs/">Comments</a>
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2013/10/22/ubifs-as-rootfs/" itemprop="url">UBIFS as Rootfs</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>This Post describes how to get startet with an UBIFS root filesystem. I suppose you are using a image generated for the &ldquo;spark&rdquo; device. I have not done any tests with &ldquo;spark7162&rdquo;. For the spark boxes there is automatically a ubifs image generated.</p>
-
-<p>Generate a core-image-minimal for example. This assumes You already have set-up the yocto build environment.</p>
-
-<pre><code>MACHINE=spark bitbake core-image-minimal
-</code></pre>
-
-<p>The resulting image can be found here</p>
-
-<pre><code>tmp/deploy/images/core-image-minimal-spark.ubi
-</code></pre>
-
-<p>This is a ubivolume which can be burned to flash &hellip;</p>
-
-<h1>The Linux Way</h1>
-
-<p>For flashing from Linux <a href="https://github.com/project-magpie/meta-stlinux/wiki/Boot-from-USB-Stick">booting over USB</a> is recommended. Be cause we do not want to bite the hand that feeds us. For debugging and configuration purposes a Nullmodem Cable and a Terminal Emulator is recommended.</p>
-
-<h2>Flashing the image</h2>
-
-<p>To get a list with the mtd devices just dump the content of &ldquo;/proc/mtd&rdquo;</p>
-
-<pre><code>root@spark:~# cat /proc/mtd
-dev:    size   erasesize  name
-mtd0: 00080000 00010000 "Boot firmware"
-mtd1: 00700000 00010000 "Kernel"
-mtd2: 00080000 00010000 "Reserve"
-mtd3: 00800000 00020000 "Spark Kernel"
-mtd4: 17800000 00020000 "Spark Rootfs"
-mtd5: 00800000 00020000 "E2 Kernel"
-mtd6: 05000000 00020000 "E2 RootFs"
-</code></pre>
-
-<p>We want to modify the Partion number &ldquo;6&rdquo; also known as &ldquo;E2 RootFs&rdquo;. Be carefull to not erase Number &ldquo;0&rdquo; otherwise your bootloader is blown.
-At first you have to transfer the image. In absence of any other tools I do use netcat again.</p>
-
-<p>On the host (quadros) run this</p>
-
-<pre><code>$ cat tmp/deploy/images/core-image-minimal-spark.ubi | nc -l -v 3333
-</code></pre>
-
-<p>On the target run this</p>
-
-<pre><code>root@spark:~# nc  quadros 3333 &gt; /tmp/image.ubi
-</code></pre>
-
-<p>Now we can burn the image onto the flash</p>
-
-<pre><code>root@spark:~# flash_eraseall /dev/mtd6
-root@spark:~# ubiformat /dev/mtd6 -q -y -f /tmp/image.ubi
-</code></pre>
-
-<h2>Choosing the right commandline</h2>
-
-<p>I had a some difficulties with the console. The default bootagrs point to &ldquo;ttyAS1&rdquo; but I have to use ttyAS0. So I have to check this. This is the command line which works for me.</p>
-
-<pre><code>setenv bootargs 'console=ttyAS0,115200 rw init=/bin/devinit coprocessor_mem=4m@0x40000000,4m@0x40400000 printk=1 nwhwconf=device:eth0,hwaddr:00:80:E1:12:40:61 rw ip=172.100.100.249:172.100.100.174:172.100.100.174:255.255.0.0:LINUX7109:eth0:off bigphysarea=6000 stmmaceth=msglvl:0,phyaddr:2,watchdog:5000 ubi.mtd=6 rootfstype=ubifs root=ubi0:rootfs'
-</code></pre>
-
-<h1>The spark u-boot</h1>
-
-<p>The spark bootloader has a nice menu integrated. With this you can also write images from a USB stick to the flash. Notice this is not the recommended way. Using ubiformat keeps all required information about the underlying flash device. To get started you need a USB-Stick which is supported by the spark u-noot. To boot the UBI image the commandline also have be tweaked to use ubi instead jffs2. Please have a look at the The Linux Way section for advise.</p>
-
-<ul>
-<li>Format USB-thumb drive with a single FAT32 partition</li>
-<li>Create an enigma2 folder on the USB-thumb drive</li>
-<li>Copy the file core-image-minimal-spark.ubi to the enigma2 folder and rename it to e2jffs2.img</li>
-<li>Copy the file uImage-spark.bin to the enigma2 folder as-well and rename it to uImage</li>
-<li>Turn the Set-Top-Box off by the power switch</li>
-<li>Put the USB-Stick into the USB-Slot at the back of the STB. Not the front one!</li>
-<li>Press the OK at the Front-Panel and keep it pressed.</li>
-<li>Turn on the box by the power switch.</li>
-<li>Wait until you read &ldquo;Forc&rdquo; on the display</li>
-<li>Release the OK Button. Now you can press the Button V+ -> (right).</li>
-<li>After this you can read &ldquo;U LD&rdquo; on the display.</li>
-<li>The flashing of the image may take some minutes. After successfull flashing &ldquo;SUCC&rdquo; is written on the display and the box reboots.</li>
-</ul>
-
-</div>
-  
-  
-
-
-        </article>
-      
     </div>
 
     <ul class="pager">
@@ -1390,6 +1356,8 @@ root@spark:~# ubiformat /dev/mtd6 -q -y -f /tmp/image.ubi
   
   <div id="recent_posts" class="list-group">
     
+    <a class="list-group-item " href="/blog/2015/10/31/attaching-a-serial-console-to-udoo-neo/">Attaching a Serial Console to UDOO Neo</a>
+    
     <a class="list-group-item " href="/blog/2015/09/22/tweaking-freescales-yocto-community-bsp-builds/">Tweaking Freescales Yocto Community BSP Builds</a>
     
     <a class="list-group-item " href="/blog/2015/09/19/openembedded-support-for-the-upcomming-udoo-neo/">OpenEmbedded Support for the Upcomming UDOO Neo</a>
@@ -1397,8 +1365,6 @@ root@spark:~# ubiformat /dev/mtd6 -q -y -f /tmp/image.ubi
     <a class="list-group-item " href="/blog/2015/08/03/installing-stm32cubemx-on-linux/">Installing STM32CubeMX on Linux</a>
     
     <a class="list-group-item " href="/blog/2015/07/18/nim-dvb-s-slash-s2-v1-dot-0-pinout/">[WIP] NIM_DVB-S/S2 V1.0 Pinout</a>
-    
-    <a class="list-group-item " href="/blog/2015/07/18/pci-express-connectors-from-china/">PCI-Express Connectors From China</a>
     
   </div>
 </section>

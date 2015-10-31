@@ -116,7 +116,101 @@
 
 
 
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2015-09-22T19:42:34+02:00"  data-updated="true" itemprop="datePublished dateCreated">Tue 22 Sep 2015,  7:42 PM</time>
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2015-10-31T16:56:22+01:00"  data-updated="true" itemprop="datePublished dateCreated">Sat 31 Oct 2015,  4:56 PM</time>
+        
+           | <a href="/blog/2015/10/31/attaching-a-serial-console-to-udoo-neo/#disqus_thread" itemprop="discussionUrl"
+             data-disqus-identifier="http://ch.ege.io/blog/2015/10/31/attaching-a-serial-console-to-udoo-neo/">Comments</a>
+        
+      </p>
+    
+    
+      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2015/10/31/attaching-a-serial-console-to-udoo-neo/" itemprop="url">Attaching a Serial Console to UDOO Neo</a></h2>
+    
+  </header>
+
+
+  <div class="entry-content clearfix" itemprop="articleBody description"><p>Yesterday my long time awaited <a href="http://www.udoo.org/udoo-neo/">UDOO Neo</a> board has arrived. They do provide a really good <a href="http://www.udoo.org/get-started-neo/">getting stated guide</a> for UDOO Neo. But for my Yocto Port I need access to the serial console to check the output of the U-Boot and the kernel. So I&rsquo;ve checked the <a href="http://udoo.org/download/files/schematics/UDOO_NEO_schematics.pdf">UDOO Neo Schematics</a> and located UART1 on the connector J7.</p>
+
+<p><img src="/images/posts/UDOOUartNeo.png"></p>
+
+<p>It is so incredible that they do provide the schematics. It is much easier to check the PINOUT. To connect the UDOO to a terminal client you need the following stuff</p>
+
+<ul>
+<li>1 x USB to serial converter with 3.3V output. Do not use any 5V type, this may damage your UDOO Neo! I use some cheap Chinese <a href="https://hackaday.com/tag/ch341">CH341</a> USB to UART converters. They cost about 3€ but are not FTDI clones.</li>
+<li>3 Jumper wires. It depends on your USB to serial converter if you need male <-> male or female <-> male. I needed female <-> male connectors</li>
+<li>1 x <a href="http://www.udoo.org/udoo-neo/">UDOO Neo board</a></li>
+<li>1 x Powersupply for the Neo.</li>
+<li>1 x Micro SD-Card with the UDOOBuntu or a <a href="http://ch.ege.io/blog/2015/09/19/openembedded-support-for-the-upcomming-udoo-neo/">Yocto build</a> for UDOO Neo</li>
+</ul>
+
+
+<p>For power connection and flashing the SD-Card please have a look at the <a href="http://www.udoo.org/get-started-neo/">getting stated guide</a> for UDOO Neo.</p>
+
+<p>Before you plug-in the serial wires you have to remove any power source from the UDOO board. Otherwise you may damage your board. Double check if your adapter is a 3.3V. Connect the ground line (GND) of your USB to serial converter with the PIN 11 of the J7 connector. Then you have to connect the RX and TX PINs. But remember you have to cross them. Why do we need to cross RX and TX?</p>
+
+<p>This is because <code>TX</code> is transmit and if the UDOO Board and your PC are transmitting on the same line nothing is received on both sides. So you have to connect the <code>RX</code> PIN of the UDOO board, PIN 4 of J7, with the <code>TX</code> PIN of your converter. The <code>TX</code>, PIN 2 of J7, from UDOO is connected to the <code>RX</code> PIN of converter.</p>
+
+<p><img src="/images/posts/UDOONeoAndUSBSeriell.png"></p>
+
+<p>After this you can check <a href="http://www.udoo.org/tutorial/connecting-via-serial-cable/">their tutorial how to fire up an Terminal Emulator</a> on your Platform of choice and connect to the NEO at the following settings:</p>
+
+<ul>
+<li>115200 kB</li>
+<li>8N1</li>
+<li>No Flow-Control</li>
+</ul>
+
+
+<p>I do prefer minicom under Linux for this job.</p>
+
+<h1>UDOO Neo direct USB console</h1>
+
+<p>You may have noticed while booting the official <a href="http://www.udoo.org/get-started-neo/">UDOOBuntu image</a> image new disk is suddenly mounted and you have a new network interface connected. And even a new serial interface is available.</p>
+
+<pre><code>[...]
+[ 4885.463264] cdc_acm 4-1.4.1.1:1.2: ttyACM0: USB ACM device
+[ 4885.463682] usbcore: registered new interface driver cdc_acm
+[ 4885.463685] cdc_acm: USB Abstract Control Model driver for USB modems and ISDN adapters
+[...]
+</code></pre>
+
+<p>You can use minicom with <code>/dev/ttyACM0</code> and the same settings like above.</p>
+
+<pre><code>Ubuntu 14.04.3 LTS udooneo ttyGS0
+
+
+default username:password is [udooer:udooer]
+udooneo login:
+</code></pre>
+
+<p>This is absolutely awesome!</p>
+</div>
+  
+  
+
+
+        </article>
+      
+      
+        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+          
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2015-09-22T08:42:22+02:00"  data-updated="true" itemprop="datePublished dateCreated">Tue 22 Sep 2015,  8:42 AM</time>
         
            | <a href="/blog/2015/09/22/tweaking-freescales-yocto-community-bsp-builds/#disqus_thread" itemprop="discussionUrl"
              data-disqus-identifier="http://ch.ege.io/blog/2015/09/22/tweaking-freescales-yocto-community-bsp-builds/">Comments</a>
@@ -129,16 +223,16 @@
   </header>
 
 
-  <div class="entry-content clearfix" itemprop="articleBody description"><p><a href="https://twitter.com/scrumnl">Maurice le Rutte</a> asked me on <a href="https://twitter.com/scrumnl/status/645315188187635712">Twitter</a> if it is possible to add support for the first UDOO board and building a <a href="https://en.wikipedia.org/wiki/DirectFB">DirectFB</a> enabled image. After some research it looked like a solution for the <a href="https://en.wikipedia.org/wiki/DirectFB">DirectFB</a> task should be not that big issue.</p>
+  <div class="entry-content clearfix" itemprop="articleBody description"><p><a href="https://twitter.com/scrumnl">Maurice le Rutte</a> asked me on Twitter if it is possible to add support for the first UDOO board and building a <a href="https://en.wikipedia.org/wiki/DirectFB">DirectFB</a> enabled image. After some research it looked like a solution for the DirectFB task should be not that big issue.</p>
 
-<p>I guess you have already a running Yocto environment based on the <a href="https://github.com/Freescale/fsl-community-bsp-base">Freescale BSP comunity layers</a>. To build a <a href="https://en.wikipedia.org/wiki/DirectFB">DirectFB</a> image some tweaking is needed. You have to add those lines to your <code>conf/local.conf</code></p>
+<p>I guess you have already a running Yocto environment based on the Freescale BSP comunity layers. To build a DirectFB image some tweaking is needed. You have to add those lines to your <code>conf/local.conf</code></p>
 
 <pre><code>DISTRO_FEATURES_remove = "x11"
 DISTRO_FEATURES_remove = "wayland"
 DISTRO_FEATURES_append = " directfb"
 </code></pre>
 
-<p>The first two lines remove support for wayland and X11 which will conflict with <a href="https://en.wikipedia.org/wiki/DirectFB">DirectFB</a> and will prevent a successful build. With this modification you can build a <a href="https://en.wikipedia.org/wiki/DirectFB">DirectFB</a> image. The extra white space in front of directfb is mandatory!</p>
+<p>The first two lines remove support for wayland and X11 which will conflict with DirectFB and will prevent a successful build. With this modification you can build a DirectFB image. The extra white space in front of directfb is mandatory!</p>
 
 <pre><code>bitbake core-image-directfb
 </code></pre>
@@ -864,89 +958,6 @@ sys     0m 0.36s
 
         </article>
       
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-
-
-
-
-
-
-
-
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2015-04-12T17:07:32+02:00"  data-updated="true" itemprop="datePublished dateCreated">Sun 12 Apr 2015,  5:07 PM</time>
-        
-           | <a href="/blog/2015/04/12/using-the-segger-j-link-to-access-the-ti-cc2650-chip/#disqus_thread" itemprop="discussionUrl"
-             data-disqus-identifier="http://ch.ege.io/blog/2015/04/12/using-the-segger-j-link-to-access-the-ti-cc2650-chip/">Comments</a>
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2015/04/12/using-the-segger-j-link-to-access-the-ti-cc2650-chip/" itemprop="url">Using the SEGGER J-Link to Access the TI CC2650 Chip</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>Before you get started install the <a href="https://www.segger.com/jlink-software.html">newest host tools</a> for your SEGGER in my case I installed the Debian package of version <strong>V4.98b</strong>. On first start the <strong>JLinExe</strong> installs the apropriate Firmware.</p>
-
-<pre><code>$ JLinkExe -if jtag -device CC2650F128
-SEGGER J-Link Commander V4.98b ('?' for help)
-Compiled Apr 10 2015 20:27:38
-Updating firmware:  J-Link V9 compiled Apr 10 2015 10:51:08
-Replacing firmware: J-Link V9 compiled Feb 13 2015 20:37:28
-Waiting for new firmware to boot
-New firmware booted successfully
-</code></pre>
-
-<p>On the <a href="http://www.ti.com/tool/cc2650stk">SimpleLink™ Bluetooth Smart®/Multi-Standard SensorTag</a> they use the <a href="http://www.ti.com/product/cc2650">CC2650</a> with 128kB of Flash ROM. So you have to select <em>-device CC2650F128</em> when running <strong>JLinkExe</strong> At the moment it seems the <a href="http://www.ti.com/product/cc2650">CC2650</a> only supports JTAG debugging and not the more common SWI debug like STM32 do use. Anyway The Segger can run both modes.</p>
-
-<p>After a succesful firmawre update the communication looks like this</p>
-
-<pre><code>SEGGER J-Link Commander V4.98b ('?' for help)
-Compiled Apr 10 2015 20:27:38
-Info: Device "CC2650F128" selected.
-DLL version V4.98b, compiled Apr 10 2015 20:27:35
-Firmware: J-Link V9 compiled Apr 10 2015 10:51:08
-Hardware: V9.30
-S/N: XXXXXXXX
-OEM: SEGGER-EDU
-Feature(s): FlashBP, GDB
-VTarget = 2.800V
-Info: TotalIRLen = 10, IRPrint = 0x0011
-Info: Found Cortex-M3 r2p1, Little endian.
-Info: FPUnit: 6 code (BP) slots and 2 literal slots
-Info: CoreSight components:
-Info: ROMTbl 0 @ E00FF000
-Info: ROMTbl 0 [0]: FFF0F000, CID: B105E00D, PID: 000BB000 SCS
-Info: ROMTbl 0 [1]: FFF02000, CID: B105E00D, PID: 003BB002 DWT
-Info: ROMTbl 0 [2]: FFF03000, CID: B105E00D, PID: 002BB003 FPB
-Info: ROMTbl 0 [3]: FFF01000, CID: B105E00D, PID: 003BB001 ITM
-Info: ROMTbl 0 [4]: FFF41000, CID: B105900D, PID: 003BB923 TPIU-Lite
-Found 2 JTAG devices, Total IRLen = 10:
- #0 Id: 0x4BA00477, IRLen: 04, IRPrint: 0x1, CoreSight JTAG-DP (ARM)
- #1 Id: 0x8B99A02F, IRLen: 06, IRPrint: 0x1, TI ICEPick
-Cortex-M3 identified.
-Target interface speed: 100 kHz
-J-Link&gt;
-</code></pre>
-
-<p>The next step is to create a firmware backup of the original firmware. This is needed because this little beast at the momemnt denies to build its firmware under Linux. The CodeComposerStudio Projekt is using some Windows Tools to build and expects a specific directory layout.</p>
-</div>
-  
-  
-
-
-        </article>
-      
     </div>
 
     <ul class="pager">
@@ -970,6 +981,8 @@ J-Link&gt;
   
   <div id="recent_posts" class="list-group">
     
+    <a class="list-group-item " href="/blog/2015/10/31/attaching-a-serial-console-to-udoo-neo/">Attaching a Serial Console to UDOO Neo</a>
+    
     <a class="list-group-item " href="/blog/2015/09/22/tweaking-freescales-yocto-community-bsp-builds/">Tweaking Freescales Yocto Community BSP Builds</a>
     
     <a class="list-group-item " href="/blog/2015/09/19/openembedded-support-for-the-upcomming-udoo-neo/">OpenEmbedded Support for the Upcomming UDOO Neo</a>
@@ -977,8 +990,6 @@ J-Link&gt;
     <a class="list-group-item " href="/blog/2015/08/03/installing-stm32cubemx-on-linux/">Installing STM32CubeMX on Linux</a>
     
     <a class="list-group-item " href="/blog/2015/07/18/nim-dvb-s-slash-s2-v1-dot-0-pinout/">[WIP] NIM_DVB-S/S2 V1.0 Pinout</a>
-    
-    <a class="list-group-item " href="/blog/2015/07/18/pci-express-connectors-from-china/">PCI-Express Connectors From China</a>
     
   </div>
 </section>
