@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Udoo | Sturmschneid]]></title>
   <link href="http://ch.ege.io/blog/categories/udoo/atom.xml" rel="self"/>
   <link href="http://ch.ege.io/"/>
-  <updated>2015-10-31T18:40:44+01:00</updated>
+  <updated>2015-10-31T18:42:32+01:00</updated>
   <id>http://ch.ege.io/</id>
   <author>
     <name><![CDATA[Christian Ege]]></name>
@@ -54,7 +54,7 @@
 
 <h1>UDOO Neo direct USB console</h1>
 
-<p>You may have noticed while booting the official <a href="http://www.udoo.org/get-started-neo/">UDOOBuntu image</a> image new disk is suddenly mounted and you have a new network interface connected. And even a new serial interface is available.</p>
+<p>You may have noticed while booting the official <a href="http://www.udoo.org/get-started-neo/">UDOOBuntu image</a> image a new disk is suddenly mounted on your PC. And you have a new network interface connected as well. Last but not least even a new serial interface is available.</p>
 
 <pre><code>[...]
 [ 4885.463264] cdc_acm 4-1.4.1.1:1.2: ttyACM0: USB ACM device
