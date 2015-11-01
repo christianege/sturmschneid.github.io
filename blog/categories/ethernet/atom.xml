@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Ethernet | Sturmschneid]]></title>
+  <link href="http://ch.ege.io/blog/categories/ethernet/atom.xml" rel="self"/>
+  <link href="http://ch.ege.io/"/>
+  <updated>2015-11-01T10:57:12+01:00</updated>
+  <id>http://ch.ege.io/</id>
+  <author>
+    <name><![CDATA[Christian Ege]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Activating USB_OTG Composite Ethernet + Serial Gadget Support in Yocto's Poky for UDOO Neo]]></title>
+    <link href="http://ch.ege.io/blog/2015/11/01/activating-usb-otg-udoo-neos-composite-ethernet-plus-serial-gadget-support-in-yoctos-poky/"/>
+    <updated>2015-11-01T09:23:35+01:00</updated>
+    <id>http://ch.ege.io/blog/2015/11/01/activating-usb-otg-udoo-neos-composite-ethernet-plus-serial-gadget-support-in-yoctos-poky</id>
+    <content type="html"><![CDATA[<p>After playing with UDOOBuntu and the nice USB OTG Gadget support my decision was to provide something similar for my Yocot Port as-well. It turned out that the serial Gadget support was pretty easy the Ethernet support is more complex.</p>
+
+<p>For serial console over the USB OTG port of your NEO you have to change the <code>udooneo.conf</code> file in the folder <code>conf\machine</code> of <code>meta-fsl-arm-extra</code></p>
+
+<pre><code>MACHINE_FEATURES += " usbgadget usbhost"
+SERIAL_CONSOLES ?= "115200;ttymxc0 115200;ttyGS0"
+
+KERNEL_MODULE_AUTOLOAD += " g_serial"
+</code></pre>
+
+<p>This adds usbgadget support and automatically loads the module g_serial on startup. The line <code>SERIAL_CONSOLES</code> automatically spawns a <a href="https://en.wikipedia.org/wiki/Getty_%28Unix%29">getty</a> on  <code>/dev/ttyGS0</code> through the <a href="https://en.wikipedia.org/wiki/Init#SysV-style">inittab</a>.</p>
+
+<p>Due to the fact that only one USB OTG gagdget module can be loaded there are some composite modules available. A combination of serial and Ethernet for example is the  <code>g_cdc</code>. To use <code>g_cdc</code> instead of <code>g_serial</code> is pretty simple just change the line</p>
+
+<pre><code>KERNEL_MODULE_AUTOLOAD += " g_serial"
+</code></pre>
+
+<p>To this</p>
+
+<pre><code>KERNEL_MODULE_AUTOLOAD += " g_cdc"
+</code></pre>
+
+<p>This will automatically provide serial support and spawns a <code>usb0</code> network device device on the target and the host. But my Ubuntu host was not able to set get an IP-Adress for this interface. Setting one by hand resolved this. But this is not comparable to the out of the box experience UDOOBuntu provides.</p>
+
+<p>On your host computer you&rsquo;ll see something like this in your dmesg log</p>
+
+<pre><code>[ 9515.050081] usb 4-1.4.1.1: new high-speed USB device number 12 using ehci-pci
+[ 9515.144407] usb 4-1.4.1.1: New USB device found, idVendor=0525, idProduct=a4aa
+[ 9515.144411] usb 4-1.4.1.1: New USB device strings: Mfr=1, Product=2, SerialNumber=0
+[ 9515.144412] usb 4-1.4.1.1: Product: CDC Composite Gadget
+[ 9515.144414] usb 4-1.4.1.1: Manufacturer: Linux 3.14.28_1.0.0_ga-udooboard+g580e305 with 2184000.usb
+[ 9515.152930] cdc_ether 4-1.4.1.1:1.0 usb0: register 'cdc_ether' at usb-0000:00:1d.0-1.4.1.1, CDC Ethernet Device, 76:26:58:xx:xx:xx
+[ 9515.153714] cdc_acm 4-1.4.1.1:1.2: ttyACM0: USB ACM device
+[ 9515.176120] cdc_ether 4-1.4.1.1:1.0 usb0: kevent 12 may have been dropped
+[ 9515.193036] IPv6: ADDRCONF(NETDEV_UP): usb0: link is not ready
+[ 9515.377616] userif-3: sent link down event.
+[ 9515.377619] userif-3: sent link up event.
+</code></pre>
+
+<p>For serial console access you can connet to the UDOO Neo by attaching minicom to <code>/dev/ttyACM0</code> at 115200 Baud 8N1 No flow control, or any other treminal emulator of your choice.</p>
+]]></content>
+  </entry>
+  
+</feed>

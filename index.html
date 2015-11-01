@@ -116,6 +116,85 @@
 
 
 
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2015-11-01T09:23:35+01:00"  data-updated="true" itemprop="datePublished dateCreated">Sun  1 Nov 2015,  9:23 AM</time>
+        
+           | <a href="/blog/2015/11/01/activating-usb-otg-udoo-neos-composite-ethernet-plus-serial-gadget-support-in-yoctos-poky/#disqus_thread" itemprop="discussionUrl"
+             data-disqus-identifier="http://ch.ege.io/blog/2015/11/01/activating-usb-otg-udoo-neos-composite-ethernet-plus-serial-gadget-support-in-yoctos-poky/">Comments</a>
+        
+      </p>
+    
+    
+      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2015/11/01/activating-usb-otg-udoo-neos-composite-ethernet-plus-serial-gadget-support-in-yoctos-poky/" itemprop="url">Activating USB_OTG Composite Ethernet + Serial Gadget Support in Yocto&#8217;s Poky for UDOO Neo</a></h2>
+    
+  </header>
+
+
+  <div class="entry-content clearfix" itemprop="articleBody description"><p>After playing with UDOOBuntu and the nice USB OTG Gadget support my decision was to provide something similar for my Yocot Port as-well. It turned out that the serial Gadget support was pretty easy the Ethernet support is more complex.</p>
+
+<p>For serial console over the USB OTG port of your NEO you have to change the <code>udooneo.conf</code> file in the folder <code>conf\machine</code> of <code>meta-fsl-arm-extra</code></p>
+
+<pre><code>MACHINE_FEATURES += " usbgadget usbhost"
+SERIAL_CONSOLES ?= "115200;ttymxc0 115200;ttyGS0"
+
+KERNEL_MODULE_AUTOLOAD += " g_serial"
+</code></pre>
+
+<p>This adds usbgadget support and automatically loads the module g_serial on startup. The line <code>SERIAL_CONSOLES</code> automatically spawns a <a href="https://en.wikipedia.org/wiki/Getty_%28Unix%29">getty</a> on  <code>/dev/ttyGS0</code> through the <a href="https://en.wikipedia.org/wiki/Init#SysV-style">inittab</a>.</p>
+
+<p>Due to the fact that only one USB OTG gagdget module can be loaded there are some composite modules available. A combination of serial and Ethernet for example is the  <code>g_cdc</code>. To use <code>g_cdc</code> instead of <code>g_serial</code> is pretty simple just change the line</p>
+
+<pre><code>KERNEL_MODULE_AUTOLOAD += " g_serial"
+</code></pre>
+
+<p>To this</p>
+
+<pre><code>KERNEL_MODULE_AUTOLOAD += " g_cdc"
+</code></pre>
+
+<p>This will automatically provide serial support and spawns a <code>usb0</code> network device device on the target and the host. But my Ubuntu host was not able to set get an IP-Adress for this interface. Setting one by hand resolved this. But this is not comparable to the out of the box experience UDOOBuntu provides.</p>
+
+<p>On your host computer you&rsquo;ll see something like this in your dmesg log</p>
+
+<pre><code>[ 9515.050081] usb 4-1.4.1.1: new high-speed USB device number 12 using ehci-pci
+[ 9515.144407] usb 4-1.4.1.1: New USB device found, idVendor=0525, idProduct=a4aa
+[ 9515.144411] usb 4-1.4.1.1: New USB device strings: Mfr=1, Product=2, SerialNumber=0
+[ 9515.144412] usb 4-1.4.1.1: Product: CDC Composite Gadget
+[ 9515.144414] usb 4-1.4.1.1: Manufacturer: Linux 3.14.28_1.0.0_ga-udooboard+g580e305 with 2184000.usb
+[ 9515.152930] cdc_ether 4-1.4.1.1:1.0 usb0: register 'cdc_ether' at usb-0000:00:1d.0-1.4.1.1, CDC Ethernet Device, 76:26:58:xx:xx:xx
+[ 9515.153714] cdc_acm 4-1.4.1.1:1.2: ttyACM0: USB ACM device
+[ 9515.176120] cdc_ether 4-1.4.1.1:1.0 usb0: kevent 12 may have been dropped
+[ 9515.193036] IPv6: ADDRCONF(NETDEV_UP): usb0: link is not ready
+[ 9515.377616] userif-3: sent link down event.
+[ 9515.377619] userif-3: sent link up event.
+</code></pre>
+
+<p>For serial console access you can connet to the UDOO Neo by attaching minicom to <code>/dev/ttyACM0</code> at 115200 Baud 8N1 No flow control, or any other treminal emulator of your choice.</p>
+</div>
+  
+  
+
+
+        </article>
+      
+      
+        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+          
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
 <span class="glyphicon glyphicon-calendar"></span> <time datetime="2015-10-31T16:56:22+01:00"  data-updated="true" itemprop="datePublished dateCreated">Sat 31 Oct 2015,  4:56 PM</time>
         
            | <a href="/blog/2015/10/31/attaching-a-serial-console-to-udoo-neo/#disqus_thread" itemprop="discussionUrl"
@@ -771,193 +850,6 @@ bmp scale
 
         </article>
       
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-
-
-
-
-
-
-
-
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2015-05-04T05:30:18+02:00"  data-updated="true" itemprop="datePublished dateCreated">Mon  4 May 2015,  5:30 AM</time>
-        
-           | <a href="/blog/2015/05/04/using-h-slash-w-randaom-generator-on-odrod-c1-with-yocto/#disqus_thread" itemprop="discussionUrl"
-             data-disqus-identifier="http://ch.ege.io/blog/2015/05/04/using-h-slash-w-randaom-generator-on-odrod-c1-with-yocto/">Comments</a>
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2015/05/04/using-h-slash-w-randaom-generator-on-odrod-c1-with-yocto/" itemprop="url">Using H/W Randaom Generator on ODROD-C1 With Yocto</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>The Amlogic S805 CPU used in the ODROID-C1 contains a hardware random number generator which can be used to increase entropy in the linux kernel. The guys at Hardkernel wrote a <a href="http://odroid.com/dokuwiki/doku.php?id=en:c1_hardware_number_generator">tutorial how to enable this in Ubuntu</a>.</p>
-
-<p>Due to the fact that there is a <a href="http://cgit.openembedded.org/meta-openembedded/tree/meta-oe/recipes-support/rng-tools/rng-tools_4.bb?h=fido">rng-tools recipe</a> in the <a href="http://cgit.openembedded.org/meta-openembedded/">meta-openembedded</a> repo I thought it would be a no-brainer to get this working in Yocto fido.</p>
-
-<p>Before you can build the rng-tools you need the <a href="http://cgit.openembedded.org/meta-openembedded/">meta-openembedded</a> meta-oe layer in your bblayer configuration file this may look like this</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='diff'><span class='line'><span class="gh">diff --git a/conf/bblayers.conf b/conf/bblayers.conf</span>
-</span><span class='line'><span class="gh">index d999c9d..fcf7bf2 100644</span>
-</span><span class='line'><span class="gd">--- a/conf/bblayers.conf</span>
-</span><span class='line'><span class="gi">+++ b/conf/bblayers.conf</span>
-</span><span class='line'><span class="gu">@@ -9,8 +9,12 @@ BBLAYERS ?= &quot; \</span>
-</span><span class='line'>   /build/hardkernel/odroid-c1/poky/meta \
-</span><span class='line'>   /build/hardkernel/odroid-c1/poky/meta-yocto \
-</span><span class='line'>   /build/hardkernel/odroid-c1/poky/meta-yocto-bsp \
-</span><span class='line'><span class="gi">+  /build/hardkernel/odroid-c1/meta-amlogic \</span>
-</span><span class='line'><span class="gi">+  /build/hardkernel/odroid-c1/meta-openembedded/meta-oe \</span>
-</span><span class='line'>   &quot;
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>After adding the meta-oe layer and preparing the bitbake environment we can build the rng-tools recipe</p>
-
-<pre><code>$ source poky/oe-init-build-env build/
-$ bitbake rng-tools
-</code></pre>
-
-<p>The resulting file can be transfered to the target and installed with the defined package manger. In my case I do use opkg. Please ensure you are using a image with a package manager enabled. I do use core-image-base and add the following to conf/local.conf:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class='diff'><span class='line'><span class="gh">diff --git a/conf/local.conf b/conf/local.conf</span>
-</span><span class='line'><span class="gh">index a1d99f9..3e200c9 100644</span>
-</span><span class='line'><span class="gd">--- a/conf/local.conf</span>
-</span><span class='line'><span class="gi">+++ b/conf/local.conf</span>
-</span><span class='line'><span class="gu">@@ -104,13 +119,13 @@ DISTRO ?= &quot;poky&quot;</span>
-</span><span class='line'> #  - &#39;package_rpm&#39; for rpm style packages
-</span><span class='line'> # E.g.: PACKAGE_CLASSES ?= &quot;package_rpm package_deb package_ipk&quot;
-</span><span class='line'> # We default to rpm:
-</span><span class='line'><span class="gd">-PACKAGE_CLASSES ?= &quot;package_rpm&quot;</span>
-</span><span class='line'><span class="gi">+PACKAGE_CLASSES ?= &quot;package_ipk&quot;</span>
-</span><span class='line'><span class="gu">@@ -137,13 +152,13 @@ PACKAGE_CLASSES ?= &quot;package_rpm&quot;</span>
-</span><span class='line'> # There are other application targets that can be used here too, see
-</span><span class='line'> # meta/classes/image.bbclass and meta/classes/core-image.bbclass for more details.
-</span><span class='line'> # We default to enabling the debugging tweaks.
-</span><span class='line'><span class="gd">-EXTRA_IMAGE_FEATURES = &quot;debug-tweaks&quot;</span>
-</span><span class='line'><span class="gi">+EXTRA_IMAGE_FEATURES = &quot;debug-tweaks package-management ssh-server-dropbear&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Let&rsquo;s transfer the resulting files to the target.</p>
-
-<pre><code>$ find tmp/deploy/ipk/ -name "rng-tools*"
-$ scp tmp/deploy/ipk/cortexa5hf-vfp-neon/rng-tools_4-r0_cortexa5hf-vfp-neon.ipk root@odroidc1:/tmp
-</code></pre>
-
-<p><strong>Attention</strong>: At the moment the recipe for the rng-tools packages installs it&rsquo;s configuration to <em>/etc/rng-tools</em> but the initscript expects it at <em>/etc/default/rng-tools</em>. I send a <a href="http://article.gmane.org/gmane.comp.handhelds.openembedded/68813">patch</a> to the meta-openembedded mailinglist to correct this. The current behaviour of the rng-tools should be pretty okay due to the fact that given no &ldquo;-r&rdquo; option the default behavior is to use /dev/hwrng.</p>
-
-<h2>Benchmarks</h2>
-
-<p>The rng-tools provide some statistical tests for checking if the hardware random generator works as expected.</p>
-
-<h3>Without rngd</h3>
-
-<p>This runs the <a href="http://en.wikipedia.org/wiki/FIPS_140-2">FIPS 140-2 tests</a> against the device <em>/dev/random</em> <strong>without</strong> running rngd</p>
-
-<pre><code>root@odroidc1:~# time rngtest -c1 &lt; /dev/random
-rngtest 4
-Copyright (c) 2004 by Henrique de Moraes Holschuh
-This is free software; see the source for copying conditions.  There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
-rngtest: starting FIPS tests...
-rngtest: bits received from input: 20032
-rngtest: FIPS 140-2 successes: 1
-rngtest: FIPS 140-2 failures: 0
-rngtest: FIPS 140-2(2001-10-10) Monobit: 0
-rngtest: FIPS 140-2(2001-10-10) Poker: 0
-rngtest: FIPS 140-2(2001-10-10) Runs: 0
-rngtest: FIPS 140-2(2001-10-10) Long run: 0
-rngtest: FIPS 140-2(2001-10-10) Continuous run: 0
-rngtest: input channel speed: (min=132.975; avg=132.975; max=132.975)bits/s
-rngtest: FIPS tests speed: (min=55.934; avg=55.934; max=55.934)Mibits/s
-rngtest: Program run time: 150404986 microseconds
-real    2m 30.40s
-user    0m 0.00s
-sys     0m 0.01s
-</code></pre>
-
-<p>The average of <strong>132.975 bits/s</strong> throughput is pretty low.</p>
-
-<h3>With rngd</h3>
-
-<p>This runs the <a href="http://en.wikipedia.org/wiki/FIPS_140-2">FIPS 140-2 tests</a> against the device <em>/dev/random</em> <strong>with</strong> running rngd</p>
-
-<pre><code>root@odroidc1:~# /etc/init.d/rng-tools start
-root@odroidc1:~# time rngtest -c1 &lt; /dev/random
-root@odroidc1:~# time rngtest -c100 &lt; /dev/random
-rngtest 4
-Copyright (c) 2004 by Henrique de Moraes Holschuh
-This is free software; see the source for copying conditions.  There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
-rngtest: starting FIPS tests...
-rngtest: bits received from input: 2000032
-rngtest: FIPS 140-2 successes: 99
-rngtest: FIPS 140-2 failures: 1
-rngtest: FIPS 140-2(2001-10-10) Monobit: 1
-rngtest: FIPS 140-2(2001-10-10) Poker: 0
-rngtest: FIPS 140-2(2001-10-10) Runs: 0
-rngtest: FIPS 140-2(2001-10-10) Long run: 0
-rngtest: FIPS 140-2(2001-10-10) Continuous run: 0
-rngtest: input channel speed: (min=5.034; avg=5.310; max=5.374)Mibits/s
-rngtest: FIPS tests speed: (min=53.880; avg=58.279; max=58.688)Mibits/s
-rngtest: Program run time: 392465 microseconds
-Command exited with non-zero status 1
-real    0m 0.39s
-user    0m 0.03s
-sys     0m 0.36s
-</code></pre>
-
-<p>Now we have an average throughput of <strong>5.310 Mibits/s</strong> compared to the <strong>132.975 bits/s</strong> without rngd.</p>
-
-<h2>Considerations</h2>
-
-<p>You might keep in mind that using a hardware random generator may cause security issues. To have a more detailed view on this read this posting and comments on <a href="https://plus.google.com/+TheodoreTso/posts/SDcoemc9V3J">Theodore Ts&#8217;o posting on G+</a>. From this posting <em>If I were the NSA, and I wanted to gimmick an RNG, whether it be the one inside the Intel chip or the Android build, it would be a counter encrypted by an AES key known by the NSA.  (Why AES?   Because RDRAND is documented as using AES in its final whitening stage; so someone taking a quick look at the RDRAND implementation would be expecting AES).</em></p>
-</div>
-  
-  
-
-
-        </article>
-      
     </div>
 
     <ul class="pager">
@@ -981,6 +873,8 @@ sys     0m 0.36s
   
   <div id="recent_posts" class="list-group">
     
+    <a class="list-group-item " href="/blog/2015/11/01/activating-usb-otg-udoo-neos-composite-ethernet-plus-serial-gadget-support-in-yoctos-poky/">Activating USB_OTG Composite Ethernet + Serial Gadget Support in Yocto&#8217;s Poky for UDOO Neo</a>
+    
     <a class="list-group-item " href="/blog/2015/10/31/attaching-a-serial-console-to-udoo-neo/">Attaching a Serial Console to UDOO Neo</a>
     
     <a class="list-group-item " href="/blog/2015/09/22/tweaking-freescales-yocto-community-bsp-builds/">Tweaking Freescales Yocto Community BSP Builds</a>
@@ -988,8 +882,6 @@ sys     0m 0.36s
     <a class="list-group-item " href="/blog/2015/09/19/openembedded-support-for-the-upcomming-udoo-neo/">OpenEmbedded Support for the Upcomming UDOO Neo</a>
     
     <a class="list-group-item " href="/blog/2015/08/03/installing-stm32cubemx-on-linux/">Installing STM32CubeMX on Linux</a>
-    
-    <a class="list-group-item " href="/blog/2015/07/18/nim-dvb-s-slash-s2-v1-dot-0-pinout/">[WIP] NIM_DVB-S/S2 V1.0 Pinout</a>
     
   </div>
 </section>

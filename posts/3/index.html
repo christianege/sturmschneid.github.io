@@ -116,6 +116,210 @@
 
 
 
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2013-11-04T00:00:00+01:00"  data-updated="true" itemprop="datePublished dateCreated">Mon  4 Nov 2013, 12:00 AM</time>
+        
+           | <a href="/blog/2013/11/04/rewriting-history/#disqus_thread" itemprop="discussionUrl"
+             data-disqus-identifier="http://ch.ege.io/blog/2013/11/04/rewriting-history/">Comments</a>
+        
+      </p>
+    
+    
+      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2013/11/04/rewriting-history/" itemprop="url">Rewriting History</a></h2>
+    
+  </header>
+
+
+  <div class="entry-content clearfix" itemprop="articleBody description"><p>Sometimes history has to be rewritten. In real life this is hopefully not possible yet. But in case of git this is possible. Some projecs start with a small repository which evolves over the time to a big bloated repository. Other ones start already bloated. In some cases the wish to split-up the repository in smaller chunks emerges. With some advice from <a href="http://seife.kernalert.de/blog/">Stefan Seyfried</a> I learned how to rewrite history</p>
+
+<p>The goal was to extract the driver directory from the <a href="https://gitorious.org/open-duckbox-project-sh4/tdt">tdt</a> repository like <a href="https://gitorious.org/neutrino-mp/tdt-driver">Stefan</a> already did.</p>
+
+<p>These are the steps to follow:</p>
+
+<pre><code>$ cd /dev/shm/
+$ git clone --reference /net/transfer/spark71xx/tdt https://git.gitorious.org/open-duckbox-project-sh4/tdt.git tdt-driver
+$ cd tdt-driver/
+$ git filter-branch --subdirectory-filter tdt/cvs/driver
+</code></pre>
+
+<p>The first step speeds up the process of rewriting by doing it all in memory instead of writing everything onto a slow disk device. But please remember to push your work onto a less volatile memory.</p>
+
+<pre><code>$ cd /dev/shm/
+</code></pre>
+
+<p>In the second step the original repository is cloned. To again speedup things I used a local copy as reference. After cloning the directory structure looked like this</p>
+
+<pre><code>$ tree -d -L 3 tdt/
+tdt/
+├── custom
+├── cvs
+│   ├── apps
+│   │   ├── dvb
+│   │   ├── enigma1-hd
+│   │   ├── enigma2
+│   │   ├── misc
+│   │   ├── neutrino
+│   │   ├── tuxbox
+│   │   └── vdr
+│   ├── boot
+│   │   └── u-boot-tufsbox
+│   ├── cdk
+│   │   ├── integrated_firmware
+│   │   ├── make
+│   │   ├── own_build
+│   │   ├── Patches
+│   │   ├── root
+│   │   ├── static
+│   │   └── tfinstaller
+│   ├── driver
+│   │   ├── adb_box_fan
+│   │   ├── avs
+│   │   ├── boxtype
+│   │   ├── bpamem
+│   │   ├── button
+│   │   ├── button_hs5101
+│   │   ├── cec
+│   │   ├── cec_adb_box
+│   │   ├── cic
+│   │   ├── compcache
+│   │   ├── cpu_frequ
+│   │   ├── dvbt
+│   │   ├── e2_proc
+│   │   ├── frontcontroller
+│   │   ├── frontends
+│   │   ├── i2c_spi
+│   │   ├── include
+│   │   ├── ipbox99xx_fan
+│   │   ├── led
+│   │   ├── logfs
+│   │   ├── multicom-3.2.2
+│   │   ├── multicom-3.2.4
+│   │   ├── multicom-3.2.4_rc3
+│   │   ├── multicom-4.0.6
+│   │   ├── old
+│   │   ├── player2_131
+│   │   ├── player2_179
+│   │   ├── player2_191
+│   │   ├── pti
+│   │   ├── rmu
+│   │   ├── sata_switch
+│   │   ├── siinfo
+│   │   ├── simu_button
+│   │   ├── smartcard
+│   │   ├── stgfb
+│   │   ├── tfswitch
+│   │   ├── ufs922_fan
+│   │   └── wireless
+│   └── hostapps
+│       ├── flash
+│       ├── mkfs.jffs2
+│       └── mklibs
+└── flash
+    ├── at7500
+    │   ├── extras
+    │   ├── scripts
+    │   ├── scripts_209
+    │   └── scripts_extended
+    ├── common
+    │   ├── fup.src
+    │   ├── mup.src
+    │   └── pad.src
+    ├── hs7810a
+    │   ├── extras
+    │   └── scripts
+    ├── spark
+    │   ├── extras
+    │   └── scripts
+    ├── tf7700hdpvr
+    ├── ufc960
+    │   ├── extra
+    │   └── scripts
+    ├── ufs910
+    │   └── scripts
+    ├── ufs912
+    │   ├── extras
+    │   └── scripts
+    └── ufs913
+        ├── extra
+        ├── scripts
+        └── test
+</code></pre>
+
+<p>The last step extracts just the directory  &lsquo;&#8217;tdt/cvs/driver&rsquo;&#8217;</p>
+
+<pre><code>$ git filter-branch --subdirectory-filter tdt/cvs/driver
+</code></pre>
+
+<p>After this step the filesystem looks like this:</p>
+
+<pre><code>$ tree -d -L 1 tdt-driver/
+tdt-driver/
+├── adb_box_fan
+├── avs
+├── boxtype
+├── bpamem
+├── button
+├── button_hs5101
+├── cec
+├── cec_adb_box
+├── cic
+├── compcache
+├── cpu_frequ
+├── dvbt
+├── e2_proc
+├── frontcontroller
+├── frontends
+├── i2c_spi
+├── include
+├── ipbox99xx_fan
+├── led
+├── logfs
+├── multicom-3.2.2
+├── multicom-3.2.4
+├── multicom-3.2.4_rc3
+├── multicom-4.0.6
+├── old
+├── player2_131
+├── player2_179
+├── player2_191
+├── pti
+├── rmu
+├── sata_switch
+├── siinfo
+├── simu_button
+├── smartcard
+├── stgfb
+├── tfswitch
+├── ufs922_fan
+└── wireless
+</code></pre>
+
+<p>There are more steps recommended in a <a href="http://stackoverflow.com/questions/359424/detach-subdirectory-into-separate-git-repository/1591174#1591174">stackoverflow</a> article. These steps had not been necessary for my example.</p>
+</div>
+  
+  
+
+
+        </article>
+      
+      
+        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+          
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
 <span class="glyphicon glyphicon-calendar"></span> <time datetime="2013-10-22T00:00:00+02:00"  data-updated="true" itemprop="datePublished dateCreated">Tue 22 Oct 2013, 12:00 AM</time>
         
            | <a href="/blog/2013/10/22/ubifs-as-rootfs/#disqus_thread" itemprop="discussionUrl"
@@ -597,6 +801,8 @@ IdentID : 09 00 07 00 00 46 d1
   
   <div id="recent_posts" class="list-group">
     
+    <a class="list-group-item " href="/blog/2015/11/01/activating-usb-otg-udoo-neos-composite-ethernet-plus-serial-gadget-support-in-yoctos-poky/">Activating USB_OTG Composite Ethernet + Serial Gadget Support in Yocto&#8217;s Poky for UDOO Neo</a>
+    
     <a class="list-group-item " href="/blog/2015/10/31/attaching-a-serial-console-to-udoo-neo/">Attaching a Serial Console to UDOO Neo</a>
     
     <a class="list-group-item " href="/blog/2015/09/22/tweaking-freescales-yocto-community-bsp-builds/">Tweaking Freescales Yocto Community BSP Builds</a>
@@ -604,8 +810,6 @@ IdentID : 09 00 07 00 00 46 d1
     <a class="list-group-item " href="/blog/2015/09/19/openembedded-support-for-the-upcomming-udoo-neo/">OpenEmbedded Support for the Upcomming UDOO Neo</a>
     
     <a class="list-group-item " href="/blog/2015/08/03/installing-stm32cubemx-on-linux/">Installing STM32CubeMX on Linux</a>
-    
-    <a class="list-group-item " href="/blog/2015/07/18/nim-dvb-s-slash-s2-v1-dot-0-pinout/">[WIP] NIM_DVB-S/S2 V1.0 Pinout</a>
     
   </div>
 </section>

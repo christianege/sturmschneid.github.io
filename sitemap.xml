@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://ch.ege.io/blog/2015/11/01/activating-usb-otg-udoo-neos-composite-ethernet-plus-serial-gadget-support-in-yoctos-poky/</loc>
+    <lastmod>2015-11-01T09:23:35+01:00</lastmod>
+  </url>
+  <url>
     <loc>http://ch.ege.io/blog/2015/10/31/attaching-a-serial-console-to-udoo-neo/</loc>
     <lastmod>2015-10-31T16:56:22+01:00</lastmod>
   </url>
@@ -230,5 +234,17 @@
   </url>
   <url>
     <loc>http://ch.ege.io/blog/categories/udoobuntu/</loc>
+  </url>
+  <url>
+    <loc>http://ch.ege.io/blog/categories/poky/</loc>
+  </url>
+  <url>
+    <loc>http://ch.ege.io/blog/categories/ethernet/</loc>
+  </url>
+  <url>
+    <loc>http://ch.ege.io/blog/categories/serial/</loc>
+  </url>
+  <url>
+    <loc>http://ch.ege.io/blog/categories/gadget/</loc>
   </url>
 </urlset>
