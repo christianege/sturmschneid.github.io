@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Unbrick | Sturmschneid]]></title>
   <link href="http://ch.ege.io/blog/categories/unbrick/atom.xml" rel="self"/>
   <link href="http://ch.ege.io/"/>
-  <updated>2016-01-31T15:38:49+01:00</updated>
+  <updated>2016-01-31T15:40:49+01:00</updated>
   <id>http://ch.ege.io/</id>
   <author>
     <name><![CDATA[Christian Ege]]></name>
@@ -18,7 +18,7 @@
     <link href="http://ch.ege.io/blog/2016/01/31/unbricking-a-buffalo-whr-hp-g300n/"/>
     <updated>2016-01-31T14:48:42+01:00</updated>
     <id>http://ch.ege.io/blog/2016/01/31/unbricking-a-buffalo-whr-hp-g300n</id>
-    <content type="html"><![CDATA[<p>Last week I attended the first <a href="https://freifunk.net/">Freifunk</a> meeting in my hometown. The decision was made to participate with my old <a href="https://wiki.openwrt.org/toh/buffalo/whr-hp-g300n">Buffalo WHR-HP-G300N</a> router.</p>
+    <content type="html"><![CDATA[<p>Last week I attended the first <a href="https://freifunk.net/">Freifunk</a> meeting in my hometown. The decision was made to participate to <a href="https://ffbsee.de">FFBsee</a> with my old <a href="https://wiki.openwrt.org/toh/buffalo/whr-hp-g300n">Buffalo WHR-HP-G300N</a> router.</p>
 
 <p>Before flashing the latest <a href="https://freifunk.net/">Freifunk</a> firmware I tried to install a vanilla OpenWrt image for this router. But the outdated DD-WRT image on this router refused to get updated.</p>
 
