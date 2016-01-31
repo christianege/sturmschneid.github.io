@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Linux | Sturmschneid]]></title>
   <link href="http://ch.ege.io/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://ch.ege.io/"/>
-  <updated>2015-11-01T10:57:12+01:00</updated>
+  <updated>2016-01-31T15:38:49+01:00</updated>
   <id>http://ch.ege.io/</id>
   <author>
     <name><![CDATA[Christian Ege]]></name>
@@ -12,6 +12,177 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Unbricking a Buffalo WHR-HP-G300N]]></title>
+    <link href="http://ch.ege.io/blog/2016/01/31/unbricking-a-buffalo-whr-hp-g300n/"/>
+    <updated>2016-01-31T14:48:42+01:00</updated>
+    <id>http://ch.ege.io/blog/2016/01/31/unbricking-a-buffalo-whr-hp-g300n</id>
+    <content type="html"><![CDATA[<p>Last week I attended the first <a href="https://freifunk.net/">Freifunk</a> meeting in my hometown. The decision was made to participate with my old <a href="https://wiki.openwrt.org/toh/buffalo/whr-hp-g300n">Buffalo WHR-HP-G300N</a> router.</p>
+
+<p>Before flashing the latest <a href="https://freifunk.net/">Freifunk</a> firmware I tried to install a vanilla OpenWrt image for this router. But the outdated DD-WRT image on this router refused to get updated.</p>
+
+<p>After several retries I gave up on the suggested tftp method. I tried several combinations of MAC-Addresses and interfaces always without success. Luckily <a href="http://scarygliders.net/2010/02/23/hacking-around-the-japanese-buffalo-wzr-hp-g300n/">Kevin Cave on Scarygliders</a> pointed out that the U-Boot on the router can be interrupted with <code>CTRL-C</code> when it tries to request a firmware by tftp.</p>
+
+<p>He also pointed out that the OpenWrt image is prefixed with some <code>0x20 byte</code> header. So I tweaked the U-Boot environment a bit so I could skip to alter the firmware.</p>
+
+<pre><code>tftp server(receive) go, waiting:4[sec]
+Load address: 0x80f00000
+
+Abort
+no file was loaded.
+ar7240&gt; &lt;INTERRUPT&gt;
+ar7240&gt;
+</code></pre>
+
+<p>There are some interesting environment variables related to firmware update</p>
+
+<pre><code>ar7240&gt; printenv
+[...]
+u_fw=erase $fw_eaddr; cp.b $fileaddr BF040000 $filesize; bootm BF040000;
+ut_fw=tftp $tmp_ram firmware.bin; erase $fw_eaddr; cp.b $fileaddr BF040000 $filesize; bootm BF040000;
+ut_uboot=tftp $tmp_ram u-boot.bin; protect off $uboot_eaddr; erase $uboot_eaddr; cp.b $fileaddr BF000000 $filesize;
+[...]
+</code></pre>
+
+<p>After setting up a <a href="https://wiki.openwrt.org/doc/howto/generic.flashing.tftp">TFTP server</a> and changing your host system to the IPv4 address off <code>192.168.11.2</code> You can download a firmware image right from the U-BOOT command prompt:</p>
+
+<pre><code>ar7240&gt; tftp $tmp_ram openwrt-ar71xx-generic-whr-hp-g300n-squashfs-tftp.bin
+Using eth1 device
+TFTP from server 192.168.11.2; our IP address is 192.168.11.1
+Filename 'openwrt-ar71xx-generic-whr-hp-g300n-squashfs-tftp.bin'.
+Load address: 0x80f00000
+Loading: #################################################################
+         #################################################################
+         #################################################################
+         #################################################################
+         #################################################################
+         #################################################################
+         #################################################################
+         #################################################################
+         #################################################################
+         ##############################
+done
+Bytes transferred = 3145764 (300024 hex)
+</code></pre>
+
+<p>So let&rsquo;s check if the image also suffer from this 0x20 bytes offset</p>
+
+<pre><code>ar7240&gt; iminfo $fileaddr
+
+## Checking Image at 80f00000 ...
+   Bad Magic Number
+ar7240&gt;
+</code></pre>
+
+<p>Of course it is as-well padded by this 0x20 byte offset. Just out of curiosity</p>
+
+<pre><code>ar7240&gt; md $fileaddr
+80f00000: 23204169 72737461 74696f6e 20507562    # Airstation Pub
+80f00010: 6c696320 466d7431 00000000 00000000    lic Fmt1........
+80f00020: 27051956 d3488451 56acca20 00115622    '..V.H.QV.. ..V"
+80f00030: 80060000 80060000 b3e42d50 05050203    ..........-P....
+80f00040: 4d495053 204f7065 6e577274 204c696e    MIPS OpenWrt Lin
+80f00050: 75782d33 2e31382e 32330000 00000000    ux-3.18.23......
+80f00060: 6d000080 00344934 00000000 0000006f    m....4I4.......o
+80f00070: fdffffa3 b77f4c34 f7f8df51 7a6edb3c    ......L4...Qzn.&lt;
+80f00080: ec7d4ea1 71788f3e 662e5921 bcf0be72    .}N.qx.&gt;f.Y!...r
+80f00090: a6181f38 843f1584 43cbe578 c27d99b4    ...8.?..C..x.}..
+80f000a0: b9a7b99a d79b850d 10e56023 bc86313d    ..........`#..1=
+80f000b0: f4653466 dd6085ac b5474b05 33efbdb7    .e4f.`...GK.3...
+80f000c0: 76abd394 bebfacf4 f08fe76a db6961b8    v..........j.ia.
+80f000d0: d341676a 67864eb5 e28b8dbd 3dbb489e    .Agjg.N.....=.H.
+80f000e0: 978fb0a7 01f8fcc8 a0ebe5e4 54e07d07    ............T.}.
+80f000f0: 05175829 289f8be8 6ac6d14c ece8db8a    ..X)(...j..L....
+</code></pre>
+
+<p>In the line starting with <code>80f00020</code> we can see the magic <code>27051956</code> ,the expected uImage header, which <a href="http://scarygliders.net/2010/02/23/hacking-around-the-japanese-buffalo-wzr-hp-g300n/">Kevin Cave on Scarygliders</a> pointed out. So let&rsquo;s skip this header</p>
+
+<pre><code>ar7240&gt; setenv fileaddr 80F00020
+</code></pre>
+
+<p>Please do not save the environment after this modification otherwise your router will may not work properly after this. This is just a temporary modification!</p>
+
+<p>After this modification the test should past fine</p>
+
+<pre><code>ar7240&gt; iminfo $fileaddr
+
+## Checking Image at 80f00020 ...
+   Image Name:   MIPS OpenWrt Linux-3.18.23
+   Created:      2016-01-30  14:35:12 UTC
+   Image Type:   MIPS Linux Kernel Image (lzma compressed)
+   Data Size:    1136162 Bytes =  1.1 MB
+   Load Address: 80060000
+   Entry Point:  80060000
+   Verifying Checksum ... OK
+ar7240&gt;
+</code></pre>
+
+<p>Bingo! This looks promising. We now have to erase the flash and copy the image to it&rsquo;s new place.</p>
+
+<pre><code>ar7240&gt; erase $fw_eaddr
+Erase Flash from 0xbf040000 to 0xbf3effff in Bank # 1
+First 0x40 last 0x3ef sector size 0x1000                                                                                                                                                                  992
+Erased 944 sectors
+ar7240&gt; cp.b $fileaddr BF040000 $filesize
+Copy to Flash...
+ Copy 3145764 byte to Flash... write addr: bf040000
+done
+ar7240&gt;
+</code></pre>
+
+<p>Now it is time to check if everything went fine or if we have created something for the dust bin.</p>
+
+<pre><code>ar7240&gt; bootm BF040000
+## Booting image at bf040000 ...
+   Image Name:   MIPS OpenWrt Linux-3.18.23
+   Created:      2016-01-30  14:35:12 UTC
+   Image Type:   MIPS Linux Kernel Image (lzma compressed)
+   Data Size:    1136162 Bytes =  1.1 MB
+   Load Address: 80060000
+   Entry Point:  80060000
+   Verifying Checksum ... OK
+   Uncompressing Kernel Image ... OK
+No initrd
+## Transferring control to Linux (at address 80060000) ...
+## Giving linux memsize in bytes, 33554432
+
+Starting kernel ...
+
+[    0.000000] Linux version 3.18.23 (chris@quadros) (gcc version 4.8.3 (OpenWrt/Linaro GCC 4.8-2014.04 r48532) ) #1 Sat Jan 30 15:35:03 CET 2016
+[    0.000000] bootconsole [early0] enabled
+[    0.000000] CPU0 revision is: 00019374 (MIPS 24Kc)
+[    0.000000] SoC: Atheros AR7240 rev 2
+[    0.000000] Determined physical RAM map:
+[    0.000000]  memory: 02000000 @ 00000000 (usable)
+[    0.000000] Initrd not found or empty - disabling initrd
+[    0.000000] Zone ranges:
+[    0.000000]   Normal   [mem 0x00000000-0x01ffffff]
+[    0.000000] Movable zone start for each node
+[    0.000000] Early memory node ranges
+[...]
+BusyBox v1.23.2 (2016-01-30 15:30:41 CET) built-in shell (ash)
+
+  _______                     ________        __
+ |       |.-----.-----.-----.|  |  |  |.----.|  |_
+ |   -   ||  _  |  -__|     ||  |  |  ||   _||   _|
+ |_______||   __|_____|__|__||________||__|  |____|
+          |__| W I R E L E S S   F R E E D O M
+ -----------------------------------------------------
+ CHAOS CALMER (Chaos Calmer, r48532)
+ -----------------------------------------------------
+  * 1 1/2 oz Gin            Shake with a glassful
+  * 1/4 oz Triple Sec       of broken ice and pour
+  * 3/4 oz Lime Juice       unstrained into a goblet.
+  * 1 1/2 oz Orange Juice
+  * 1 tsp. Grenadine Syrup
+ -----------------------------------------------------
+root@OpenWrt:/#
+</code></pre>
+
+<p>This looks like full success to me. Next step will be increasing the flash size to 8 MB to provide enough space for the <a href="https://ffbsee.de">FFBsee</a> firmware.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Tweaking Freescales Yocto Community BSP Builds]]></title>
@@ -147,42 +318,6 @@ $: bitbake core-image-base</p>
 <p>The last part in the jigsaw puzzle is the DVB-S2 tuner and demodulator part. Some of the linux based Set-Top-Boxes provide swappable tuner modules one of them is the manufacturer GigaBlue. They sell a <a href="http://www.gigablue.de/portfolio-item/gigablue-dvb-s2-tuner/">DVB-S2 Tuner</a> based on the Serit <a href="http://serit.hk/Products_Details.aspx?IDX=144">SP2246 NIM for DVB-S2</a>. The SP2246 is based on the <a href="http://www.st.com/web/catalog/mmc/FM131/SC1003/PF251478">STV6111</a> tuner and the <a href="http://www.st.com/web/catalog/mmc/FM131/SC628/SS1334/PF252767?s_searchtype=partnumber">STV0913</a> demodulator. It looks like the tuner module is connected via a <a href="https://en.wikipedia.org/wiki/PCI_Express#Form_factors">PCI-Express x1 36Pin</a> connector. Serit provides a very detailed <a href="http://serit.hk/Manager/Public/pdf/201212070342307ead.pdf">data sheet</a> so at least a few of the PINs should be easily mappable with a multi meter.</p>
 
 <p><img src="/images/posts/sp2246.jpg"></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[ODROID-C1 Enabling Bootlogo on Yocto Builds]]></title>
-    <link href="http://ch.ege.io/blog/2015/05/04/odroid-c1-enabling-bootlogo-on-yocto-builds/"/>
-    <updated>2015-05-04T11:40:53+02:00</updated>
-    <id>http://ch.ege.io/blog/2015/05/04/odroid-c1-enabling-bootlogo-on-yocto-builds</id>
-    <content type="html"><![CDATA[<p>The U-Boot for the Amlogic S805 from <a href="https://github.com/hardkernel/u-boot/tree/odroidc-v2011.03">Hardkernel</a> has the capabilities to display a bootlogo. It is not that easy to find any bootlogo that complies to a licence which can be used in comercial and in open source environments. Using the yocto logo is most probably prohibited, so I decided to design my own logo. And saved it to <strong> 24-bit Windows BMP image</strong> with the dimension of <strong>1280×720</strong> as statet in the <a href="http://odroid.com/dokuwiki/doku.php?id=en:c1_tips#logo_file_format">ODROID-C1 Wiki</a></p>
-
-<p><img class="<a" src="href="https://raw.githubusercontent.com/linux-meson/meta-amlogic/fido/recipes-bsp/u-boot/u-boot-odroidc1/odroidc1/bootlogo.png">https://raw.githubusercontent.com/linux-meson/meta-amlogic/fido/recipes-bsp/u-boot/u-boot-odroidc1/odroidc1/bootlogo.png</a>&#8221;></p>
-
-<h2>Modifying boot.ini</h2>
-
-<p>In my Amlogic meta layer for the yocto build system I do not use a Fat32 boot partition so the <a href="">original bootlogo loading command</a> needed some minor modifications. The bootlogo is name bootlogo.bmp and should be copied to /boot.</p>
-
-<pre><code># loading and displaying bootlogo
-logo size ${outputmode}
-video open
-video clear
-video dev open ${outputmode}
-ext4load mmc 0:1 ${loadaddr_logo} /boot/bootlogo.bmp
-bmp display ${loadaddr_logo}
-bmp scale
-</code></pre>
-
-<p>You can either add this to your boot.ini or wait until I pushed a patch for <a href="https://github.com/linux-meson/meta-amlogic">meta-amlogic</a>.</p>
-
-<h2>Modifying the U-Boot environment</h2>
-
-<p>Another option is to change the U-Boot environment. There is already a variable called <em>preloadlogo</em>. We can update the command to load the bootlogo from ext4 instead of Fat32</p>
-
-<pre><code>setenv preloadlogo 'logo size ${outputmode};video open;video clear;video dev open ${outputmode};ext4load mmc 0:1 ${loadaddr_logo} /boot/bootlogo.bmp;bmp display ${loadaddr_logo};bmp scale'
-</code></pre>
-
-<p>Pleas ensure, that you paste this as a single line.</p>
 ]]></content>
   </entry>
   

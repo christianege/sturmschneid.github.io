@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://ch.ege.io/blog/2016/01/31/unbricking-a-buffalo-whr-hp-g300n/</loc>
+    <lastmod>2016-01-31T14:48:42+01:00</lastmod>
+  </url>
+  <url>
     <loc>http://ch.ege.io/blog/2015/11/01/activating-usb-otg-udoo-neos-composite-ethernet-plus-serial-gadget-support-in-yoctos-poky/</loc>
     <lastmod>2015-11-01T09:23:35+01:00</lastmod>
   </url>
@@ -246,5 +250,17 @@
   </url>
   <url>
     <loc>http://ch.ege.io/blog/categories/gadget/</loc>
+  </url>
+  <url>
+    <loc>http://ch.ege.io/blog/categories/openwrt/</loc>
+  </url>
+  <url>
+    <loc>http://ch.ege.io/blog/categories/u-boot/</loc>
+  </url>
+  <url>
+    <loc>http://ch.ege.io/blog/categories/unbrick/</loc>
+  </url>
+  <url>
+    <loc>http://ch.ege.io/blog/categories/ffbsee/</loc>
   </url>
 </urlset>

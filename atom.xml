@@ -4,7 +4,7 @@
   <title><![CDATA[Sturmschneid]]></title>
   <link href="http://ch.ege.io/atom.xml" rel="self"/>
   <link href="http://ch.ege.io/"/>
-  <updated>2015-11-01T10:57:12+01:00</updated>
+  <updated>2016-01-31T15:38:49+01:00</updated>
   <id>http://ch.ege.io/</id>
   <author>
     <name><![CDATA[Christian Ege]]></name>
@@ -12,6 +12,296 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Unbricking a Buffalo WHR-HP-G300N]]></title>
+    <link href="http://ch.ege.io/blog/2016/01/31/unbricking-a-buffalo-whr-hp-g300n/"/>
+    <updated>2016-01-31T14:48:42+01:00</updated>
+    <id>http://ch.ege.io/blog/2016/01/31/unbricking-a-buffalo-whr-hp-g300n</id>
+    <content type="html"><![CDATA[<p>Last week I attended the first <a href="https://freifunk.net/">Freifunk</a> meeting in my hometown. The decision was made to participate with my old <a href="https://wiki.openwrt.org/toh/buffalo/whr-hp-g300n">Buffalo WHR-HP-G300N</a> router.</p>
+
+<p>Before flashing the latest <a href="https://freifunk.net/">Freifunk</a> firmware I tried to install a vanilla OpenWrt image for this router. But the outdated DD-WRT image on this router refused to get updated.</p>
+
+<p>After several retries I gave up on the suggested tftp method. I tried several combinations of MAC-Addresses and interfaces always without success. Luckily <a href="http://scarygliders.net/2010/02/23/hacking-around-the-japanese-buffalo-wzr-hp-g300n/">Kevin Cave on Scarygliders</a> pointed out that the U-Boot on the router can be interrupted with <code>CTRL-C</code> when it tries to request a firmware by tftp.</p>
+
+<p>He also pointed out that the OpenWrt image is prefixed with some <code>0x20 byte</code> header. So I tweaked the U-Boot environment a bit so I could skip to alter the firmware.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>tftp server(receive) go, waiting:4[sec]
+</span><span class='line'>Load address: 0x80f00000
+</span><span class='line'>
+</span><span class='line'>Abort
+</span><span class='line'>no file was loaded.
+</span><span class='line'>ar7240&gt; &lt;INTERRUPT&gt;
+</span><span class='line'>ar7240&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>There are some interesting environment variables related to firmware update</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ar7240&gt; printenv
+</span><span class='line'>[...]
+</span><span class='line'>u_fw=erase $fw_eaddr; cp.b $fileaddr BF040000 $filesize; bootm BF040000;
+</span><span class='line'>ut_fw=tftp $tmp_ram firmware.bin; erase $fw_eaddr; cp.b $fileaddr BF040000 $filesize; bootm BF040000;
+</span><span class='line'>ut_uboot=tftp $tmp_ram u-boot.bin; protect off $uboot_eaddr; erase $uboot_eaddr; cp.b $fileaddr BF000000 $filesize;
+</span><span class='line'>[...]</span></code></pre></td></tr></table></div></figure>
+
+
+<p>After setting up a <a href="https://wiki.openwrt.org/doc/howto/generic.flashing.tftp">TFTP server</a> and changing your host system to the IPv4 address off <code>192.168.11.2</code> You can download a firmware image right from the U-BOOT command prompt:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ar7240&gt; tftp $tmp_ram openwrt-ar71xx-generic-whr-hp-g300n-squashfs-tftp.bin
+</span><span class='line'>Using eth1 device
+</span><span class='line'>TFTP from server 192.168.11.2; our IP address is 192.168.11.1
+</span><span class='line'>Filename 'openwrt-ar71xx-generic-whr-hp-g300n-squashfs-tftp.bin'.
+</span><span class='line'>Load address: 0x80f00000
+</span><span class='line'>Loading: #################################################################
+</span><span class='line'>         #################################################################
+</span><span class='line'>         #################################################################
+</span><span class='line'>         #################################################################
+</span><span class='line'>         #################################################################
+</span><span class='line'>         #################################################################
+</span><span class='line'>         #################################################################
+</span><span class='line'>         #################################################################
+</span><span class='line'>         #################################################################
+</span><span class='line'>         ##############################
+</span><span class='line'>done
+</span><span class='line'>Bytes transferred = 3145764 (300024 hex)</span></code></pre></td></tr></table></div></figure>
+
+
+<p>So let&rsquo;s check if the image also suffer from this 0x20 bytes offset</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ar7240&gt; iminfo $fileaddr
+</span><span class='line'>
+</span><span class='line'>## Checking Image at 80f00000 ...
+</span><span class='line'>   Bad Magic Number
+</span><span class='line'>ar7240&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Of course it is as-well padded by this 0x20 byte offset. Just out of curiosity</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ar7240&gt; md $fileaddr
+</span><span class='line'>80f00000: 23204169 72737461 74696f6e 20507562    # Airstation Pub
+</span><span class='line'>80f00010: 6c696320 466d7431 00000000 00000000    lic Fmt1........
+</span><span class='line'>80f00020: 27051956 d3488451 56acca20 00115622    '..V.H.QV.. ..V"
+</span><span class='line'>80f00030: 80060000 80060000 b3e42d50 05050203    ..........-P....
+</span><span class='line'>80f00040: 4d495053 204f7065 6e577274 204c696e    MIPS OpenWrt Lin
+</span><span class='line'>80f00050: 75782d33 2e31382e 32330000 00000000    ux-3.18.23......
+</span><span class='line'>80f00060: 6d000080 00344934 00000000 0000006f    m....4I4.......o
+</span><span class='line'>80f00070: fdffffa3 b77f4c34 f7f8df51 7a6edb3c    ......L4...Qzn.&lt;
+</span><span class='line'>80f00080: ec7d4ea1 71788f3e 662e5921 bcf0be72    .}N.qx.&gt;f.Y!...r
+</span><span class='line'>80f00090: a6181f38 843f1584 43cbe578 c27d99b4    ...8.?..C..x.}..
+</span><span class='line'>80f000a0: b9a7b99a d79b850d 10e56023 bc86313d    ..........`#..1=
+</span><span class='line'>80f000b0: f4653466 dd6085ac b5474b05 33efbdb7    .e4f.`...GK.3...
+</span><span class='line'>80f000c0: 76abd394 bebfacf4 f08fe76a db6961b8    v..........j.ia.
+</span><span class='line'>80f000d0: d341676a 67864eb5 e28b8dbd 3dbb489e    .Agjg.N.....=.H.
+</span><span class='line'>80f000e0: 978fb0a7 01f8fcc8 a0ebe5e4 54e07d07    ............T.}.
+</span><span class='line'>80f000f0: 05175829 289f8be8 6ac6d14c ece8db8a    ..X)(...j..L....</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In the line starting with <code>80f00020</code> we can see the magic <code>27051956</code> ,the expected uImage header, which <a href="http://scarygliders.net/2010/02/23/hacking-around-the-japanese-buffalo-wzr-hp-g300n/">Kevin Cave on Scarygliders</a> pointed out. So let&rsquo;s skip this header</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ar7240&gt; setenv fileaddr 80F00020</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Please do not save the environment after this modification otherwise your router will may not work properly after this. This is just a temporary modification!</p>
+
+<p>After this modification the test should past fine</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ar7240&gt; iminfo $fileaddr
+</span><span class='line'>
+</span><span class='line'>## Checking Image at 80f00020 ...
+</span><span class='line'>   Image Name:   MIPS OpenWrt Linux-3.18.23
+</span><span class='line'>   Created:      2016-01-30  14:35:12 UTC
+</span><span class='line'>   Image Type:   MIPS Linux Kernel Image (lzma compressed)
+</span><span class='line'>   Data Size:    1136162 Bytes =  1.1 MB
+</span><span class='line'>   Load Address: 80060000
+</span><span class='line'>   Entry Point:  80060000
+</span><span class='line'>   Verifying Checksum ... OK
+</span><span class='line'>ar7240&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Bingo! This looks promising. We now have to erase the flash and copy the image to it&rsquo;s new place.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ar7240&gt; erase $fw_eaddr
+</span><span class='line'>Erase Flash from 0xbf040000 to 0xbf3effff in Bank # 1
+</span><span class='line'>First 0x40 last 0x3ef sector size 0x1000                                                                                                                                                                  992
+</span><span class='line'>Erased 944 sectors
+</span><span class='line'>ar7240&gt; cp.b $fileaddr BF040000 $filesize
+</span><span class='line'>Copy to Flash...
+</span><span class='line'> Copy 3145764 byte to Flash... write addr: bf040000
+</span><span class='line'>done
+</span><span class='line'>ar7240&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now it is time to check if everything went fine or if we have created something for the dust bin.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ar7240&gt; bootm BF040000
+</span><span class='line'>## Booting image at bf040000 ...
+</span><span class='line'>   Image Name:   MIPS OpenWrt Linux-3.18.23
+</span><span class='line'>   Created:      2016-01-30  14:35:12 UTC
+</span><span class='line'>   Image Type:   MIPS Linux Kernel Image (lzma compressed)
+</span><span class='line'>   Data Size:    1136162 Bytes =  1.1 MB
+</span><span class='line'>   Load Address: 80060000
+</span><span class='line'>   Entry Point:  80060000
+</span><span class='line'>   Verifying Checksum ... OK
+</span><span class='line'>   Uncompressing Kernel Image ... OK
+</span><span class='line'>No initrd
+</span><span class='line'>## Transferring control to Linux (at address 80060000) ...
+</span><span class='line'>## Giving linux memsize in bytes, 33554432
+</span><span class='line'>
+</span><span class='line'>Starting kernel ...
+</span><span class='line'>
+</span><span class='line'>[    0.000000] Linux version 3.18.23 (chris@quadros) (gcc version 4.8.3 (OpenWrt/Linaro GCC 4.8-2014.04 r48532) ) #1 Sat Jan 30 15:35:03 CET 2016
+</span><span class='line'>[    0.000000] bootconsole [early0] enabled
+</span><span class='line'>[    0.000000] CPU0 revision is: 00019374 (MIPS 24Kc)
+</span><span class='line'>[    0.000000] SoC: Atheros AR7240 rev 2
+</span><span class='line'>[    0.000000] Determined physical RAM map:
+</span><span class='line'>[    0.000000]  memory: 02000000 @ 00000000 (usable)
+</span><span class='line'>[    0.000000] Initrd not found or empty - disabling initrd
+</span><span class='line'>[    0.000000] Zone ranges:
+</span><span class='line'>[    0.000000]   Normal   [mem 0x00000000-0x01ffffff]
+</span><span class='line'>[    0.000000] Movable zone start for each node
+</span><span class='line'>[    0.000000] Early memory node ranges
+</span><span class='line'>[...]
+</span><span class='line'>BusyBox v1.23.2 (2016-01-30 15:30:41 CET) built-in shell (ash)
+</span><span class='line'>
+</span><span class='line'>  _______                     ________        __
+</span><span class='line'> |       |.-----.-----.-----.|  |  |  |.----.|  |_
+</span><span class='line'> |   -   ||  _  |  -__|     ||  |  |  ||   _||   _|
+</span><span class='line'> |_______||   __|_____|__|__||________||__|  |____|
+</span><span class='line'>          |__| W I R E L E S S   F R E E D O M
+</span><span class='line'> -----------------------------------------------------
+</span><span class='line'> CHAOS CALMER (Chaos Calmer, r48532)
+</span><span class='line'> -----------------------------------------------------
+</span><span class='line'>  * 1 1/2 oz Gin            Shake with a glassful
+</span><span class='line'>  * 1/4 oz Triple Sec       of broken ice and pour
+</span><span class='line'>  * 3/4 oz Lime Juice       unstrained into a goblet.
+</span><span class='line'>  * 1 1/2 oz Orange Juice
+</span><span class='line'>  * 1 tsp. Grenadine Syrup
+</span><span class='line'> -----------------------------------------------------
+</span><span class='line'>root@OpenWrt:/#
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This looks like full success to me. Next step will be increasing the flash size to 8 MB to provide enough space for the <a href="https://ffbsee.de">FFBsee</a> firmware.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Activating USB_OTG Composite Ethernet + Serial Gadget Support in Yocto's Poky for UDOO Neo]]></title>
@@ -1346,22 +1636,6 @@ Checksum: 0x56
 </code></pre>
 
 <p>The result looks quite good isn&rsquo;t it? One of the next step would be to connect the loose ends. Or trying to write useful information to the on board eeprom.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Assign Static Device Name for USB Infrared Toy]]></title>
-    <link href="http://ch.ege.io/blog/2014/04/21/assign-static-device-name-for-usb-infrared-toy/"/>
-    <updated>2014-04-21T00:00:00+02:00</updated>
-    <id>http://ch.ege.io/blog/2014/04/21/assign-static-device-name-for-usb-infrared-toy</id>
-    <content type="html"><![CDATA[<p>The last few days I was playing arround with my <a href="http://dangerousprototypes.com/docs/USB_Infrared_Toy">USB Infrared Toy v2</a> from Dangerous Prototypes. Due to the fact that I have attached some more devices which are detected as <strong>/dev/ACM[0-9]</strong> I decided to write an udev rule to assign a static device name.</p>
-
-<p>I stored the rule in the following file: <strong>/etc/udev/rules.d/98-ir-toy-v2.rules</strong></p>
-
-<pre><code>SUBSYSTEM=="tty", ATTRS{manufacturer}=="Dangerous Prototypes", ATTRS{idProduct}=="fd08", SYMLINK+="ir_toy" MODE="0666"
-</code></pre>
-
-<p>Maybe the field <strong>&ldquo;ATTRS{idProduct}==&#8221;fd08&rdquo;&ldquo;</strong> have to be tweaked for versions differnet of v2. With this rule the IR Toy is accessible via <strong>/dev/ir_toy</strong></p>
 ]]></content>
   </entry>
   

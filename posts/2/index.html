@@ -116,6 +116,73 @@
 
 
 
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2015-05-04T11:40:53+02:00"  data-updated="true" itemprop="datePublished dateCreated">Mon  4 May 2015, 11:40 AM</time>
+        
+           | <a href="/blog/2015/05/04/odroid-c1-enabling-bootlogo-on-yocto-builds/#disqus_thread" itemprop="discussionUrl"
+             data-disqus-identifier="http://ch.ege.io/blog/2015/05/04/odroid-c1-enabling-bootlogo-on-yocto-builds/">Comments</a>
+        
+      </p>
+    
+    
+      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2015/05/04/odroid-c1-enabling-bootlogo-on-yocto-builds/" itemprop="url">ODROID-C1 Enabling Bootlogo on Yocto Builds</a></h2>
+    
+  </header>
+
+
+  <div class="entry-content clearfix" itemprop="articleBody description"><p>The U-Boot for the Amlogic S805 from <a href="https://github.com/hardkernel/u-boot/tree/odroidc-v2011.03">Hardkernel</a> has the capabilities to display a bootlogo. It is not that easy to find any bootlogo that complies to a licence which can be used in comercial and in open source environments. Using the yocto logo is most probably prohibited, so I decided to design my own logo. And saved it to <strong> 24-bit Windows BMP image</strong> with the dimension of <strong>1280×720</strong> as statet in the <a href="http://odroid.com/dokuwiki/doku.php?id=en:c1_tips#logo_file_format">ODROID-C1 Wiki</a></p>
+
+<p><img src="https://raw.githubusercontent.com/linux-meson/meta-amlogic/fido/recipes-bsp/u-boot/u-boot-odroidc1/odroidc1/bootlogo.png"></p>
+
+<h2>Modifying boot.ini</h2>
+
+<p>In my Amlogic meta layer for the yocto build system I do not use a Fat32 boot partition so the <a href="">original bootlogo loading command</a> needed some minor modifications. The bootlogo is name bootlogo.bmp and should be copied to /boot.</p>
+
+<pre><code># loading and displaying bootlogo
+logo size ${outputmode}
+video open
+video clear
+video dev open ${outputmode}
+ext4load mmc 0:1 ${loadaddr_logo} /boot/bootlogo.bmp
+bmp display ${loadaddr_logo}
+bmp scale
+</code></pre>
+
+<p>You can either add this to your boot.ini or wait until I pushed a patch for <a href="https://github.com/linux-meson/meta-amlogic">meta-amlogic</a>.</p>
+
+<h2>Modifying the U-Boot environment</h2>
+
+<p>Another option is to change the U-Boot environment. There is already a variable called <em>preloadlogo</em>. We can update the command to load the bootlogo from ext4 instead of Fat32</p>
+
+<pre><code>setenv preloadlogo 'logo size ${outputmode};video open;video clear;video dev open ${outputmode};ext4load mmc 0:1 ${loadaddr_logo} /boot/bootlogo.bmp;bmp display ${loadaddr_logo};bmp scale'
+</code></pre>
+
+<p>Pleas ensure, that you paste this as a single line.</p>
+</div>
+  
+  
+
+
+        </article>
+      
+      
+        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+          
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
 <span class="glyphicon glyphicon-calendar"></span> <time datetime="2015-05-04T05:30:18+02:00"  data-updated="true" itemprop="datePublished dateCreated">Mon  4 May 2015,  5:30 AM</time>
         
            | <a href="/blog/2015/05/04/using-h-slash-w-randaom-generator-on-odrod-c1-with-yocto/#disqus_thread" itemprop="discussionUrl"
@@ -1269,53 +1336,6 @@ Checksum: 0x56
 
         </article>
       
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-
-
-
-
-
-
-
-
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2014-04-21T00:00:00+02:00"  data-updated="true" itemprop="datePublished dateCreated">Mon 21 Apr 2014, 12:00 AM</time>
-        
-           | <a href="/blog/2014/04/21/assign-static-device-name-for-usb-infrared-toy/#disqus_thread" itemprop="discussionUrl"
-             data-disqus-identifier="http://ch.ege.io/blog/2014/04/21/assign-static-device-name-for-usb-infrared-toy/">Comments</a>
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2014/04/21/assign-static-device-name-for-usb-infrared-toy/" itemprop="url">Assign Static Device Name for USB Infrared Toy</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>The last few days I was playing arround with my <a href="http://dangerousprototypes.com/docs/USB_Infrared_Toy">USB Infrared Toy v2</a> from Dangerous Prototypes. Due to the fact that I have attached some more devices which are detected as <strong>/dev/ACM[0-9]</strong> I decided to write an udev rule to assign a static device name.</p>
-
-<p>I stored the rule in the following file: <strong>/etc/udev/rules.d/98-ir-toy-v2.rules</strong></p>
-
-<pre><code>SUBSYSTEM=="tty", ATTRS{manufacturer}=="Dangerous Prototypes", ATTRS{idProduct}=="fd08", SYMLINK+="ir_toy" MODE="0666"
-</code></pre>
-
-<p>Maybe the field <strong>&ldquo;ATTRS{idProduct}==&#8221;fd08&rdquo;&ldquo;</strong> have to be tweaked for versions differnet of v2. With this rule the IR Toy is accessible via <strong>/dev/ir_toy</strong></p>
-</div>
-  
-  
-
-
-        </article>
-      
     </div>
 
     <ul class="pager">
@@ -1339,6 +1359,8 @@ Checksum: 0x56
   
   <div id="recent_posts" class="list-group">
     
+    <a class="list-group-item " href="/blog/2016/01/31/unbricking-a-buffalo-whr-hp-g300n/">Unbricking a Buffalo WHR-HP-G300N</a>
+    
     <a class="list-group-item " href="/blog/2015/11/01/activating-usb-otg-udoo-neos-composite-ethernet-plus-serial-gadget-support-in-yoctos-poky/">Activating USB_OTG Composite Ethernet + Serial Gadget Support in Yocto&#8217;s Poky for UDOO Neo</a>
     
     <a class="list-group-item " href="/blog/2015/10/31/attaching-a-serial-console-to-udoo-neo/">Attaching a Serial Console to UDOO Neo</a>
@@ -1346,8 +1368,6 @@ Checksum: 0x56
     <a class="list-group-item " href="/blog/2015/09/22/tweaking-freescales-yocto-community-bsp-builds/">Tweaking Freescales Yocto Community BSP Builds</a>
     
     <a class="list-group-item " href="/blog/2015/09/19/openembedded-support-for-the-upcomming-udoo-neo/">OpenEmbedded Support for the Upcomming UDOO Neo</a>
-    
-    <a class="list-group-item " href="/blog/2015/08/03/installing-stm32cubemx-on-linux/">Installing STM32CubeMX on Linux</a>
     
   </div>
 </section>
@@ -1378,7 +1398,7 @@ Checksum: 0x56
     </div>
     <footer role="contentinfo"><div class="container">
     <p class="text-muted credits">
-  Copyright &copy; 2015 - Christian Ege<br>
+  Copyright &copy; 2016 - Christian Ege<br>
   <small>
       <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>,
       <span class="credit">customized with <a href="https://github.com/kAworu/octostrap3">octostrap3</a></span>.

@@ -116,6 +116,327 @@
 
 
 
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2016-01-31T14:48:42+01:00"  data-updated="true" itemprop="datePublished dateCreated">Sun 31 Jan 2016,  2:48 PM</time>
+        
+           | <a href="/blog/2016/01/31/unbricking-a-buffalo-whr-hp-g300n/#disqus_thread" itemprop="discussionUrl"
+             data-disqus-identifier="http://ch.ege.io/blog/2016/01/31/unbricking-a-buffalo-whr-hp-g300n/">Comments</a>
+        
+      </p>
+    
+    
+      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2016/01/31/unbricking-a-buffalo-whr-hp-g300n/" itemprop="url">Unbricking a Buffalo WHR-HP-G300N</a></h2>
+    
+  </header>
+
+
+  <div class="entry-content clearfix" itemprop="articleBody description"><p>Last week I attended the first <a href="https://freifunk.net/">Freifunk</a> meeting in my hometown. The decision was made to participate with my old <a href="https://wiki.openwrt.org/toh/buffalo/whr-hp-g300n">Buffalo WHR-HP-G300N</a> router.</p>
+
+<p>Before flashing the latest <a href="https://freifunk.net/">Freifunk</a> firmware I tried to install a vanilla OpenWrt image for this router. But the outdated DD-WRT image on this router refused to get updated.</p>
+
+<p>After several retries I gave up on the suggested tftp method. I tried several combinations of MAC-Addresses and interfaces always without success. Luckily <a href="http://scarygliders.net/2010/02/23/hacking-around-the-japanese-buffalo-wzr-hp-g300n/">Kevin Cave on Scarygliders</a> pointed out that the U-Boot on the router can be interrupted with <code>CTRL-C</code> when it tries to request a firmware by tftp.</p>
+
+<p>He also pointed out that the OpenWrt image is prefixed with some <code>0x20 byte</code> header. So I tweaked the U-Boot environment a bit so I could skip to alter the firmware.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>tftp server(receive) go, waiting:4[sec]
+</span><span class='line'>Load address: 0x80f00000
+</span><span class='line'>
+</span><span class='line'>Abort
+</span><span class='line'>no file was loaded.
+</span><span class='line'>ar7240&gt; &lt;INTERRUPT&gt;
+</span><span class='line'>ar7240&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>There are some interesting environment variables related to firmware update</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ar7240&gt; printenv
+</span><span class='line'>[...]
+</span><span class='line'>u_fw=erase $fw_eaddr; cp.b $fileaddr BF040000 $filesize; bootm BF040000;
+</span><span class='line'>ut_fw=tftp $tmp_ram firmware.bin; erase $fw_eaddr; cp.b $fileaddr BF040000 $filesize; bootm BF040000;
+</span><span class='line'>ut_uboot=tftp $tmp_ram u-boot.bin; protect off $uboot_eaddr; erase $uboot_eaddr; cp.b $fileaddr BF000000 $filesize;
+</span><span class='line'>[...]</span></code></pre></td></tr></table></div></figure>
+
+
+<p>After setting up a <a href="https://wiki.openwrt.org/doc/howto/generic.flashing.tftp">TFTP server</a> and changing your host system to the IPv4 address off <code>192.168.11.2</code> You can download a firmware image right from the U-BOOT command prompt:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ar7240&gt; tftp $tmp_ram openwrt-ar71xx-generic-whr-hp-g300n-squashfs-tftp.bin
+</span><span class='line'>Using eth1 device
+</span><span class='line'>TFTP from server 192.168.11.2; our IP address is 192.168.11.1
+</span><span class='line'>Filename 'openwrt-ar71xx-generic-whr-hp-g300n-squashfs-tftp.bin'.
+</span><span class='line'>Load address: 0x80f00000
+</span><span class='line'>Loading: #################################################################
+</span><span class='line'>         #################################################################
+</span><span class='line'>         #################################################################
+</span><span class='line'>         #################################################################
+</span><span class='line'>         #################################################################
+</span><span class='line'>         #################################################################
+</span><span class='line'>         #################################################################
+</span><span class='line'>         #################################################################
+</span><span class='line'>         #################################################################
+</span><span class='line'>         ##############################
+</span><span class='line'>done
+</span><span class='line'>Bytes transferred = 3145764 (300024 hex)</span></code></pre></td></tr></table></div></figure>
+
+
+<p>So let&rsquo;s check if the image also suffer from this 0x20 bytes offset</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ar7240&gt; iminfo $fileaddr
+</span><span class='line'>
+</span><span class='line'>## Checking Image at 80f00000 ...
+</span><span class='line'>   Bad Magic Number
+</span><span class='line'>ar7240&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Of course it is as-well padded by this 0x20 byte offset. Just out of curiosity</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ar7240&gt; md $fileaddr
+</span><span class='line'>80f00000: 23204169 72737461 74696f6e 20507562    # Airstation Pub
+</span><span class='line'>80f00010: 6c696320 466d7431 00000000 00000000    lic Fmt1........
+</span><span class='line'>80f00020: 27051956 d3488451 56acca20 00115622    '..V.H.QV.. ..V"
+</span><span class='line'>80f00030: 80060000 80060000 b3e42d50 05050203    ..........-P....
+</span><span class='line'>80f00040: 4d495053 204f7065 6e577274 204c696e    MIPS OpenWrt Lin
+</span><span class='line'>80f00050: 75782d33 2e31382e 32330000 00000000    ux-3.18.23......
+</span><span class='line'>80f00060: 6d000080 00344934 00000000 0000006f    m....4I4.......o
+</span><span class='line'>80f00070: fdffffa3 b77f4c34 f7f8df51 7a6edb3c    ......L4...Qzn.&lt;
+</span><span class='line'>80f00080: ec7d4ea1 71788f3e 662e5921 bcf0be72    .}N.qx.&gt;f.Y!...r
+</span><span class='line'>80f00090: a6181f38 843f1584 43cbe578 c27d99b4    ...8.?..C..x.}..
+</span><span class='line'>80f000a0: b9a7b99a d79b850d 10e56023 bc86313d    ..........`#..1=
+</span><span class='line'>80f000b0: f4653466 dd6085ac b5474b05 33efbdb7    .e4f.`...GK.3...
+</span><span class='line'>80f000c0: 76abd394 bebfacf4 f08fe76a db6961b8    v..........j.ia.
+</span><span class='line'>80f000d0: d341676a 67864eb5 e28b8dbd 3dbb489e    .Agjg.N.....=.H.
+</span><span class='line'>80f000e0: 978fb0a7 01f8fcc8 a0ebe5e4 54e07d07    ............T.}.
+</span><span class='line'>80f000f0: 05175829 289f8be8 6ac6d14c ece8db8a    ..X)(...j..L....</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In the line starting with <code>80f00020</code> we can see the magic <code>27051956</code> ,the expected uImage header, which <a href="http://scarygliders.net/2010/02/23/hacking-around-the-japanese-buffalo-wzr-hp-g300n/">Kevin Cave on Scarygliders</a> pointed out. So let&rsquo;s skip this header</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ar7240&gt; setenv fileaddr 80F00020</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Please do not save the environment after this modification otherwise your router will may not work properly after this. This is just a temporary modification!</p>
+
+<p>After this modification the test should past fine</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ar7240&gt; iminfo $fileaddr
+</span><span class='line'>
+</span><span class='line'>## Checking Image at 80f00020 ...
+</span><span class='line'>   Image Name:   MIPS OpenWrt Linux-3.18.23
+</span><span class='line'>   Created:      2016-01-30  14:35:12 UTC
+</span><span class='line'>   Image Type:   MIPS Linux Kernel Image (lzma compressed)
+</span><span class='line'>   Data Size:    1136162 Bytes =  1.1 MB
+</span><span class='line'>   Load Address: 80060000
+</span><span class='line'>   Entry Point:  80060000
+</span><span class='line'>   Verifying Checksum ... OK
+</span><span class='line'>ar7240&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Bingo! This looks promising. We now have to erase the flash and copy the image to it&rsquo;s new place.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ar7240&gt; erase $fw_eaddr
+</span><span class='line'>Erase Flash from 0xbf040000 to 0xbf3effff in Bank # 1
+</span><span class='line'>First 0x40 last 0x3ef sector size 0x1000                                                                                                                                                                  992
+</span><span class='line'>Erased 944 sectors
+</span><span class='line'>ar7240&gt; cp.b $fileaddr BF040000 $filesize
+</span><span class='line'>Copy to Flash...
+</span><span class='line'> Copy 3145764 byte to Flash... write addr: bf040000
+</span><span class='line'>done
+</span><span class='line'>ar7240&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now it is time to check if everything went fine or if we have created something for the dust bin.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ar7240&gt; bootm BF040000
+</span><span class='line'>## Booting image at bf040000 ...
+</span><span class='line'>   Image Name:   MIPS OpenWrt Linux-3.18.23
+</span><span class='line'>   Created:      2016-01-30  14:35:12 UTC
+</span><span class='line'>   Image Type:   MIPS Linux Kernel Image (lzma compressed)
+</span><span class='line'>   Data Size:    1136162 Bytes =  1.1 MB
+</span><span class='line'>   Load Address: 80060000
+</span><span class='line'>   Entry Point:  80060000
+</span><span class='line'>   Verifying Checksum ... OK
+</span><span class='line'>   Uncompressing Kernel Image ... OK
+</span><span class='line'>No initrd
+</span><span class='line'>## Transferring control to Linux (at address 80060000) ...
+</span><span class='line'>## Giving linux memsize in bytes, 33554432
+</span><span class='line'>
+</span><span class='line'>Starting kernel ...
+</span><span class='line'>
+</span><span class='line'>[    0.000000] Linux version 3.18.23 (chris@quadros) (gcc version 4.8.3 (OpenWrt/Linaro GCC 4.8-2014.04 r48532) ) #1 Sat Jan 30 15:35:03 CET 2016
+</span><span class='line'>[    0.000000] bootconsole [early0] enabled
+</span><span class='line'>[    0.000000] CPU0 revision is: 00019374 (MIPS 24Kc)
+</span><span class='line'>[    0.000000] SoC: Atheros AR7240 rev 2
+</span><span class='line'>[    0.000000] Determined physical RAM map:
+</span><span class='line'>[    0.000000]  memory: 02000000 @ 00000000 (usable)
+</span><span class='line'>[    0.000000] Initrd not found or empty - disabling initrd
+</span><span class='line'>[    0.000000] Zone ranges:
+</span><span class='line'>[    0.000000]   Normal   [mem 0x00000000-0x01ffffff]
+</span><span class='line'>[    0.000000] Movable zone start for each node
+</span><span class='line'>[    0.000000] Early memory node ranges
+</span><span class='line'>[...]
+</span><span class='line'>BusyBox v1.23.2 (2016-01-30 15:30:41 CET) built-in shell (ash)
+</span><span class='line'>
+</span><span class='line'>  _______                     ________        __
+</span><span class='line'> |       |.-----.-----.-----.|  |  |  |.----.|  |_
+</span><span class='line'> |   -   ||  _  |  -__|     ||  |  |  ||   _||   _|
+</span><span class='line'> |_______||   __|_____|__|__||________||__|  |____|
+</span><span class='line'>          |__| W I R E L E S S   F R E E D O M
+</span><span class='line'> -----------------------------------------------------
+</span><span class='line'> CHAOS CALMER (Chaos Calmer, r48532)
+</span><span class='line'> -----------------------------------------------------
+</span><span class='line'>  * 1 1/2 oz Gin            Shake with a glassful
+</span><span class='line'>  * 1/4 oz Triple Sec       of broken ice and pour
+</span><span class='line'>  * 3/4 oz Lime Juice       unstrained into a goblet.
+</span><span class='line'>  * 1 1/2 oz Orange Juice
+</span><span class='line'>  * 1 tsp. Grenadine Syrup
+</span><span class='line'> -----------------------------------------------------
+</span><span class='line'>root@OpenWrt:/#
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This looks like full success to me. Next step will be increasing the flash size to 8 MB to provide enough space for the <a href="https://ffbsee.de">FFBsee</a> firmware.</p>
+</div>
+  
+  
+
+
+        </article>
+      
+      
+        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+          
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
 <span class="glyphicon glyphicon-calendar"></span> <time datetime="2015-11-01T09:23:35+01:00"  data-updated="true" itemprop="datePublished dateCreated">Sun  1 Nov 2015,  9:23 AM</time>
         
            | <a href="/blog/2015/11/01/activating-usb-otg-udoo-neos-composite-ethernet-plus-serial-gadget-support-in-yoctos-poky/#disqus_thread" itemprop="discussionUrl"
@@ -783,73 +1104,6 @@ $: bitbake core-image-base</p>
 
         </article>
       
-      
-        <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-
-
-
-
-
-
-
-
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2015-05-04T11:40:53+02:00"  data-updated="true" itemprop="datePublished dateCreated">Mon  4 May 2015, 11:40 AM</time>
-        
-           | <a href="/blog/2015/05/04/odroid-c1-enabling-bootlogo-on-yocto-builds/#disqus_thread" itemprop="discussionUrl"
-             data-disqus-identifier="http://ch.ege.io/blog/2015/05/04/odroid-c1-enabling-bootlogo-on-yocto-builds/">Comments</a>
-        
-      </p>
-    
-    
-      <h2 class="entry-title" itemprop="name headline"><a href="/blog/2015/05/04/odroid-c1-enabling-bootlogo-on-yocto-builds/" itemprop="url">ODROID-C1 Enabling Bootlogo on Yocto Builds</a></h2>
-    
-  </header>
-
-
-  <div class="entry-content clearfix" itemprop="articleBody description"><p>The U-Boot for the Amlogic S805 from <a href="https://github.com/hardkernel/u-boot/tree/odroidc-v2011.03">Hardkernel</a> has the capabilities to display a bootlogo. It is not that easy to find any bootlogo that complies to a licence which can be used in comercial and in open source environments. Using the yocto logo is most probably prohibited, so I decided to design my own logo. And saved it to <strong> 24-bit Windows BMP image</strong> with the dimension of <strong>1280×720</strong> as statet in the <a href="http://odroid.com/dokuwiki/doku.php?id=en:c1_tips#logo_file_format">ODROID-C1 Wiki</a></p>
-
-<p><img src="https://raw.githubusercontent.com/linux-meson/meta-amlogic/fido/recipes-bsp/u-boot/u-boot-odroidc1/odroidc1/bootlogo.png"></p>
-
-<h2>Modifying boot.ini</h2>
-
-<p>In my Amlogic meta layer for the yocto build system I do not use a Fat32 boot partition so the <a href="">original bootlogo loading command</a> needed some minor modifications. The bootlogo is name bootlogo.bmp and should be copied to /boot.</p>
-
-<pre><code># loading and displaying bootlogo
-logo size ${outputmode}
-video open
-video clear
-video dev open ${outputmode}
-ext4load mmc 0:1 ${loadaddr_logo} /boot/bootlogo.bmp
-bmp display ${loadaddr_logo}
-bmp scale
-</code></pre>
-
-<p>You can either add this to your boot.ini or wait until I pushed a patch for <a href="https://github.com/linux-meson/meta-amlogic">meta-amlogic</a>.</p>
-
-<h2>Modifying the U-Boot environment</h2>
-
-<p>Another option is to change the U-Boot environment. There is already a variable called <em>preloadlogo</em>. We can update the command to load the bootlogo from ext4 instead of Fat32</p>
-
-<pre><code>setenv preloadlogo 'logo size ${outputmode};video open;video clear;video dev open ${outputmode};ext4load mmc 0:1 ${loadaddr_logo} /boot/bootlogo.bmp;bmp display ${loadaddr_logo};bmp scale'
-</code></pre>
-
-<p>Pleas ensure, that you paste this as a single line.</p>
-</div>
-  
-  
-
-
-        </article>
-      
     </div>
 
     <ul class="pager">
@@ -873,6 +1127,8 @@ bmp scale
   
   <div id="recent_posts" class="list-group">
     
+    <a class="list-group-item " href="/blog/2016/01/31/unbricking-a-buffalo-whr-hp-g300n/">Unbricking a Buffalo WHR-HP-G300N</a>
+    
     <a class="list-group-item " href="/blog/2015/11/01/activating-usb-otg-udoo-neos-composite-ethernet-plus-serial-gadget-support-in-yoctos-poky/">Activating USB_OTG Composite Ethernet + Serial Gadget Support in Yocto&#8217;s Poky for UDOO Neo</a>
     
     <a class="list-group-item " href="/blog/2015/10/31/attaching-a-serial-console-to-udoo-neo/">Attaching a Serial Console to UDOO Neo</a>
@@ -880,8 +1136,6 @@ bmp scale
     <a class="list-group-item " href="/blog/2015/09/22/tweaking-freescales-yocto-community-bsp-builds/">Tweaking Freescales Yocto Community BSP Builds</a>
     
     <a class="list-group-item " href="/blog/2015/09/19/openembedded-support-for-the-upcomming-udoo-neo/">OpenEmbedded Support for the Upcomming UDOO Neo</a>
-    
-    <a class="list-group-item " href="/blog/2015/08/03/installing-stm32cubemx-on-linux/">Installing STM32CubeMX on Linux</a>
     
   </div>
 </section>
@@ -912,7 +1166,7 @@ bmp scale
     </div>
     <footer role="contentinfo"><div class="container">
     <p class="text-muted credits">
-  Copyright &copy; 2015 - Christian Ege<br>
+  Copyright &copy; 2016 - Christian Ege<br>
   <small>
       <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>,
       <span class="credit">customized with <a href="https://github.com/kAworu/octostrap3">octostrap3</a></span>.
